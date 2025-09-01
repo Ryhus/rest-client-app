@@ -1,0 +1,9 @@
+@use './base/reset';
+@use './base/variables';
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50rem;
+}
