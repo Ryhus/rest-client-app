@@ -1,5 +1,46 @@
+import { Link } from 'react-router-dom';
+import { useAuthStore } from '@/stores/authStore';
+import { supabase } from '@/services/supabase/supaBaseClient';
+
 import './HeaderStyles.scss';
 
 export default function Header() {
-  return <div className="header">Here must be header</div>;
+  const session = useAuthStore((s) => s.session);
+  const loading = useAuthStore((s) => s.loading);
+
+  return (
+    <header className="header">
+      <Link to="/" className="header__logo">
+        Rest Client
+      </Link>
+
+      {!loading && (
+        <div className="header__actions">
+          {session ? (
+            <button
+              className="header__button header__button--signout"
+              onClick={() => supabase.auth.signOut()}
+            >
+              Sign Out
+            </button>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="header__button header__button--signin"
+              >
+                Sign In
+              </Link>
+              <Link
+                to="/signup"
+                className="header__button header__button--signup"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
+        </div>
+      )}
+    </header>
+  );
 }
