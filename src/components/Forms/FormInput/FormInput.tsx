@@ -25,7 +25,6 @@ export default function FormInput({
   list,
   className = '',
   errorMessage,
-
   rightIcon,
   onChange,
 }: InputProps) {

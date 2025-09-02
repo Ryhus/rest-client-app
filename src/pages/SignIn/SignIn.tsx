@@ -8,8 +8,20 @@ import { SignInForm } from '@/components';
 
 import './SignInStyles.scss';
 
+export async function clientAction({ request }: { request: Request }) {
+  const formData = await request.formData();
+
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
+
+  const user = await supabase.auth.signInWithPassword({ email, password });
+
+  return user;
+}
+
 export default function SignIn() {
   const session = useAuthStore((s) => s.session);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,15 +34,4 @@ export default function SignIn() {
       <SignInForm />
     </div>
   );
-}
-
-export async function clientAction({ request }: { request: Request }) {
-  const formData = await request.formData();
-
-  const email = formData.get('email') as string;
-  const password = formData.get('password') as string;
-
-  const user = await supabase.auth.signInWithPassword({ email, password });
-  console.log(user);
-  return user;
 }

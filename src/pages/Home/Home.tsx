@@ -5,7 +5,6 @@ import './HomeStyles.scss';
 
 export default function Home() {
   const session = useAuthStore((s) => s.session);
-  console.log(session);
 
   return (
     <main className="home">
@@ -23,7 +22,9 @@ export default function Home() {
         </>
       ) : (
         <>
-          <h1 className="home__tittle">Welcome back, user!</h1>
+          <h1 className="home__tittle">
+            Welcome back, {session.user.user_metadata.name}!
+          </h1>
           <nav className="home__nav">
             <Link to="/" className="home__link">
               REST Client

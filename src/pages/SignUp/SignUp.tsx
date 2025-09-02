@@ -6,6 +6,22 @@ import { supabase } from '@/services/supabase/supaBaseClient';
 
 import './SignUpStyles.scss';
 
+export async function clientAction({ request }: { request: Request }) {
+  const formData = await request.formData();
+
+  const email = formData.get('email') as string;
+  const name = formData.get('name') as string;
+  const password = formData.get('password') as string;
+
+  const user = await supabase.auth.signUp({
+    email,
+    password,
+    options: { data: { name: name } },
+  });
+  console.log(user);
+  return user;
+}
+
 export default function SignUp() {
   const session = useAuthStore((s) => s.session);
   const navigate = useNavigate();
@@ -20,15 +36,4 @@ export default function SignUp() {
       <SignUpForm />
     </div>
   );
-}
-
-export async function clientAction({ request }: { request: Request }) {
-  const formData = await request.formData();
-
-  const email = formData.get('email') as string;
-  const password = formData.get('password') as string;
-
-  const user = await supabase.auth.signUp({ email, password });
-  console.log(user);
-  return user;
 }
