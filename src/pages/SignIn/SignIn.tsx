@@ -1,10 +1,9 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 
+import { DynamicForm } from '@/components';
+import { supabase } from '@/services/supabase';
 import { useAuthStore } from '@/stores/authStore';
-import { supabase } from '@/services/supabase/supaBaseClient';
-
-import { SignInForm } from '@/components';
 
 import './SignInStyles.scss';
 
@@ -20,18 +19,33 @@ export async function clientAction({ request }: { request: Request }) {
 }
 
 export default function SignIn() {
-  const session = useAuthStore((s) => s.session);
+  const { session } = useAuthStore();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const navigate = useNavigate();
+  if (session) return <Navigate to="/" replace />;
 
-  useEffect(() => {
-    if (session) navigate('/');
-  });
+  const loginFields = [
+    {
+      id: 'email',
+      name: 'email',
+      labelText: 'Email',
+      value: email,
+      onChange: setEmail,
+    },
+    {
+      id: 'password',
+      name: 'password',
+      labelText: 'Password',
+      value: password,
+      onChange: setPassword,
+    },
+  ];
 
   return (
     <div className="signup-page">
       <h2>Login</h2>
-      <SignInForm />
+      <DynamicForm fields={loginFields} submitLabel="Login"></DynamicForm>
     </div>
   );
 }

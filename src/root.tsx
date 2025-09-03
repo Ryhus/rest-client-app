@@ -1,4 +1,9 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
+import { setupAuthListener } from './services/supabase/authListener';
+
+if (typeof window !== 'undefined') {
+  setupAuthListener();
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (

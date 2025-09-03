@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
+import { type UserMetaData } from '@/services/supabase';
 
 import './HomeStyles.scss';
 
 export default function Home() {
   const session = useAuthStore((s) => s.session);
+  const userData = session?.user.user_metadata as UserMetaData | null;
 
   return (
     <main className="home">
@@ -23,7 +25,7 @@ export default function Home() {
       ) : (
         <>
           <h1 className="home__tittle">
-            Welcome back, {session.user.user_metadata.name}!
+            Welcome back, {userData?.name ?? 'Dear User'}!
           </h1>
           <nav className="home__nav">
             <Link to="/" className="home__link">

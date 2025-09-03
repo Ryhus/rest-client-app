@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { supabase } from '@/services/supabase/supaBaseClient';
 import type { Session } from '@supabase/supabase-js';
 
 type AuthState = {
@@ -13,10 +12,3 @@ export const useAuthStore = create<AuthState>((set) => ({
   loading: true,
   setSession: (session) => set({ session, loading: false }),
 }));
-
-supabase.auth.getSession().then(({ data }) => {
-  useAuthStore.getState().setSession(data.session);
-});
-supabase.auth.onAuthStateChange((_event, session) => {
-  useAuthStore.getState().setSession(session);
-});

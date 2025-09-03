@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
-import { SignUpForm } from '@/components';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Navigate } from 'react-router-dom';
+
+import { DynamicForm } from '@/components';
 import { useAuthStore } from '@/stores/authStore';
-import { supabase } from '@/services/supabase/supaBaseClient';
+import { supabase } from '@/services/supabase';
 
 import './SignUpStyles.scss';
 
@@ -23,17 +24,41 @@ export async function clientAction({ request }: { request: Request }) {
 }
 
 export default function SignUp() {
-  const session = useAuthStore((s) => s.session);
-  const navigate = useNavigate();
+  const { session } = useAuthStore();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
 
-  useEffect(() => {
-    if (session) navigate('/');
-  });
+  if (session) return <Navigate to="/" replace />;
+
+  const signUpFields = [
+    {
+      id: 'email',
+      name: 'email',
+      labelText: 'Email',
+      value: email,
+      onChange: setEmail,
+    },
+    {
+      id: 'name',
+      name: 'name',
+      labelText: 'Name',
+      value: name,
+      onChange: setName,
+    },
+    {
+      id: 'password',
+      name: 'password',
+      labelText: 'Password',
+      value: password,
+      onChange: setPassword,
+    },
+  ];
 
   return (
     <div className="signup-page">
       <h2>Create Account</h2>
-      <SignUpForm />
+      <DynamicForm fields={signUpFields} submitLabel="Sign Up"></DynamicForm>
     </div>
   );
 }

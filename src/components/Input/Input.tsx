@@ -1,6 +1,6 @@
-import './FormInputStyles.scss';
+import './InputStyles.scss';
 
-interface InputProps {
+export interface InputProps {
   id: string;
   type?: string;
   name?: string;
@@ -15,7 +15,7 @@ interface InputProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function FormInput({
+export default function Input({
   name,
   value,
   checked,
