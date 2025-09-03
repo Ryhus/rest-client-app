@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+
 import { useAuthStore } from '@/stores/authStore';
 import { type UserMetaData } from '@/services/supabase';
+import { userLinks, guestLinks } from '@/utils/navLinksConfig';
 
 import './HomeStyles.scss';
 
@@ -8,38 +10,23 @@ export default function Home() {
   const session = useAuthStore((s) => s.session);
   const userData = session?.user.user_metadata as UserMetaData | null;
 
+  const links = session ? userLinks : guestLinks;
+
   return (
     <main className="home">
-      {!session ? (
-        <>
-          <h1 className="home__tittle">Welcome!</h1>
-          <nav className="home__nav">
-            <Link to="login" className="home__link">
-              Sign in
-            </Link>
-            <Link to="signup" className="home__link">
-              Sign up
-            </Link>
-          </nav>
-        </>
-      ) : (
-        <>
-          <h1 className="home__tittle">
-            Welcome back, {userData?.name ?? 'Dear User'}!
-          </h1>
-          <nav className="home__nav">
-            <Link to="/" className="home__link">
-              REST Client
-            </Link>
-            <Link to="/" className="home__link">
-              History
-            </Link>
-            <Link to="/" className="home__link">
-              Variables
-            </Link>
-          </nav>
-        </>
-      )}
+      <h1 className="home__tittle">
+        {session
+          ? `Welcome back, ${userData?.name ?? 'Dear User'}!`
+          : 'Welcome!'}
+      </h1>
+
+      <nav className="home__nav">
+        {links.map((link) => (
+          <Link key={link.text} to={link.to} className="home__link">
+            {link.text}
+          </Link>
+        ))}
+      </nav>
     </main>
   );
 }
