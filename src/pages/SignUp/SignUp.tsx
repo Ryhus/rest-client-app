@@ -4,6 +4,9 @@ import { Input } from '@/components';
 import { useAuthStore } from '@/stores/authStore';
 import { supabase } from '@/services/supabase';
 
+import eyeHide from '@/assets/img/eyeHide.svg';
+import eyeShow from '@/assets/img/eyeShow.svg';
+
 import './SignUpStyles.scss';
 
 export async function clientAction({ request }: { request: Request }) {
@@ -36,6 +39,7 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const actionData = useActionData() as { error?: string };
 
   if (session) return <Navigate to="/" replace />;
@@ -61,11 +65,24 @@ export default function SignUp() {
           onChange={(e) => setName(e.target.value)}
         ></Input>
         <Input
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           id="password"
           labelText="Password"
           name="password"
           value={password}
+          rightIcon={
+            <button
+              type="button"
+              className="icon-button"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {showPassword ? (
+                <img src={eyeHide} alt="eye hide" />
+              ) : (
+                <img src={eyeShow} alt="eye show" />
+              )}
+            </button>
+          }
           onChange={(e) => setPassword(e.target.value)}
         ></Input>
         {actionData && <p className="form__server-error">{actionData.error}</p>}

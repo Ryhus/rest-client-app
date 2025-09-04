@@ -5,6 +5,9 @@ import { Input } from '@/components';
 import { supabase } from '@/services/supabase';
 import { useAuthStore } from '@/stores/authStore';
 
+import eyeHide from '@/assets/img/eyeHide.svg';
+import eyeShow from '@/assets/img/eyeShow.svg';
+
 import './SignInStyles.scss';
 
 export async function clientAction({ request }: { request: Request }) {
@@ -34,6 +37,7 @@ export default function SignIn() {
   const { session } = useAuthStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const actionData = useActionData() as { error?: string };
 
   if (session) return <Navigate to="/" replace />;
@@ -51,11 +55,24 @@ export default function SignIn() {
           onChange={(e) => setEmail(e.target.value)}
         ></Input>
         <Input
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           id="password"
           labelText="Password"
           name="password"
           value={password}
+          rightIcon={
+            <button
+              type="button"
+              className="icon-button"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {showPassword ? (
+                <img src={eyeHide} alt="eye hide" />
+              ) : (
+                <img src={eyeShow} alt="eye show" />
+              )}
+            </button>
+          }
           onChange={(e) => setPassword(e.target.value)}
         ></Input>
         {actionData && <p className="form__server-error">{actionData.error}</p>}
