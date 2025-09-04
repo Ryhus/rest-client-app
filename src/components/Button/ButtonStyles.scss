@@ -1,0 +1,73 @@
+@use '../../styles/base/variables';
+
+.button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: variables.$btn-padding;
+  gap: variables.$spacing-sm;
+  width: variables.$btn-width;
+  height: variables.$btn-height;
+  border-radius: variables.$border-radius;
+  font-family: variables.$font-family-base;
+  font-style: variables.$font-style-normal;
+  font-weight: variables.$font-weight-btn;
+  font-size: variables.$font-size-base;
+  line-height: variables.$line-height-btn;
+  text-transform: capitalize;
+  transition: 3ms ease;
+}
+
+.button:hover {
+  cursor: pointer;
+  transform: scale(1.03);
+}
+
+.button:disabled {
+  cursor: none;
+  pointer-events: none;
+}
+
+.primary {
+  color: variables.$color-basic;
+  background-color: variables.$color-primary;
+  border: none;
+}
+
+.primary:hover {
+  background-color: variables.$color-primary-light;
+}
+
+.primary:disabled {
+  background-color: variables.$color-disabled;
+}
+
+.icon-btn {
+  width: 32px;
+  height: 32px;
+  padding: 4px;
+}
+
+.secondary,
+.icon-btn {
+  color: variables.$font-color-primary;
+  background-color: variables.$color-basic;
+  border: 1px solid variables.$border-color; 
+}
+
+.icon-btn:hover {
+  color: variables.$color-warning;
+}
+
+.secondary:hover {
+  border-color: variables.$font-color-primary;
+}
+
+.secondary:disabled,
+.icon-btn:disabled {
+  border-color: variables.$color-disabled;
+  color: variables.$color-disabled;
+}
+
+
