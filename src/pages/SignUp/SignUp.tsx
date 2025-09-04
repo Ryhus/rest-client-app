@@ -47,7 +47,7 @@ export default function SignUp() {
   return (
     <div className="signup-page">
       <h2>Create Account</h2>
-      <Form className="form">
+      <Form className="form" method="post">
         <Input
           type="text"
           id="email"

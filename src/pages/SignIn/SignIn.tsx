@@ -16,6 +16,7 @@ export async function clientAction({ request }: { request: Request }) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 
+  console.log(email, password);
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -39,13 +40,14 @@ export default function SignIn() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const actionData = useActionData() as { error?: string };
+  console.log(session, actionData);
 
   if (session) return <Navigate to="/" replace />;
 
   return (
     <div className="signup-page">
       <h2>Login</h2>
-      <Form className="form">
+      <Form className="form" method="post">
         <Input
           type="text"
           id="email"
