@@ -3,7 +3,7 @@ import { Navigate, useActionData, Form } from 'react-router-dom';
 
 import { Input } from '@/components';
 import { supabase } from '@/services/supabase';
-import { useAuthStore } from '@/stores/authStore';
+import { useAuthStore } from '@/stores/authStore/authStore';
 
 import eyeHide from '@/assets/img/eyeHide.svg';
 import eyeShow from '@/assets/img/eyeShow.svg';
@@ -16,7 +16,6 @@ export async function clientAction({ request }: { request: Request }) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 
-  console.log(email, password);
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -40,7 +39,6 @@ export default function SignIn() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const actionData = useActionData() as { error?: string };
-  console.log(session, actionData);
 
   if (session) return <Navigate to="/" replace />;
 

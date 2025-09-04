@@ -1,5 +1,5 @@
 import { supabase } from './supaBaseClient';
-import { useAuthStore } from '@/stores/authStore';
+import { useAuthStore } from '@/stores/authStore/authStore';
 
 export function setupAuthListener() {
   if (typeof window === 'undefined') return;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Navigate, Form, useActionData } from 'react-router-dom';
 import { Input } from '@/components';
-import { useAuthStore } from '@/stores/authStore';
+import { useAuthStore } from '@/stores/authStore/authStore';
 import { supabase } from '@/services/supabase';
 
 import eyeHide from '@/assets/img/eyeHide.svg';

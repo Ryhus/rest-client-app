@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useAuthStore } from '@/stores/authStore';
+import { useAuthStore } from '@/stores/authStore/authStore';
 import { supabase } from '@/services/supabase';
 
 import './HeaderStyles.scss';

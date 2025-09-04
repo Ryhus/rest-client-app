@@ -31,6 +31,7 @@ export default defineConfig({
         'src/**/index.ts',
         'src/layouts/*',
         'src/entry.client.tsx',
+        'src/utils/navLinksConfig.ts',
       ],
       thresholds: {
         statements: 80,
