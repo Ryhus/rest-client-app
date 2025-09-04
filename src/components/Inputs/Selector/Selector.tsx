@@ -5,8 +5,8 @@ interface SelectorProps {
   id: string;
   name?: string;
   labelTxt?: string;
-  value: string;
-  onChange: ChangeEventHandler<HTMLSelectElement>;
+  value?: string;
+  onChange?: ChangeEventHandler<HTMLSelectElement>;
   data: string[];
 }
 

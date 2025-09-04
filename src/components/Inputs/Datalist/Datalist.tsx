@@ -5,10 +5,10 @@ interface DatalistProps {
   id: string;
   name?: string;
   labelTxt?: string;
-  value: string;
+  value?: string;
   listName: string;
   placeholder?: string;
-  onChange: ChangeEventHandler<HTMLInputElement>;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
   data: string[];
 }
 
