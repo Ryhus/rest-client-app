@@ -147,8 +147,11 @@ describe('SignUp component', () => {
 
   it('submits the form', () => {
     renderWithDataRouter();
-    const submitButton = screen.getByRole('button', { name: /Sign Up/i });
-    fireEvent.submit(submitButton);
+
+    const form = document.querySelector('.form') as HTMLFormElement;
+    if (!form) throw new Error('Form not found');
+
+    fireEvent.submit(form);
   });
 });
 
