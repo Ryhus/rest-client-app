@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useActionData, Form } from 'react-router-dom';
 
-import { DynamicForm } from '@/components';
+import { Input } from '@/components';
 import { supabase } from '@/services/supabase';
 import { useAuthStore } from '@/stores/authStore';
 
@@ -13,39 +13,56 @@ export async function clientAction({ request }: { request: Request }) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 
-  const user = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
 
-  return user;
+  if (error) {
+    return {
+      error:
+        error.message === 'Failed to fetch'
+          ? 'Pls, check your internet connection.'
+          : error.message,
+    };
+  }
+
+  return { data };
 }
 
 export default function SignIn() {
   const { session } = useAuthStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const actionData = useActionData() as { error?: string };
 
   if (session) return <Navigate to="/" replace />;
-
-  const loginFields = [
-    {
-      id: 'email',
-      name: 'email',
-      labelText: 'Email',
-      value: email,
-      onChange: setEmail,
-    },
-    {
-      id: 'password',
-      name: 'password',
-      labelText: 'Password',
-      value: password,
-      onChange: setPassword,
-    },
-  ];
 
   return (
     <div className="signup-page">
       <h2>Login</h2>
-      <DynamicForm fields={loginFields} submitLabel="Login"></DynamicForm>
+      <Form className="form">
+        <Input
+          type="text"
+          id="email"
+          labelText="Email"
+          name="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        ></Input>
+        <Input
+          type="password"
+          id="password"
+          labelText="Password"
+          name="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        ></Input>
+        {actionData && <p className="form__server-error">{actionData.error}</p>}
+        <button type="submit" className="form__submit-bttn">
+          Login
+        </button>
+      </Form>
     </div>
   );
 }

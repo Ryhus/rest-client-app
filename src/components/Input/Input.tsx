@@ -2,13 +2,11 @@ import './InputStyles.scss';
 
 export interface InputProps {
   id: string;
-  type?: string;
+  type?: 'text' | 'password' | 'email' | 'number';
   name?: string;
   value?: string;
-  checked?: boolean;
   labelText?: string;
   className?: string;
-  list?: string;
   errorMessage?: string;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
@@ -18,11 +16,9 @@ export interface InputProps {
 export default function Input({
   name,
   value,
-  checked,
   id,
   type = 'text',
   labelText,
-  list,
   className = '',
   errorMessage,
   rightIcon,
@@ -44,8 +40,6 @@ export default function Input({
           id={id}
           type={type}
           value={value}
-          checked={checked}
-          list={list}
           className={inputFieldClass}
           onChange={onChange}
         ></input>
