@@ -40,7 +40,7 @@
   width: 18px;
   background-color: variables.$color-basic;
   border-radius: 1px;
-  border: 1px solid variables.$font-color-primary;
+  border: 1px solid variables.$color-basic-dark;
 }
 
 .checkboxLabel:hover input ~ .checkmark {
@@ -48,7 +48,7 @@
 }
 
 .checkboxLabel input:checked ~ .checkmark{
-  background-color: variables.$font-color-primary;
+  background-color: variables.$color-basic-dark;
 }
 
 .checkmark::after{

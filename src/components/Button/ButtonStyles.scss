@@ -12,7 +12,7 @@
   border-radius: variables.$border-radius;
   font-family: variables.$font-family-base;
   font-style: variables.$font-style-normal;
-  font-weight: variables.$font-weight-btn;
+  font-weight: variables.$font-weight-medium;
   font-size: variables.$font-size-base;
   line-height: variables.$line-height-btn;
   text-transform: capitalize;
@@ -61,7 +61,7 @@
 }
 
 .secondary:hover {
-  border-color: variables.$font-color-primary;
+  border-color: variables.$color-basic-dark;
 }
 
 .secondary:disabled,

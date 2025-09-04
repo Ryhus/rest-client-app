@@ -15,7 +15,7 @@
 .input-label {
   padding: 0px 8px;
   color: variables.$input-color;
-  font-weight: variables.$font-weight-btn;
+  font-weight: variables.$font-weight-medium;
 }
 
 .input-field {
@@ -31,11 +31,11 @@
 }
 
 .input-field:focus {
-  border-color: variables.$font-color-primary;
+  border-color: variables.$color-basic-dark;
 }
 
 .input-field:disabled {
-  background-color: variables.$color-disabled;
+  background-color: variables.$input-disabled-color;
   cursor: none;
   pointer-events: none;
 }

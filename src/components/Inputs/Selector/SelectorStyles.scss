@@ -23,5 +23,6 @@ select {
   background-color: transparent;
   border-radius: variables.$border-radius;
   padding: variables.$spacing-sm;
+  color: variables.$font-color-primary;
   cursor: pointer;
 }
