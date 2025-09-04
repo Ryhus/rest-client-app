@@ -10,10 +10,8 @@ interface InputProps {
   type?: string;
   name?: string;
   value?: string;
-  checked?: boolean;
   labelText?: string;
   className?: string;
-  list?: string;
   errors?: InputError[];
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
@@ -24,11 +22,9 @@ interface InputProps {
 function Input({
   name,
   value,
-  checked,
   id,
   type = 'text',
   labelText,
-  list,
   className = '',
   errors,
   rightIcon,
@@ -52,8 +48,6 @@ function Input({
           id={id}
           type={type}
           value={value}
-          checked={checked}
-          list={list}
           className={inputFieldClass}
           onChange={onChange}
           disabled={isDisabled}
