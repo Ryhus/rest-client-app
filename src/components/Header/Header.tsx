@@ -17,12 +17,17 @@ export default function Header() {
       {!loading && (
         <div className="header__actions">
           {session ? (
-            <button
-              className="header__button header__button--signout"
-              onClick={() => supabase.auth.signOut()}
-            >
-              Sign Out
-            </button>
+            <>
+              <Link to="/" className="header__button">
+                Home
+              </Link>
+              <button
+                className="header__button header__button--signout"
+                onClick={() => supabase.auth.signOut()}
+              >
+                Sign Out
+              </button>
+            </>
           ) : (
             <>
               <Link
