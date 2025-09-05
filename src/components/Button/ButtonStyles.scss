@@ -1,20 +1,17 @@
-@use '../../styles/base/variables';
+@use '@/styles/base/variables';
 
 .button {
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: center;
   padding: variables.$btn-padding;
-  gap: variables.$spacing-sm;
-  width: variables.$btn-width;
+  min-width: variables.$btn-width;
   height: variables.$btn-height;
   border-radius: variables.$border-radius;
   font-family: variables.$font-family-base;
   font-style: variables.$font-style-normal;
   font-weight: variables.$font-weight-medium;
   font-size: variables.$font-size-base;
-  line-height: variables.$line-height-btn;
   text-transform: capitalize;
   transition: 3ms ease;
 }
