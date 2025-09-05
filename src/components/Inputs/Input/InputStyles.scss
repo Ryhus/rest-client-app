@@ -1,0 +1,57 @@
+@use '@/styles/base/variables';
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  font-family: variables.$font-family-base;
+  font-size: variables.$font-size-base;
+  font-style: variables.$font-style-normal;
+  font-weight: variables.$font-weight-regular;
+  width: 252px;
+  height: 66px;
+}
+
+.input-label {
+  padding: 0px 8px;
+  color: variables.$input-color;
+  font-weight: variables.$font-weight-medium;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 12px;
+  gap: variables.$spacing-sm;
+  border: 1px solid variables.$input-color;
+  border-radius: variables.$border-radius;
+  background-color: variables.$color-basic;
+  cursor: text;
+}
+
+.input-field:focus {
+  border-color: variables.$color-basic-dark;
+}
+
+.input-field:disabled {
+  background-color: variables.$input-disabled-color;
+  cursor: none;
+  pointer-events: none;
+}
+
+.input-field--error {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px 8px;
+  width: 252px;
+  min-height: 16px;
+  color: variables.$color-warning;
+  font-size: variables.$font-size-sm;
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
