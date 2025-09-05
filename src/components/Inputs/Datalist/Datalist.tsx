@@ -23,12 +23,15 @@ export default function Datalist({
   data,
 }: DatalistProps) {
   return (
-    <div className="datalist">
-      <label htmlFor={id}>{labelTxt}</label>
+    <div className="datalist-container">
+      <label htmlFor={id} className="datalist-label">
+        {labelTxt}
+      </label>
       <input
         id={id}
         list={listName}
         name={name}
+        className="datalist-input"
         placeholder={placeholder}
         value={value}
         onChange={onChange}

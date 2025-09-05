@@ -19,9 +19,17 @@ export default function Selector({
   data,
 }: SelectorProps) {
   return (
-    <div className="selector">
-      <label htmlFor={id}>{labelTxt}</label>
-      <select id={id} name={name} value={value} onChange={onChange}>
+    <div className="selector-container">
+      <label htmlFor={id} className="label">
+        {labelTxt}
+      </label>
+      <select
+        id={id}
+        name={name}
+        className="select"
+        value={value}
+        onChange={onChange}
+      >
         {data.map((item) => (
           <option key={item} value={item} className="option">
             {item}

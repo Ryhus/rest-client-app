@@ -15,12 +15,13 @@ export default function Checkbox({
   onChange,
 }: CheckboxProps) {
   return (
-    <div className="checkbox">
-      <label className="checkboxLabel">
+    <div className="checkbox-container">
+      <label className="checkbox-label">
         {labelTxt}
         <input
           type="checkbox"
           name={name}
+          className="checkbox-input"
           checked={isChecked}
           onChange={onChange}
         />

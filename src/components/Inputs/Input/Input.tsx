@@ -1,4 +1,5 @@
 import './InputStyles.scss';
+import clsx from 'clsx';
 
 interface InputError {
   id: number;
@@ -11,7 +12,7 @@ interface InputProps {
   name?: string;
   value?: string;
   labelText?: string;
-  className?: string;
+  inputClassName?: string;
   errors?: InputError[];
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
@@ -25,20 +26,20 @@ function Input({
   id,
   type = 'text',
   labelText,
-  className = '',
+  inputClassName = '',
   errors,
   rightIcon,
   onChange,
   isDisabled,
 }: InputProps) {
-  const inputContainerClass =
-    `input-container input-container__${type}  ${className}`.trim();
-
-  const inputFieldClass =
-    `input-field input-field__${type} ${rightIcon ? 'input-field--right-icon' : ''}`.trim();
+  const inputFieldClass = clsx(
+    'input-field',
+    `${inputClassName}`,
+    `${rightIcon ? 'input-field--right-icon' : ''}`
+  );
 
   return (
-    <div className={inputContainerClass}>
+    <div className="input-container">
       <label className="input-label" htmlFor={id}>
         {labelText}
       </label>
