@@ -1,6 +1,5 @@
 export * from './Header';
 export * from './Footer';
-export * from './Input';
+export * from './Inputs';
 export * from './Spinner';
 export * from './Button';
-export * from './Inputs';
