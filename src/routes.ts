@@ -4,6 +4,16 @@ export default [
   {
     path: '/',
     file: './layouts/MainLayout/MainLayout.tsx',
-    children: [{ index: true, file: './pages/Home/Home.tsx' }],
+    children: [
+      {
+        index: true,
+        file: './pages/Home/Home.tsx',
+      },
+      {
+        path: 'signup',
+        file: './pages/SignUp/SignUp.tsx',
+      },
+      { path: 'login', file: './pages/SignIn/SignIn.tsx' },
+    ],
   },
 ] satisfies RouteConfig;

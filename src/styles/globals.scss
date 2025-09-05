@@ -5,5 +5,39 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 50rem;
+  gap: 20rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  &__server-error {
+    font-size: 1.5rem;
+    color: red;
+  }
+
+  &__submit-bttn {
+    padding: 0.75rem 2rem;
+    border-radius: 0.75rem;
+    border: none;
+    background-color: #4f46e5;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover,
+    &:focus {
+      background-color: #4338ca;
+      outline: none;
+    }
+
+    &:disabled {
+      background-color: #a5b4fc;
+      cursor: default;
+      opacity: 0.6;
+    }
+  }
 }

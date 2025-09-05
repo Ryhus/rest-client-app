@@ -6,6 +6,7 @@ import './styles/globals.scss';
 
 ReactDOM.hydrateRoot(
   document,
+
   <React.StrictMode>
     <HydratedRouter />
   </React.StrictMode>
