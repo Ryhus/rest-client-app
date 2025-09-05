@@ -1,0 +1,21 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  align-items: center;
+
+  &__tittle {
+    font-size: 5rem;
+  }
+
+  &__nav {
+    display: flex;
+    gap: 5rem;
+  }
+
+  &__link {
+    text-decoration: none;
+    font-size: 2rem;
+    color: #333;
+  }
+}
