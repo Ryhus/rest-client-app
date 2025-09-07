@@ -1,0 +1,13 @@
+@use '@/styles/base/variables';
+
+.section-body {
+  height: 250px;
+  overflow-y: auto;
+}
+
+.headers-table .thead {
+  .key,
+  .value {
+    width: 50%;
+  }
+}

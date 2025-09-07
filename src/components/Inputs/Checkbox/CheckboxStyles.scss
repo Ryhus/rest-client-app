@@ -45,12 +45,12 @@
   background-color: variables.$input-color;
 }
 
-.checkbox-label .checkbox-input:checked ~ .checkmark{
+.checkbox-label .checkbox-input:checked ~ .checkmark {
   background-color: variables.$color-basic-dark;
 }
 
-.checkmark::after{
-  content: "";
+.checkmark::after {
+  content: '';
   position: absolute;
   display: none;
 }

@@ -5,39 +5,48 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20rem;
+  margin: auto;
+  min-height: 100vh;
+  max-width: 1440px;
+  font-family: variables.$font-family-base;
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+.main {
+  flex-grow: 1;
+  width: 100%;
+}
 
-  &__server-error {
-    font-size: 1.5rem;
-    color: red;
+.table {
+  border-collapse: collapse;
+
+  .thead {
+    position: sticky;
+
+    .td {
+      color: variables.$font-color-secondary;
+      font-weight: 600;
+    }
   }
 
-  &__submit-bttn {
-    padding: 0.75rem 2rem;
-    border-radius: 0.75rem;
-    border: none;
-    background-color: #4f46e5;
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  .td {
+    padding: 8px;
+    border: 1px solid variables.$border-color;
+  }
+}
 
-    &:hover,
-    &:focus {
-      background-color: #4338ca;
-      outline: none;
-    }
+.table-input {
+  padding: variables.$spacing-xs;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: variables.$border-radius;
+  outline: none;
+  transition: border-color 0.2s;
 
-    &:disabled {
-      background-color: #a5b4fc;
-      cursor: default;
-      opacity: 0.6;
-    }
+  &::placeholder {
+    color: variables.$input-placeholder-color;
+  }
+
+  &:focus {
+    border-color: variables.$border-color;
   }
 }

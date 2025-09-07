@@ -10,26 +10,13 @@ interface SelectorProps {
   data: string[];
 }
 
-export default function Selector({
-  id,
-  name,
-  value,
-  labelTxt,
-  onChange,
-  data,
-}: SelectorProps) {
+export default function Selector({ id, name, value, labelTxt, onChange, data }: SelectorProps) {
   return (
     <div className="selector-container">
       <label htmlFor={id} className="label">
         {labelTxt}
       </label>
-      <select
-        id={id}
-        name={name}
-        className="select"
-        value={value}
-        onChange={onChange}
-      >
+      <select id={id} name={name} className="select" value={value} onChange={onChange}>
         {data.map((item) => (
           <option key={item} value={item} className="option">
             {item}

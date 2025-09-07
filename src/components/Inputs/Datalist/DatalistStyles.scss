@@ -2,8 +2,8 @@
 
 .datalist-container {
   display: flex;
+  flex-direction: column;
   align-items: baseline;
-  gap: variables.$spacing-sm;
   font-family: variables.$font-family-base;
   font-size: variables.$font-size-base;
   font-style: variables.$font-style-normal;
@@ -14,17 +14,27 @@
   display: none;
 }
 
+.datalist-label {
+  margin-bottom: variables.$spacing-sm;
+}
+
 .datalist-input {
   height: 43px;
   width: auto;
-  border: 1px solid variables.$border-color;
+  border: 1px solid variables.$input-color;
   background-color: transparent;
   border-radius: variables.$border-radius;
   padding: variables.$spacing-sm;
   color: variables.$font-color-primary;
   cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
 }
 
 .datalist-input::placeholder {
-  color: variables.$input-color;
+  color: variables.$input-placeholder-color;
+}
+
+.datalist-input:focus {
+  border-color: variables.$color-basic-dark;
 }
