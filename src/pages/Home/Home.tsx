@@ -13,7 +13,7 @@ export default function Home() {
   const links = session ? userLinks : guestLinks;
 
   return (
-    <main className="home">
+    <div className="home">
       <h1 className="home__tittle">{session ? `Welcome back, ${userData?.name ?? 'Dear User'}!` : 'Welcome!'}</h1>
 
       <nav className="home__nav">
@@ -23,6 +23,6 @@ export default function Home() {
           </Link>
         ))}
       </nav>
-    </main>
+    </div>
   );
 }
