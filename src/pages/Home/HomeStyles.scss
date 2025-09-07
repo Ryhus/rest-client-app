@@ -1,3 +1,6 @@
+@use '@/styles/base/variables';
+@use '@/components/Button/ButtonStyles';
+
 .home {
   display: flex;
   flex-direction: column;
@@ -5,17 +8,18 @@
   align-items: center;
 
   &__tittle {
-    font-size: 5rem;
+    font-family: variables.$font-family-base;
+    font-size: variables.$font-size-lg;
+    font-weight: variables.$font-weight-bold;
+    color: variables.$font-color-primary;
   }
 
   &__nav {
     display: flex;
-    gap: 5rem;
+    gap: variables.$spacing-md;
   }
 
   &__link {
     text-decoration: none;
-    font-size: 2rem;
-    color: #333;
   }
 }
