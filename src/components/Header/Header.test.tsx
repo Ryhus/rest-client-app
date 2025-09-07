@@ -15,8 +15,11 @@ vi.mock('@/services/supabase', () => ({
   },
 }));
 
-const renderWithRouter = (ui: React.ReactNode) =>
-  render(<BrowserRouter>{ui}</BrowserRouter>);
+vi.mock('@/assets/img/logo.svg', () => ({
+  default: 'mock-logo.svg',
+}));
+
+const renderWithRouter = (ui: React.ReactNode) => render(<BrowserRouter>{ui}</BrowserRouter>);
 
 const createTestSession = (): Session => ({
   access_token: 'token',
@@ -46,7 +49,10 @@ describe('Header component', () => {
     useAuthStore.setState({ session: null, loading: false });
 
     renderWithRouter(<Header />);
-    expect(screen.getByText(/Rest Client/i)).toBeInTheDocument();
+    const img = screen.getByAltText('Rest client app logo') as HTMLImageElement;
+    expect(img).toBeInTheDocument();
+    expect(img.src).toContain('mock-logo.svg');
+    expect(img).toHaveClass('header__logo');
   });
 
   it('renders Sign In/Sign Up when no session and not loading', () => {
