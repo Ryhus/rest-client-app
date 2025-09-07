@@ -6,6 +6,8 @@
   flex-direction: column;
   gap: 5rem;
   align-items: center;
+  justify-content: center;
+  flex: 1;
 
   &__tittle {
     font-family: variables.$font-family-base;
