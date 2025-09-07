@@ -14,11 +14,7 @@ export default function Home() {
 
   return (
     <main className="home">
-      <h1 className="home__tittle">
-        {session
-          ? `Welcome back, ${userData?.name ?? 'Dear User'}!`
-          : 'Welcome!'}
-      </h1>
+      <h1 className="home__tittle">{session ? `Welcome back, ${userData?.name ?? 'Dear User'}!` : 'Welcome!'}</h1>
 
       <nav className="home__nav">
         {links.map((link) => (

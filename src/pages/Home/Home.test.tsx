@@ -18,8 +18,7 @@ vi.mock('@/utils/navLinksConfig', () => ({
   ],
 }));
 
-const renderWithRouter = (ui: React.ReactNode) =>
-  render(<BrowserRouter>{ui}</BrowserRouter>);
+const renderWithRouter = (ui: React.ReactNode) => render(<BrowserRouter>{ui}</BrowserRouter>);
 
 const createTestSession = (name?: string): Session => ({
   access_token: 'token',

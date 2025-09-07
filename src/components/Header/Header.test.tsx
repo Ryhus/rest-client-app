@@ -15,8 +15,7 @@ vi.mock('@/services/supabase', () => ({
   },
 }));
 
-const renderWithRouter = (ui: React.ReactNode) =>
-  render(<BrowserRouter>{ui}</BrowserRouter>);
+const renderWithRouter = (ui: React.ReactNode) => render(<BrowserRouter>{ui}</BrowserRouter>);
 
 const createTestSession = (): Session => ({
   access_token: 'token',
