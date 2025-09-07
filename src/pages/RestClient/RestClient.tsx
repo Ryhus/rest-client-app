@@ -33,14 +33,20 @@ export default function RestClient({ params }: Props) {
   } = restClientPageStore();
 
   useEffect(() => {
-    if (method) setRequestMethod(method);
-    if (encodedUrl) setRequestUrl(atob(encodedUrl));
-    if (encodedBody) setRequestBody(atob(encodedBody));
+    setRequestMethod(method || 'GET');
+
+    if (encodedUrl) {
+      setRequestUrl(atob(encodedUrl));
+    }
+
+    if (encodedBody) {
+      setRequestBody(atob(encodedBody));
+    }
 
     clearRequestHeaders();
 
     searchParams.forEach((value, key) => {
-      addRequestHeader({ name: decodeURIComponent(key), value: decodeURIComponent(value) });
+      addRequestHeader({ name: key, value: value });
     });
   }, []);
 
@@ -61,9 +67,7 @@ export default function RestClient({ params }: Props) {
     ].filter((s) => s !== undefined);
 
     const newUrlSearchParams = new URLSearchParams(
-      requestHeaders
-        .filter((h) => h.name || h.value)
-        .map((r) => [encodeURIComponent(r.name), encodeURIComponent(r.value)])
+      requestHeaders.filter((h) => h.name || h.value).map((r) => [r.name, r.value])
     );
 
     navigate({
