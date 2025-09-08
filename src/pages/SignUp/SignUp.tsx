@@ -3,7 +3,8 @@ import { Navigate, Form, useActionData } from 'react-router-dom';
 import { Input } from '@/components';
 import { useAuthStore } from '@/stores/authStore/authStore';
 import { supabase } from '@/services/supabase';
-
+import { Button } from '@/components';
+import { ButtonStyle, ButtonType } from '@/components/Button/types';
 import eyeHide from '@/assets/img/eyeHide.svg';
 import eyeShow from '@/assets/img/eyeShow.svg';
 
@@ -24,10 +25,7 @@ export async function clientAction({ request }: { request: Request }) {
 
   if (error) {
     return {
-      error:
-        error.message === 'Failed to fetch'
-          ? 'Pls, check your internet connection.'
-          : error.message,
+      error: error.message === 'Failed to fetch' ? 'Pls, check your internet connection.' : error.message,
     };
   }
 
@@ -46,8 +44,8 @@ export default function SignUp() {
 
   return (
     <div className="signup-page">
-      <h2>Create Account</h2>
-      <Form className="form" method="post">
+      <h2 className="signup-page__title">Create Account</h2>
+      <Form className="signup-page__form" method="post">
         <Input
           type="text"
           id="email"
@@ -71,24 +69,16 @@ export default function SignUp() {
           name="password"
           value={password}
           rightIcon={
-            <button
-              type="button"
-              className="icon-button"
-              onClick={() => setShowPassword((prev) => !prev)}
-            >
-              {showPassword ? (
-                <img src={eyeHide} alt="eye hide" />
-              ) : (
-                <img src={eyeShow} alt="eye show" />
-              )}
-            </button>
+            <div onClick={() => setShowPassword((prev) => !prev)}>
+              {showPassword ? <img src={eyeHide} alt="eye hide" /> : <img src={eyeShow} alt="eye show" />}
+            </div>
           }
           onChange={(e) => setPassword(e.target.value)}
         ></Input>
         {actionData && <p className="form__server-error">{actionData.error}</p>}
-        <button type="submit" className="form__submit-bttn">
-          Sign Up
-        </button>
+        <Button style={ButtonStyle.Primary} type={ButtonType.Submit} customClass="signup-page__form-button">
+          Submit
+        </Button>
       </Form>
     </div>
   );
