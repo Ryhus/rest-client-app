@@ -24,7 +24,10 @@ export async function clientAction({ request }: { request: Request }) {
 
   if (error) {
     return {
-      error: error.message === 'Failed to fetch' ? 'Pls, check your internet connection.' : error.message,
+      error:
+        error.message === 'Failed to fetch'
+          ? 'Pls, check your internet connection.'
+          : error.message,
     };
   }
 
@@ -68,8 +71,16 @@ export default function SignUp() {
           name="password"
           value={password}
           rightIcon={
-            <button type="button" className="icon-button" onClick={() => setShowPassword((prev) => !prev)}>
-              {showPassword ? <img src={eyeHide} alt="eye hide" /> : <img src={eyeShow} alt="eye show" />}
+            <button
+              type="button"
+              className="icon-button"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {showPassword ? (
+                <img src={eyeHide} alt="eye hide" />
+              ) : (
+                <img src={eyeShow} alt="eye show" />
+              )}
             </button>
           }
           onChange={(e) => setPassword(e.target.value)}
@@ -82,4 +93,3 @@ export default function SignUp() {
     </div>
   );
 }
-

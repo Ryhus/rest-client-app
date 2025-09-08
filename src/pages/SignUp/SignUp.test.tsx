@@ -206,4 +206,3 @@ describe('clientAction', () => {
     expect(result).toEqual({ error: 'Pls, check your internet connection.' });
   });
 });
-

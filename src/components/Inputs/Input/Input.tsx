@@ -32,7 +32,11 @@ function Input({
   onChange,
   isDisabled,
 }: InputProps) {
-  const inputFieldClass = clsx('input-field', `${inputClassName}`, `${rightIcon ? 'input-field--right-icon' : ''}`);
+  const inputFieldClass = clsx(
+    'input-field',
+    `${inputClassName}`,
+    `${rightIcon ? 'input-field--right-icon' : ''}`
+  );
 
   return (
     <div className="input-container">
