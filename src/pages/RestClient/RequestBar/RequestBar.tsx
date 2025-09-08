@@ -7,10 +7,10 @@ import type { ChangeEventHandler } from 'react';
 const initRequestMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'];
 
 interface Props {
-  initMethod: string;
   handleMethodOnChange: ChangeEventHandler<HTMLInputElement>;
   handleSearchOnChange: ChangeEventHandler<HTMLInputElement>;
   handleButtonClick: () => void;
+  initMethod?: string;
   initSearchValue?: string;
   urlError?: string;
   methodError?: string;

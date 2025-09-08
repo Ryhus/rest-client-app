@@ -71,9 +71,11 @@ export default function RestClient({ params }: Props) {
   }
 
   const navigateAfterSendingRequest = () => {
-    const segments = ['/rest-client', requestMethod || undefined, requestUrl ? btoa(requestUrl) : undefined].filter(
-      (s) => s !== undefined
-    );
+    const segments = [
+      '/rest-client',
+      requestMethod || undefined,
+      requestUrl ? btoa(requestUrl) : undefined,
+    ].filter((s) => s !== undefined);
 
     const newUrlSearchParams = new URLSearchParams(
       requestHeaders.filter((h) => h.name || h.value).map((r) => [r.name, r.value])

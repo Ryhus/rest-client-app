@@ -60,7 +60,11 @@ export const restClientPageStore = create<RestClientPageStore>((set) => ({
 
       const requestHeaders = [...state.requestHeaders];
       const header = requestHeaders[headerIndex];
-      requestHeaders[headerIndex] = { ...header, name: name ?? header.name, value: value ?? header.value };
+      requestHeaders[headerIndex] = {
+        ...header,
+        name: name ?? header.name,
+        value: value ?? header.value,
+      };
 
       return {
         requestHeaders,

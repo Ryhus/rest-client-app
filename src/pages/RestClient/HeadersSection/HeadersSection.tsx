@@ -2,9 +2,18 @@ import './HeadersSection.scss';
 import { Button } from '@/components';
 import { ButtonStyle } from '@/components/Button/types.ts';
 import IconTrash from '@/assets/icons/trash.svg?react';
-import { type RestClientHeader, restClientPageStore } from '@/stores/restClientPageStore/restClientPageStore.ts';
+import {
+  type RestClientHeader,
+  restClientPageStore,
+} from '@/stores/restClientPageStore/restClientPageStore.ts';
 
-const HEADERS_COLLECTION = ['Content-Type', 'Authorization', 'Cache-Control', 'Connection', 'Cookie'];
+const HEADERS_COLLECTION = [
+  'Content-Type',
+  'Authorization',
+  'Cache-Control',
+  'Connection',
+  'Cookie',
+];
 const tableHeaders = ['Key', 'Value', ''];
 
 export default function HeadersSection() {
@@ -40,7 +49,11 @@ export default function HeadersSection() {
           />
         </td>
         <td className="td">
-          <Button style={ButtonStyle.IconBtn} onClick={() => removeRequestHeader({ id })} isDisabled={isBtnDisabled}>
+          <Button
+            style={ButtonStyle.IconBtn}
+            onClick={() => removeRequestHeader({ id })}
+            isDisabled={isBtnDisabled}
+          >
             <IconTrash />
           </Button>
         </td>
