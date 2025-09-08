@@ -38,7 +38,11 @@ function Input({
   defaultValue,
   placeholder,
 }: InputProps) {
-  const inputFieldClass = clsx('input-field', `${inputClassName}`, `${rightIcon ? 'input-field--right-icon' : ''}`);
+  const inputFieldClass = clsx(
+    'input-field',
+    `${inputClassName}`,
+    `${rightIcon ? 'input-field--right-icon' : ''}`
+  );
 
   return (
     <div className={`input-container ${inputContainerClassName}`}>

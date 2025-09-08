@@ -13,7 +13,13 @@ export default function Checkbox({ name, labelTxt, isChecked, onChange }: Checkb
     <div className="checkbox-container">
       <label className="checkbox-label">
         {labelTxt}
-        <input type="checkbox" name={name} className="checkbox-input" checked={isChecked} onChange={onChange} />
+        <input
+          type="checkbox"
+          name={name}
+          className="checkbox-input"
+          checked={isChecked}
+          onChange={onChange}
+        />
         <span className="checkmark" />
       </label>
     </div>
