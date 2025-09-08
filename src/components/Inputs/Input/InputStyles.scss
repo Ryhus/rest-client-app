@@ -7,7 +7,7 @@
   font-size: variables.$font-size-base;
   font-style: variables.$font-style-normal;
   font-weight: variables.$font-weight-regular;
-  width: 252px;
+  width: 100%;
   height: 66px;
 }
 
@@ -21,6 +21,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: 100%;
   padding: 12px;
   gap: variables.$spacing-sm;
   border: 1px solid variables.$input-color;
@@ -54,4 +55,11 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  position: relative;
+}
+
+.input-right-icon {
+  position: absolute;
+  right: 5px;
+  top: 10px;
 }
