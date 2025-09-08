@@ -26,7 +26,6 @@ export default function RestClient({ params }: Props) {
   const {
     requestMethod,
     requestUrl,
-    requestBody,
     requestHeaders,
     setRequestMethod,
     setRequestUrl,
@@ -37,11 +36,11 @@ export default function RestClient({ params }: Props) {
 
   useEffect(() => {
     if (method) {
-      setRequestUrl(atob(method));
+      setRequestMethod(method);
     }
 
     if (encodedUrl) {
-      setRequestMethod(atob(encodedUrl));
+      setRequestUrl(atob(encodedUrl));
     }
 
     if (encodedBody) {
@@ -72,12 +71,9 @@ export default function RestClient({ params }: Props) {
   }
 
   const navigateAfterSendingRequest = () => {
-    const segments = [
-      '/rest-client',
-      requestMethod || undefined,
-      requestUrl ? btoa(requestUrl) : undefined,
-      requestBody ? btoa(requestBody) : undefined,
-    ].filter((s) => s !== undefined);
+    const segments = ['/rest-client', requestMethod || undefined, requestUrl ? btoa(requestUrl) : undefined].filter(
+      (s) => s !== undefined
+    );
 
     const newUrlSearchParams = new URLSearchParams(
       requestHeaders.filter((h) => h.name || h.value).map((r) => [r.name, r.value])
@@ -121,6 +117,7 @@ export default function RestClient({ params }: Props) {
   return (
     <div className="rest-client-page">
       <RequestBar
+        initMethod={requestMethod}
         handleMethodOnChange={handleMethodChange}
         initSearchValue={requestUrl}
         handleSearchOnChange={handleSearchChange}

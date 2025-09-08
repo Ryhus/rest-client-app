@@ -7,6 +7,7 @@ import type { ChangeEventHandler } from 'react';
 const initRequestMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'];
 
 interface Props {
+  initMethod: string;
   handleMethodOnChange: ChangeEventHandler<HTMLInputElement>;
   handleSearchOnChange: ChangeEventHandler<HTMLInputElement>;
   handleButtonClick: () => void;
@@ -17,6 +18,7 @@ interface Props {
 
 export default function RequestBar(props: Props) {
   const {
+    initMethod,
     handleMethodOnChange,
     handleSearchOnChange,
     handleButtonClick,
@@ -31,6 +33,7 @@ export default function RequestBar(props: Props) {
         id={'id-method-options'}
         listName="method-options"
         onChange={handleMethodOnChange}
+        defaultValue={initMethod}
         data={initRequestMethods}
         spaceForErrorMessage={true}
         errors={[{ id: 1, message: methodError }]}
