@@ -1,10 +1,12 @@
 import './RestClient.scss';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, Navigate } from 'react-router-dom';
 import HeadersSection from '@/pages/RestClient/HeadersSection/HeadersSection.tsx';
 import RequestBar from '@/pages/RestClient/RequestBar/RequestBar.tsx';
 import { restClientPageStore } from '@/stores/restClientPageStore/restClientPageStore.ts';
 import { type ChangeEvent, useEffect, useState } from 'react';
 import type { Params, UIMatch } from 'react-router';
+import { useAuthStore } from '@/stores/authStore/authStore';
+import Spinner from '@/components/Spinner/Spinner.tsx';
 
 interface Props {
   loaderData?: unknown;
@@ -19,6 +21,7 @@ export default function RestClient({ params }: Props) {
   const navigate = useNavigate();
   const [urlError, setUrlError] = useState<string>('');
   const [methodError, setMethodError] = useState<string>('');
+  const { session, loading } = useAuthStore();
 
   const {
     requestMethod,
@@ -33,10 +36,12 @@ export default function RestClient({ params }: Props) {
   } = restClientPageStore();
 
   useEffect(() => {
-    setRequestMethod(method || 'GET');
+    if (method) {
+      setRequestUrl(atob(method));
+    }
 
     if (encodedUrl) {
-      setRequestUrl(atob(encodedUrl));
+      setRequestMethod(atob(encodedUrl));
     }
 
     if (encodedBody) {
@@ -57,6 +62,14 @@ export default function RestClient({ params }: Props) {
       addRequestHeader({ name: '', value: '' });
     }
   }, [requestHeaders]);
+
+  if (loading) {
+    return <Spinner />;
+  }
+
+  if (!session) {
+    return <Navigate to="/" replace />;
+  }
 
   const navigateAfterSendingRequest = () => {
     const segments = [
@@ -108,7 +121,6 @@ export default function RestClient({ params }: Props) {
   return (
     <div className="rest-client-page">
       <RequestBar
-        initMethod={requestMethod || 'GET'}
         handleMethodOnChange={handleMethodChange}
         initSearchValue={requestUrl}
         handleSearchOnChange={handleSearchChange}

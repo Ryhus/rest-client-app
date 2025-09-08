@@ -5,9 +5,9 @@ import IconTrash from '@/assets/icons/trash.svg?react';
 import { type RestClientHeader, restClientPageStore } from '@/stores/restClientPageStore/restClientPageStore.ts';
 
 const HEADERS_COLLECTION = ['Content-Type', 'Authorization', 'Cache-Control', 'Connection', 'Cookie'];
+const tableHeaders = ['Key', 'Value', ''];
 
 export default function HeadersSection() {
-  const tableHeaders = ['Key', 'Value', ''];
   const { requestHeaders, updateRequestHeader, removeRequestHeader } = restClientPageStore();
 
   function getTableRow(props: RestClientHeader) {
@@ -51,7 +51,7 @@ export default function HeadersSection() {
   return (
     <div className="section">
       <div className="section-header">
-        <div className="title">Headers:</div>
+        <p className="title">Headers:</p>
       </div>
       <div className="section-body">
         <table className="table headers-table">
