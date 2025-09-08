@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS';
-
 interface ApiRequestParams<TData = unknown> {
-  method: HttpMethod;
+  method: string;
   url: string;
   data?: TData;
   config?: Record<string, unknown>;
