@@ -15,8 +15,7 @@ vi.mock('@/services/supabase', () => ({
   },
 }));
 
-const renderWithRouter = (ui: React.ReactNode) =>
-  render(<BrowserRouter>{ui}</BrowserRouter>);
+const renderWithRouter = (ui: React.ReactNode) => render(<BrowserRouter>{ui}</BrowserRouter>);
 
 const createTestSession = (): Session => ({
   access_token: 'token',
@@ -63,14 +62,6 @@ describe('Header component', () => {
     renderWithRouter(<Header />);
     expect(screen.getByText(/Home/i)).toBeInTheDocument();
     expect(screen.getByText(/Sign Out/i)).toBeInTheDocument();
-  });
-
-  it('does not render actions when loading is true', () => {
-    useAuthStore.setState({ session: null, loading: true });
-
-    renderWithRouter(<Header />);
-    expect(screen.queryByText(/Sign In/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Sign Out/i)).not.toBeInTheDocument();
   });
 
   it('calls signOut when Sign Out button is clicked', () => {

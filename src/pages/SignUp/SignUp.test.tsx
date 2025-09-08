@@ -21,8 +21,7 @@ vi.mock('@/services/supabase', () => ({
 }));
 
 vi.mock('react-router-dom', async () => {
-  const actual: typeof import('react-router-dom') =
-    await vi.importActual('react-router-dom');
+  const actual: typeof import('react-router-dom') = await vi.importActual('react-router-dom');
   return {
     ...actual,
     useActionData: vi.fn(() => null),
@@ -47,9 +46,7 @@ describe('SignUp component', () => {
     expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Password/i)).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /Sign Up/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Sign Up/i })).toBeInTheDocument();
   });
 
   it('redirects to "/" when session exists', () => {
@@ -79,23 +76,17 @@ describe('SignUp component', () => {
     expect(screen.queryByLabelText(/Email/i)).not.toBeInTheDocument();
     expect(screen.queryByLabelText(/Name/i)).not.toBeInTheDocument();
     expect(screen.queryByLabelText(/Password/i)).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole('button', { name: /Sign Up/i })
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Sign Up/i })).not.toBeInTheDocument();
   });
 
   it('toggles password visibility when clicking icon button', () => {
     renderWithDataRouter();
 
-    const passwordInput = screen.getByLabelText(
-      /Password/i
-    ) as HTMLInputElement;
+    const passwordInput = screen.getByLabelText(/Password/i) as HTMLInputElement;
     const inputWrapper = passwordInput.closest('.input-wrapper');
     if (!inputWrapper) throw new Error('Input wrapper not found');
 
-    const toggleButton = inputWrapper.querySelector(
-      'button'
-    ) as HTMLButtonElement;
+    const toggleButton = inputWrapper.querySelector('button') as HTMLButtonElement;
     if (!toggleButton) throw new Error('Toggle button not found');
 
     expect(passwordInput.type).toBe('password');
@@ -134,15 +125,9 @@ describe('SignUp component', () => {
       target: { value: '123456' },
     });
 
-    expect((screen.getByLabelText(/Email/i) as HTMLInputElement).value).toBe(
-      'a@b.com'
-    );
-    expect((screen.getByLabelText(/Name/i) as HTMLInputElement).value).toBe(
-      'Test User'
-    );
-    expect((screen.getByLabelText(/Password/i) as HTMLInputElement).value).toBe(
-      '123456'
-    );
+    expect((screen.getByLabelText(/Email/i) as HTMLInputElement).value).toBe('a@b.com');
+    expect((screen.getByLabelText(/Name/i) as HTMLInputElement).value).toBe('Test User');
+    expect((screen.getByLabelText(/Password/i) as HTMLInputElement).value).toBe('123456');
   });
 
   it('submits the form', () => {
@@ -164,8 +149,7 @@ describe('clientAction', () => {
     ({
       formData: vi.fn().mockResolvedValue(
         Object.assign(new FormData(), {
-          get: (key: string) =>
-            key === 'email' ? email : key === 'name' ? name : password,
+          get: (key: string) => (key === 'email' ? email : key === 'name' ? name : password),
         })
       ),
     }) as unknown as Request;
@@ -222,3 +206,4 @@ describe('clientAction', () => {
     expect(result).toEqual({ error: 'Pls, check your internet connection.' });
   });
 });
+

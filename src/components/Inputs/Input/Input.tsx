@@ -32,11 +32,7 @@ function Input({
   onChange,
   isDisabled,
 }: InputProps) {
-  const inputFieldClass = clsx(
-    'input-field',
-    `${inputClassName}`,
-    `${rightIcon ? 'input-field--right-icon' : ''}`
-  );
+  const inputFieldClass = clsx('input-field', `${inputClassName}`, `${rightIcon ? 'input-field--right-icon' : ''}`);
 
   return (
     <div className="input-container">
@@ -53,9 +49,7 @@ function Input({
           onChange={onChange}
           disabled={isDisabled}
         ></input>
-        {rightIcon && (
-          <div className="input-icon input-right-icon">{rightIcon}</div>
-        )}
+        {rightIcon && <div className="input-icon input-right-icon">{rightIcon}</div>}
         <div className="input-field--error">
           {errors?.map((error) => (
             <div key={error.id}>{error.message}</div>

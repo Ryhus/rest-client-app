@@ -1,10 +1,6 @@
 import { describe, it, beforeEach, vi, expect } from 'vitest';
 import { useAuthStore } from '@/stores/authStore/authStore';
-import type {
-  Session,
-  AuthChangeEvent,
-  Subscription,
-} from '@supabase/supabase-js';
+import type { Session, AuthChangeEvent, Subscription } from '@supabase/supabase-js';
 
 vi.mock('@supabase/supabase-js', () => ({
   createClient: vi.fn(() => ({
@@ -73,10 +69,7 @@ describe('Supabase client and setupAuthListener', () => {
       error: null,
     });
 
-    let authCallback: (
-      event: AuthChangeEvent,
-      session: Session | null
-    ) => void = () => {};
+    let authCallback: (event: AuthChangeEvent, session: Session | null) => void = () => {};
     const unsubscribeMock = vi.fn();
 
     vi.spyOn(supabase.auth, 'onAuthStateChange').mockImplementation((cb) => {
@@ -120,3 +113,4 @@ describe('Supabase client and setupAuthListener', () => {
     }
   });
 });
+

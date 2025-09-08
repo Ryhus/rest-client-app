@@ -22,12 +22,7 @@ export default function Button({
   children,
 }: ButtonProps) {
   return (
-    <button
-      type={type}
-      className={clsx('button', style, customClass)}
-      disabled={isDisabled}
-      onClick={onClick}
-    >
+    <button type={type} className={clsx('button', style, customClass)} disabled={isDisabled} onClick={onClick}>
       {children}
     </button>
   );

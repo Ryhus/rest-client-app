@@ -8,11 +8,9 @@ export function setupAuthListener() {
     useAuthStore.getState().setSession(data.session);
   });
 
-  const { data: subscription } = supabase.auth.onAuthStateChange(
-    (_event, session) => {
-      useAuthStore.getState().setSession(session);
-    }
-  );
+  const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
+    useAuthStore.getState().setSession(session);
+  });
 
   return () => subscription.subscription.unsubscribe();
 }

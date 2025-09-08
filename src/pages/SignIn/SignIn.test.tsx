@@ -20,8 +20,7 @@ vi.mock('@/services/supabase', () => ({
 }));
 
 vi.mock('react-router-dom', async () => {
-  const actual: typeof import('react-router-dom') =
-    await vi.importActual('react-router-dom');
+  const actual: typeof import('react-router-dom') = await vi.importActual('react-router-dom');
   return {
     ...actual,
     useActionData: vi.fn(() => null),
@@ -83,23 +82,17 @@ describe('SignIn component', () => {
 
     expect(screen.queryByLabelText(/Email/i)).not.toBeInTheDocument();
     expect(screen.queryByLabelText(/Password/i)).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole('button', { name: /Login/i })
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Login/i })).not.toBeInTheDocument();
   });
 
   it('toggles password visibility when clicking icon button', () => {
     renderWithDataRouter();
 
-    const passwordInput = screen.getByLabelText(
-      /Password/i
-    ) as HTMLInputElement;
+    const passwordInput = screen.getByLabelText(/Password/i) as HTMLInputElement;
     const inputWrapper = passwordInput.closest('.input-wrapper');
     if (!inputWrapper) throw new Error('Input wrapper not found');
 
-    const toggleButton = inputWrapper.querySelector(
-      'button'
-    ) as HTMLButtonElement;
+    const toggleButton = inputWrapper.querySelector('button') as HTMLButtonElement;
     if (!toggleButton) throw new Error('Toggle button not found');
 
     expect(passwordInput.type).toBe('password');
@@ -127,12 +120,8 @@ describe('SignIn component', () => {
       target: { value: '123456' },
     });
 
-    expect((screen.getByLabelText(/Email/i) as HTMLInputElement).value).toBe(
-      'a@b.com'
-    );
-    expect((screen.getByLabelText(/Password/i) as HTMLInputElement).value).toBe(
-      '123456'
-    );
+    expect((screen.getByLabelText(/Email/i) as HTMLInputElement).value).toBe('a@b.com');
+    expect((screen.getByLabelText(/Password/i) as HTMLInputElement).value).toBe('123456');
   });
 });
 
