@@ -1,10 +1,11 @@
 import { defineConfig } from 'vitest/config';
 import { reactRouter } from '@react-router/dev/vite';
 import * as path from 'path';
+import svgr from 'vite-plugin-svgr';
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [!process.env.VITEST && reactRouter()],
+  plugins: [!process.env.VITEST && reactRouter(), svgr()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),

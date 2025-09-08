@@ -13,17 +13,15 @@
   font-weight: variables.$font-weight-medium;
   font-size: variables.$font-size-base;
   text-transform: capitalize;
-  transition: 3ms ease;
+  transition: 0.3s ease;
 }
 
 .button:hover {
   cursor: pointer;
-  transform: scale(1.03);
 }
 
 .button:disabled {
-  cursor: none;
-  pointer-events: none;
+  cursor: default;
 }
 
 .primary {
@@ -41,7 +39,7 @@
 }
 
 .icon-btn {
-  width: 32px;
+  min-width: 32px;
   height: 32px;
   padding: 4px;
 }

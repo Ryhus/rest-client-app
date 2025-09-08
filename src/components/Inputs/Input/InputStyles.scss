@@ -8,11 +8,10 @@
   font-style: variables.$font-style-normal;
   font-weight: variables.$font-weight-regular;
   width: 252px;
-  height: 66px;
 }
 
 .input-label {
-  padding: 0px 8px;
+  padding: 0 8px;
   color: variables.$input-color;
   font-weight: variables.$font-weight-medium;
 }
@@ -27,6 +26,8 @@
   border-radius: variables.$border-radius;
   background-color: variables.$color-basic;
   cursor: text;
+  outline: none;
+  transition: border-color 0.2s;
 }
 
 .input-field:focus {
@@ -43,9 +44,9 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 0px 8px;
+  padding: 0 8px;
   width: 252px;
-  min-height: 16px;
+  min-height: 18px;
   color: variables.$color-warning;
   font-size: variables.$font-size-sm;
 }
@@ -54,4 +55,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.input-field::placeholder {
+  color: variables.$input-placeholder-color;
 }

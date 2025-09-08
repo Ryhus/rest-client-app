@@ -9,7 +9,7 @@ export default function Header() {
 
   return (
     <header className="header">
-      <Link to="/" className="header__logo">
+      <Link to="/rest-client" className="header__logo">
         Rest Client
       </Link>
 
