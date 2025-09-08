@@ -69,7 +69,7 @@ export default function SignUp() {
           name="password"
           value={password}
           rightIcon={
-            <div onClick={() => setShowPassword((prev) => !prev)}>
+            <div className="toggler" onClick={() => setShowPassword((prev) => !prev)}>
               {showPassword ? <img src={eyeHide} alt="eye hide" /> : <img src={eyeShow} alt="eye show" />}
             </div>
           }
@@ -77,7 +77,7 @@ export default function SignUp() {
         ></Input>
         {actionData && <p className="form__server-error">{actionData.error}</p>}
         <Button style={ButtonStyle.Primary} type={ButtonType.Submit} customClass="signup-page__form-button">
-          Submit
+          Sign Up
         </Button>
       </Form>
     </div>
