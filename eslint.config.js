@@ -6,6 +6,7 @@ import react from 'eslint-plugin-react';
 import tseslint from 'typescript-eslint';
 import eslintPluginPrettier from 'eslint-plugin-prettier/recommended';
 import reactCompiler from 'eslint-plugin-react-compiler';
+import stylistic from '@stylistic/eslint-plugin';
 
 export default tseslint.config(
   { ignores: ['dist', 'coverage', '.react-router'] },
@@ -21,6 +22,7 @@ export default tseslint.config(
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       'react-compiler': reactCompiler,
+      '@stylistic': stylistic,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -29,6 +31,7 @@ export default tseslint.config(
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
       'react-refresh/only-export-components': 'off',
+      '@stylistic/jsx-max-props-per-line': ['error', { maximum: 1, when: 'multiline' }],
     },
     settings: {
       react: {

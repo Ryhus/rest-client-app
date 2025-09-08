@@ -12,7 +12,16 @@ interface DatalistProps {
   data: string[];
 }
 
-export default function Datalist({ id, name, labelTxt, value, listName, placeholder, onChange, data }: DatalistProps) {
+export default function Datalist({
+  id,
+  name,
+  labelTxt,
+  value,
+  listName,
+  placeholder,
+  onChange,
+  data,
+}: DatalistProps) {
   return (
     <div className="datalist-container">
       <label htmlFor={id} className="datalist-label">

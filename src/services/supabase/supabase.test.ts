@@ -113,4 +113,3 @@ describe('Supabase client and setupAuthListener', () => {
     }
   });
 });
-

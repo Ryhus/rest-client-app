@@ -19,7 +19,10 @@ export default function Header() {
             <Link to="/" className="header__button">
               Home
             </Link>
-            <button className="header__button header__button--signout" onClick={() => supabase.auth.signOut()}>
+            <button
+              className="header__button header__button--signout"
+              onClick={() => supabase.auth.signOut()}
+            >
               Sign Out
             </button>
           </>
@@ -37,4 +40,3 @@ export default function Header() {
     </header>
   );
 }
-
