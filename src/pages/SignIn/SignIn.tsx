@@ -4,6 +4,8 @@ import { Navigate, useActionData, Form } from 'react-router-dom';
 import { Input } from '@/components';
 import { supabase } from '@/services/supabase';
 import { useAuthStore } from '@/stores/authStore/authStore';
+import { Button } from '@/components';
+import { ButtonStyle, ButtonType } from '@/components/Button/types';
 
 import eyeHide from '@/assets/img/eyeHide.svg';
 import eyeShow from '@/assets/img/eyeShow.svg';
@@ -23,10 +25,7 @@ export async function clientAction({ request }: { request: Request }) {
 
   if (error) {
     return {
-      error:
-        error.message === 'Failed to fetch'
-          ? 'Pls, check your internet connection.'
-          : error.message,
+      error: error.message === 'Failed to fetch' ? 'Pls, check your internet connection.' : error.message,
     };
   }
 
@@ -43,9 +42,9 @@ export default function SignIn() {
   if (session) return <Navigate to="/" replace />;
 
   return (
-    <div className="signup-page">
-      <h2>Login</h2>
-      <Form className="form" method="post">
+    <div className="signin-page">
+      <h2 className="signin-page__title">Login</h2>
+      <Form className="signin-page__form" method="post">
         <Input
           type="text"
           id="email"
@@ -61,24 +60,16 @@ export default function SignIn() {
           name="password"
           value={password}
           rightIcon={
-            <button
-              type="button"
-              className="icon-button"
-              onClick={() => setShowPassword((prev) => !prev)}
-            >
-              {showPassword ? (
-                <img src={eyeHide} alt="eye hide" />
-              ) : (
-                <img src={eyeShow} alt="eye show" />
-              )}
-            </button>
+            <div className="toggler" onClick={() => setShowPassword((prev) => !prev)}>
+              {showPassword ? <img src={eyeHide} alt="eye hide" /> : <img src={eyeShow} alt="eye show" />}
+            </div>
           }
           onChange={(e) => setPassword(e.target.value)}
         ></Input>
         {actionData && <p className="form__server-error">{actionData.error}</p>}
-        <button type="submit" className="form__submit-bttn">
+        <Button style={ButtonStyle.Primary} type={ButtonType.Submit} customClass="signin-page__form-button">
           Login
-        </button>
+        </Button>
       </Form>
     </div>
   );
