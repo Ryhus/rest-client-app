@@ -9,24 +9,38 @@
   background-color: variables.$color-basic;
   border-bottom: 0.1rem solid variables.$border-color;
   padding: 1rem 7rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   transition: 3ms ease;
 
-  &__actions {
+  .navbar {
     display: flex;
+    align-items: center;
     gap: 1rem;
-  }
 
-  &__logo {
-    width: 48px;
-    height: 48px;
-  }
+    &__actions {
+      display: flex;
+      justify-content: flex-end;
+      width: 95%;
 
-  &__link {
-    text-decoration: none;
+      &:has(.navbar__actions--expanded-group) {
+        justify-content: space-between;
+      }
+
+      &--expanded-group,
+      &--basic-group {
+        display: flex;
+        gap: 1rem;
+      }
+    }
+
+    &__link {
+      text-decoration: none;
+    }
   }
+}
+
+.app-logo {
+  width: 48px;
+  height: 48px;
 }
 
 .scrolled {

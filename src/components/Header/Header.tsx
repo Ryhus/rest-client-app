@@ -3,6 +3,7 @@ import { useAuthStore } from '@/stores/authStore/authStore';
 import { supabase } from '@/services/supabase';
 import logo from '@/assets/img/logo.svg';
 import { useEffect, useRef, useState } from 'react';
+import { userLinks } from '@/utils/navLinksConfig';
 
 import './HeaderStyles.scss';
 
@@ -28,33 +29,44 @@ export default function Header() {
 
   return (
     <header className={headerClass} ref={headerRef}>
-      <Link to="/rest-client" className="header__link">
-        <img className="header__logo" src={logo} alt="Rest client app logo" />
-      </Link>
+      <nav className="navbar">
+        <Link to="/rest-client" className="navbar__link">
+          <img className="app-logo" src={logo} alt="Rest client app logo" />
+        </Link>
 
-      {!loading && (
-        <div className="header__actions">
-          {session ? (
-            <>
-              <Link to="/" className="header__link button secondary">
-                Home
-              </Link>
-              <button className="button primary" onClick={() => supabase.auth.signOut()}>
-                Sign Out
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="header__link button secondary">
-                Sign In
-              </Link>
-              <Link to="/signup" className="header__link button secondary">
-                Sign Up
-              </Link>
-            </>
-          )}
-        </div>
-      )}
+        {!loading && (
+          <div className="navbar__actions">
+            {session ? (
+              <>
+                <div className="navbar__actions--expanded-group">
+                  {userLinks.map((link) => (
+                    <Link key={link.text} to={link.to} className="navbar__link button secondary">
+                      {link.text}
+                    </Link>
+                  ))}
+                </div>
+                <div className="navbar__actions--basic-group">
+                  <Link to="/" className="navbar__link button secondary">
+                    Home
+                  </Link>
+                  <button className="button primary" onClick={() => supabase.auth.signOut()}>
+                    Sign Out
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="navbar__actions--basic-group">
+                <Link to="/login" className="navbar__link button secondary">
+                  Sign In
+                </Link>
+                <Link to="/signup" className="navbar__link button secondary">
+                  Sign Up
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
+      </nav>
     </header>
   );
 }
