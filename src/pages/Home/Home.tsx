@@ -1,8 +1,5 @@
-import { Link } from 'react-router-dom';
-
 import { useAuthStore } from '@/stores/authStore/authStore';
 import { type UserMetaData } from '@/services/supabase';
-import { userLinks, guestLinks } from '@/utils/navLinksConfig';
 
 import './HomeStyles.scss';
 
@@ -10,20 +7,18 @@ export default function Home() {
   const session = useAuthStore((s) => s.session);
   const userData = session?.user.user_metadata as UserMetaData | null;
 
-  const links = session ? userLinks : guestLinks;
-
   return (
     <div className="home">
       <h1 className="home__tittle">
         {session ? `Welcome back, ${userData?.name ?? 'Dear User'}!` : 'Welcome!'}
       </h1>
-      <nav className="home__nav">
-        {links.map((link) => (
-          <Link key={link.text} to={link.to} className="home__link button secondary">
-            {link.text}
-          </Link>
-        ))}
-      </nav>
+      <p className="home__about">
+        Our app is a modern API testing and collaboration tool designed to make working with REST
+        APIs faster and easier. <br />
+        You can send requests, inspect responses and keep your history in one place. <br />
+        Whether you’re debugging, exploring, or documenting an API, our app helps you do it
+        efficiently.
+      </p>
     </div>
   );
 }

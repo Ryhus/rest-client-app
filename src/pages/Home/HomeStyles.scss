@@ -10,10 +10,16 @@
   flex: 1;
 
   &__tittle {
-    font-family: variables.$font-family-base;
     font-size: variables.$font-size-lg;
     font-weight: variables.$font-weight-bold;
     color: variables.$font-color-primary;
+  }
+
+  &__about {
+    font-size: variables.$font-size-base;
+    font-weight: variables.$font-weight-regular;
+    color: variables.$font-color-secondary;
+    text-align: center;
   }
 
   &__nav {
