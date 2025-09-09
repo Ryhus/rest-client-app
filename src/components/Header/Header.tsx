@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore/authStore';
 import { supabase } from '@/services/supabase';
 import logo from '@/assets/img/logo.svg';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { userLinks } from '@/utils/navLinksConfig';
 
 import './HeaderStyles.scss';
@@ -12,10 +12,9 @@ export default function Header() {
   const loading = useAuthStore((s) => s.loading);
   const [isScrolled, setIsScrolled] = useState(false);
   const headerClass = isScrolled ? 'header scrolled' : 'header';
-  const headerRef = useRef<HTMLElement>(null);
 
   const handleScroll = () => {
-    if (headerRef.current && window.scrollY > headerRef.current.offsetHeight) {
+    if (window.scrollY > 0) {
       setIsScrolled(true);
     } else {
       setIsScrolled(false);
@@ -28,7 +27,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className={headerClass} ref={headerRef}>
+    <header className={headerClass}>
       <nav className="navbar">
         <Link to="/rest-client" className="navbar__link">
           <img className="app-logo" src={logo} alt="Rest client app logo" />
