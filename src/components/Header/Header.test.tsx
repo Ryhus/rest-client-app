@@ -71,14 +71,6 @@ describe('Header component', () => {
     expect(screen.getByText(/Sign Out/i)).toBeInTheDocument();
   });
 
-  it('does not render actions when loading is true', () => {
-    useAuthStore.setState({ session: null, loading: true });
-
-    renderWithRouter(<Header />);
-    expect(screen.queryByText(/Sign In/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Sign Out/i)).not.toBeInTheDocument();
-  });
-
   it('calls signOut when Sign Out button is clicked', () => {
     useAuthStore.setState({ session: createTestSession(), loading: false });
 

@@ -1,4 +1,5 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
+import React from 'react';
 
 import { setupAuthListener } from './services/supabase/authListener';
 

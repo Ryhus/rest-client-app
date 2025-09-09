@@ -28,7 +28,7 @@ export default function Header() {
 
   return (
     <header className={headerClass} ref={headerRef}>
-      <Link to="/" className="header__link">
+      <Link to="/rest-client" className="header__link">
         <img className="header__logo" src={logo} alt="Rest client app logo" />
       </Link>
 

@@ -14,8 +14,9 @@ export default function Home() {
 
   return (
     <div className="home">
-      <h1 className="home__tittle">{session ? `Welcome back, ${userData?.name ?? 'Dear User'}!` : 'Welcome!'}</h1>
-
+      <h1 className="home__tittle">
+        {session ? `Welcome back, ${userData?.name ?? 'Dear User'}!` : 'Welcome!'}
+      </h1>
       <nav className="home__nav">
         {links.map((link) => (
           <Link key={link.text} to={link.to} className="home__link button secondary">

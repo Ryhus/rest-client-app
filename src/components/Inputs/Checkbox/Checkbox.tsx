@@ -8,12 +8,7 @@ interface CheckboxProps {
   onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
-export default function Checkbox({
-  name,
-  labelTxt,
-  isChecked,
-  onChange,
-}: CheckboxProps) {
+export default function Checkbox({ name, labelTxt, isChecked, onChange }: CheckboxProps) {
   return (
     <div className="checkbox-container">
       <label className="checkbox-label">
