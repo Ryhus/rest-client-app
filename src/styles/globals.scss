@@ -9,9 +9,13 @@
   min-height: 100vh;
   max-width: 1440px;
   font-family: variables.$font-family-base;
+  background-color: variables.$color-basic;
+  box-shadow: variables.$border-color 0px 0px 30px 0px;
 }
 
 .main {
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
   width: 100%;
 }
