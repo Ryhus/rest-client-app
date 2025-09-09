@@ -15,12 +15,19 @@
     color: variables.$font-color-primary;
   }
 
+  &__server-error {
+    font-family: variables.$font-family-base;
+    font-size: variables.$font-size-base;
+    font-weight: variables.$font-weight-regular;
+    color: variables.$color-warning;
+  }
+
   &__form {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 250px;
+    max-width: 350px;
     gap: 1rem;
 
     &-button {
