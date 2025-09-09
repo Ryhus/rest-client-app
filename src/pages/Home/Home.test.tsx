@@ -7,17 +7,6 @@ import { useAuthStore } from '@/stores/authStore/authStore';
 import type { Session } from '@supabase/supabase-js';
 import type { UserMetaData } from '@/services/supabase';
 
-vi.mock('@/utils/navLinksConfig', () => ({
-  userLinks: [
-    { text: 'Dashboard', to: '/dashboard' },
-    { text: 'Profile', to: '/profile' },
-  ],
-  guestLinks: [
-    { text: 'Login', to: '/login' },
-    { text: 'Sign Up', to: '/signup' },
-  ],
-}));
-
 const renderWithRouter = (ui: React.ReactNode) => render(<BrowserRouter>{ui}</BrowserRouter>);
 
 const createTestSession = (name?: string): Session => ({
@@ -44,17 +33,14 @@ describe('Home component', () => {
     vi.clearAllMocks();
   });
 
-  it('renders guest welcome message and guest links when no session', () => {
+  it('renders guest welcome message when no session', () => {
     useAuthStore.setState({ session: null, loading: false });
 
     renderWithRouter(<Home />);
     expect(screen.getByText(/Welcome!/i)).toBeInTheDocument();
-
-    expect(screen.getByText(/Login/i)).toBeInTheDocument();
-    expect(screen.getByText(/Sign Up/i)).toBeInTheDocument();
   });
 
-  it('renders user welcome message with name and user links when session exists', () => {
+  it('renders user welcome message with name when session exists', () => {
     useAuthStore.setState({
       session: createTestSession('John Doe'),
       loading: false,
@@ -62,9 +48,6 @@ describe('Home component', () => {
 
     renderWithRouter(<Home />);
     expect(screen.getByText(/Welcome back, John Doe!/i)).toBeInTheDocument();
-
-    expect(screen.getByText(/Dashboard/i)).toBeInTheDocument();
-    expect(screen.getByText(/Profile/i)).toBeInTheDocument();
   });
 
   it('falls back to "Dear User" if user name is missing', () => {
@@ -75,5 +58,12 @@ describe('Home component', () => {
 
     renderWithRouter(<Home />);
     expect(screen.getByText(/Welcome back, Dear User!/i)).toBeInTheDocument();
+  });
+
+  it('render app info', () => {
+    renderWithRouter(<Home />);
+    const info = screen.getByText(/Our app is/i);
+    expect(info).toBeInTheDocument();
+    expect(info).toHaveClass('home__about');
   });
 });
