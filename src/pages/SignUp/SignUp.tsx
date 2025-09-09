@@ -95,6 +95,7 @@ export default function SignUp() {
             setName(e.target.value);
             validateInput('name', e.target.value);
           }}
+          errors={errors.name}
         />
         <Input
           type={showPassword ? 'text' : 'password'}
@@ -115,6 +116,7 @@ export default function SignUp() {
             setPassword(e.target.value);
             validateInput('password', e.target.value);
           }}
+          errors={errors.password}
         />
         {actionData && <p className="signup-page__server-error">{actionData.error}</p>}
         <Button
