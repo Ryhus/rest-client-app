@@ -14,11 +14,12 @@
   .navbar {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 3rem;
 
     &__actions {
       display: flex;
       justify-content: flex-end;
+      align-items: baseline;
       width: 95%;
 
       &:has(.navbar__actions--expanded-group) {
@@ -28,12 +29,36 @@
       &--expanded-group,
       &--basic-group {
         display: flex;
-        gap: 1rem;
+        gap: 1.7rem;
       }
     }
 
     &__link {
-      text-decoration: none;
+      font-size: variables.$font-size-base;
+      font-weight: variables.$font-weight-bold;
+      color: variables.$color-secondary;
+      text-transform: uppercase;
+      transition: 0.3s ease;
+      position: relative;
+
+      &:after {
+        display: block;
+        position: absolute;
+        left: 0;
+        width: 0;
+        content: '';
+        height: 2px;
+        background-color: variables.$color-secondary-light;
+        transition: width 0.3s ease-out;
+      }
+
+      &:hover {
+        color: variables.$color-secondary-light;
+
+        &:after{
+          width: 100%;
+        }
+      }
     }
   }
 }

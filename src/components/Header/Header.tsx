@@ -39,26 +39,26 @@ export default function Header() {
               <>
                 <div className="navbar__actions--expanded-group">
                   {userLinks.map((link) => (
-                    <Link key={link.text} to={link.to} className="navbar__link button secondary">
+                    <Link key={link.text} to={link.to} className="navbar__link">
                       {link.text}
                     </Link>
                   ))}
-                </div>
-                <div className="navbar__actions--basic-group">
-                  <Link to="/" className="navbar__link button secondary">
+                  <Link to="/" className="navbar__link">
                     Home
                   </Link>
-                  <button className="button primary" onClick={() => supabase.auth.signOut()}>
+                </div>
+                <div className="navbar__actions--basic-group">
+                  <button className="button secondary" onClick={() => supabase.auth.signOut()}>
                     Sign Out
                   </button>
                 </div>
               </>
             ) : (
               <div className="navbar__actions--basic-group">
-                <Link to="/login" className="navbar__link button secondary">
+                <Link to="/login" className="button secondary">
                   Sign In
                 </Link>
-                <Link to="/signup" className="navbar__link button secondary">
+                <Link to="/signup" className="button secondary">
                   Sign Up
                 </Link>
               </div>
