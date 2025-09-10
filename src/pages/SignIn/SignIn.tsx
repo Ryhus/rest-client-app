@@ -6,8 +6,8 @@ import { supabase } from '@/services/supabase';
 import { useAuthStore } from '@/stores/authStore/authStore';
 import { Button } from '@/components';
 import { ButtonStyle, ButtonType } from '@/components/Button/types';
-import { authFormSchema, type AuthErrors } from '@/utils/schema';
-import { ValidationError } from 'yup';
+import type { AuthErrors } from '@/utils/schema';
+import { validateInput, type InputName } from '@/utils/validateInput';
 
 import eyeHide from '@/assets/img/eyeHide.svg';
 import eyeShow from '@/assets/img/eyeShow.svg';
@@ -37,10 +37,17 @@ export async function clientAction({ request }: { request: Request }) {
   return { data };
 }
 
+interface SignInData {
+  email: string;
+  password: string;
+}
+
 export default function SignIn() {
   const { session } = useAuthStore();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState<SignInData>({
+    email: '',
+    password: '',
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<AuthErrors>({
     name: [{ id: 0, message: '' }],
@@ -53,19 +60,11 @@ export default function SignIn() {
 
   if (session) return <Navigate to="/" replace />;
 
-  const validateInput = async (key: 'email' | 'name' | 'password', value: string) => {
-    try {
-      await authFormSchema.validateAt(key, { [key]: value });
-      setErrors((prev) => ({ ...prev, [key]: [{ id: 0, message: '' }], isError: false }));
-    } catch (error) {
-      if (error instanceof ValidationError) {
-        setErrors((prev) => ({
-          ...prev,
-          [key]: [{ id: 0, message: error.message }],
-          isError: true,
-        }));
-      }
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const key = name as InputName;
+    setFormData((prev) => ({ ...prev, [key]: value }));
+    validateInput({ key: key, value: value, setErrors: setErrors });
   };
 
   return (
@@ -77,11 +76,8 @@ export default function SignIn() {
           id="email"
           labelText="Email"
           name="email"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            validateInput('email', e.target.value);
-          }}
+          value={formData.email}
+          onChange={handleChange}
           errors={errors.email}
         />
         <Input
@@ -89,7 +85,7 @@ export default function SignIn() {
           id="password"
           labelText="Password"
           name="password"
-          value={password}
+          value={formData.password}
           rightIcon={
             <div className="toggler" onClick={() => setShowPassword((prev) => !prev)}>
               {showPassword ? (
@@ -99,10 +95,7 @@ export default function SignIn() {
               )}
             </div>
           }
-          onChange={(e) => {
-            setPassword(e.target.value);
-            validateInput('password', e.target.value);
-          }}
+          onChange={handleChange}
           errors={errors.password}
         />
         {actionData && <p className="signin-page__server-error">{actionData.error}</p>}

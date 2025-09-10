@@ -5,8 +5,8 @@ import { useAuthStore } from '@/stores/authStore/authStore';
 import { supabase } from '@/services/supabase';
 import { Button } from '@/components';
 import { ButtonStyle, ButtonType } from '@/components/Button/types';
-import { authFormSchema, type AuthErrors } from '@/utils/schema';
-import { ValidationError } from 'yup';
+import type { AuthErrors } from '@/utils/schema';
+import { validateInput, type InputName } from '@/utils/validateInput';
 
 import eyeHide from '@/assets/img/eyeHide.svg';
 import eyeShow from '@/assets/img/eyeShow.svg';
@@ -38,11 +38,19 @@ export async function clientAction({ request }: { request: Request }) {
   return { data };
 }
 
+interface SignUpData {
+  email: string;
+  name: string;
+  password: string;
+}
+
 export default function SignUp() {
   const { session } = useAuthStore();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
+  const [formData, setFormData] = useState<SignUpData>({
+    email: '',
+    name: '',
+    password: '',
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<AuthErrors>({
     name: [{ id: 0, message: '' }],
@@ -54,19 +62,11 @@ export default function SignUp() {
 
   if (session) return <Navigate to="/" replace />;
 
-  const validateInput = async (key: 'email' | 'name' | 'password', value: string) => {
-    try {
-      await authFormSchema.validateAt(key, { [key]: value });
-      setErrors((prev) => ({ ...prev, [key]: [{ id: 0, message: '' }], isError: false }));
-    } catch (error) {
-      if (error instanceof ValidationError) {
-        setErrors((prev) => ({
-          ...prev,
-          [key]: [{ id: 0, message: error.message }],
-          isError: true,
-        }));
-      }
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const key = name as InputName;
+    setFormData((prev) => ({ ...prev, [key]: value }));
+    validateInput({ key: key, value: value, setErrors: setErrors });
   };
 
   return (
@@ -78,11 +78,8 @@ export default function SignUp() {
           id="email"
           labelText="Email"
           name="email"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            validateInput('email', e.target.value);
-          }}
+          value={formData.email}
+          onChange={handleChange}
           errors={errors.email}
         />
         <Input
@@ -90,11 +87,8 @@ export default function SignUp() {
           id="name"
           labelText="Name"
           name="name"
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            validateInput('name', e.target.value);
-          }}
+          value={formData.name}
+          onChange={handleChange}
           errors={errors.name}
         />
         <Input
@@ -102,7 +96,7 @@ export default function SignUp() {
           id="password"
           labelText="Password"
           name="password"
-          value={password}
+          value={formData.password}
           rightIcon={
             <div className="toggler" onClick={() => setShowPassword((prev) => !prev)}>
               {showPassword ? (
@@ -112,10 +106,7 @@ export default function SignUp() {
               )}
             </div>
           }
-          onChange={(e) => {
-            setPassword(e.target.value);
-            validateInput('password', e.target.value);
-          }}
+          onChange={handleChange}
           errors={errors.password}
         />
         {actionData && <p className="signup-page__server-error">{actionData.error}</p>}
