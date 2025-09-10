@@ -18,6 +18,10 @@ export default [
         path: '/rest-client/:method?/:encodedUrl?/:encodedBody?',
         file: './pages/RestClient/RestClient.tsx',
       },
+      {
+        path: '*',
+        file: './pages/NotFound/NotFound.tsx',
+      },
     ],
   },
 ] satisfies RouteConfig;
