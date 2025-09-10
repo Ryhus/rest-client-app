@@ -4,7 +4,7 @@ import RSLogo from '@/assets/img/rsschool_logo.png';
 
 export default function Footer() {
   return (
-    <div className="footer">
+    <footer className="footer">
       <div className="footer__content">
         <a
           className="logo"
@@ -24,6 +24,6 @@ export default function Footer() {
           <img src={RSLogo} alt="RSSchool icon" />
         </a>
       </div>
-    </div>
+    </footer>
   );
 }
