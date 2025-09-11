@@ -1,21 +1,33 @@
+@use '@/styles/base/variables';
+@use '@/components/Button/ButtonStyles';
+
 .home {
   display: flex;
   flex-direction: column;
   gap: 5rem;
   align-items: center;
+  justify-content: center;
+  padding: 7rem 2rem;
 
   &__tittle {
-    font-size: 5rem;
+    font-size: variables.$font-size-lg;
+    font-weight: variables.$font-weight-bold;
+    color: variables.$font-color-primary;
+  }
+
+  &__about {
+    font-size: variables.$font-size-base;
+    font-weight: variables.$font-weight-regular;
+    color: variables.$font-color-secondary;
+    text-align: center;
   }
 
   &__nav {
     display: flex;
-    gap: 5rem;
+    gap: variables.$spacing-md;
   }
 
   &__link {
     text-decoration: none;
-    font-size: 2rem;
-    color: #333;
   }
 }

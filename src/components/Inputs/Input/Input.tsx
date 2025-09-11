@@ -61,7 +61,7 @@ function Input({
           defaultValue={defaultValue}
           placeholder={placeholder}
         ></input>
-        {rightIcon && <div className="input-icon input-right-icon">{rightIcon}</div>}
+        {rightIcon && <div className="input-right-icon">{rightIcon}</div>}
         <div className="input-field--error">
           {errors?.map((error) => (
             <div key={error.id}>{error.message}</div>

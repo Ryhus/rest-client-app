@@ -92,7 +92,7 @@ describe('SignIn component', () => {
     const inputWrapper = passwordInput.closest('.input-wrapper');
     if (!inputWrapper) throw new Error('Input wrapper not found');
 
-    const toggleButton = inputWrapper.querySelector('button') as HTMLButtonElement;
+    const toggleButton = inputWrapper.querySelector('.toggler') as HTMLButtonElement;
     if (!toggleButton) throw new Error('Toggle button not found');
 
     expect(passwordInput.type).toBe('password');

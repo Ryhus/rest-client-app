@@ -86,7 +86,7 @@ describe('SignUp component', () => {
     const inputWrapper = passwordInput.closest('.input-wrapper');
     if (!inputWrapper) throw new Error('Input wrapper not found');
 
-    const toggleButton = inputWrapper.querySelector('button') as HTMLButtonElement;
+    const toggleButton = inputWrapper.querySelector('.toggler') as HTMLButtonElement;
     if (!toggleButton) throw new Error('Toggle button not found');
 
     expect(passwordInput.type).toBe('password');
@@ -133,7 +133,7 @@ describe('SignUp component', () => {
   it('submits the form', () => {
     renderWithDataRouter();
 
-    const form = document.querySelector('.form') as HTMLFormElement;
+    const form = document.querySelector('.signup-page__form') as HTMLFormElement;
     if (!form) throw new Error('Form not found');
 
     fireEvent.submit(form);
