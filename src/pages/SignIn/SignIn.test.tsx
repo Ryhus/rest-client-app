@@ -28,6 +28,7 @@ vi.mock('react-router-dom', async () => {
 });
 
 import * as reactRouter from 'react-router-dom';
+import { act } from 'react';
 
 function renderWithDataRouter() {
   const router = createMemoryRouter(
@@ -110,18 +111,20 @@ describe('SignIn component', () => {
     renderWithDataRouter();
     expect(screen.getByText(/Invalid login/i)).toBeInTheDocument();
   });
-  it('fires onChange events for all inputs', () => {
+  it('fires onChange events for all inputs', async () => {
     renderWithDataRouter();
 
-    fireEvent.change(screen.getByLabelText(/Email/i), {
-      target: { value: 'a@b.com' },
-    });
-    fireEvent.change(screen.getByLabelText(/Password/i), {
-      target: { value: '123456' },
-    });
+    await act(async () => {
+      fireEvent.change(screen.getByLabelText(/Email/i), {
+        target: { value: 'a@b.com' },
+      });
+      fireEvent.change(screen.getByLabelText(/Password/i), {
+        target: { value: '123456' },
+      });
 
-    expect((screen.getByLabelText(/Email/i) as HTMLInputElement).value).toBe('a@b.com');
-    expect((screen.getByLabelText(/Password/i) as HTMLInputElement).value).toBe('123456');
+      expect((screen.getByLabelText(/Email/i) as HTMLInputElement).value).toBe('a@b.com');
+      expect((screen.getByLabelText(/Password/i) as HTMLInputElement).value).toBe('123456');
+    });
   });
 });
 
