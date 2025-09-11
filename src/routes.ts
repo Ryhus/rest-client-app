@@ -15,7 +15,7 @@ export default [
       },
       { path: 'login', file: './pages/SignIn/SignIn.tsx' },
       {
-        path: '/rest-client/:method?/:encodedUrl?/:encodedBody?',
+        path: 'rest-client/:method?/:encodedUrl?/:encodedBody?',
         file: './pages/RestClient/RestClient.tsx',
       },
     ],

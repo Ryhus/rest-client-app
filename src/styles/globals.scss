@@ -20,8 +20,6 @@
   border-collapse: collapse;
 
   .thead {
-    position: sticky;
-
     .td {
       color: variables.$font-color-secondary;
       font-weight: 600;
@@ -49,4 +47,8 @@
   &:focus {
     border-color: variables.$border-color;
   }
+}
+
+.textarea {
+  outline: none;
 }

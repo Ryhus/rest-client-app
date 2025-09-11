@@ -10,6 +10,7 @@ interface ApiRequestParams<TData = unknown> {
 interface ApiResponse<TResponse = unknown> {
   data: TResponse;
   status: number;
+  statusText: string;
   headers: Record<string, string>;
 }
 
@@ -19,7 +20,12 @@ export async function apiRequest<TResponse = unknown, TData = unknown>(
   const { method, url, data, config } = params;
 
   try {
-    const response = await axios.request<TResponse>({ method, url, data, ...config });
+    const response = await axios.request<TResponse>({
+      method,
+      url,
+      data,
+      ...config,
+    });
 
     const headers: Record<string, string> = {};
     for (const [key, value] of Object.entries(response.headers)) {
@@ -29,6 +35,7 @@ export async function apiRequest<TResponse = unknown, TData = unknown>(
     return {
       data: response.data,
       status: response.status,
+      statusText: response.statusText,
       headers,
     };
   } catch (error: unknown) {

@@ -1,13 +1,24 @@
 @use '@/styles/base/variables';
 
-.section-body {
-  height: 250px;
-  overflow-y: auto;
-}
+.headers-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 
-.headers-table .thead {
-  .key,
-  .value {
-    width: 50%;
+  & .content-container {
+    height: 250px;
+    overflow-y: auto;
+    border: 1px solid variables.$border-color;
+  }
+
+  & .table {
+    width: 100%;
+  }
+
+  & .headers-table .thead {
+    .key,
+    .value {
+      width: 50%;
+    }
   }
 }

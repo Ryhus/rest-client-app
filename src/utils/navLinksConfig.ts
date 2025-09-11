@@ -4,7 +4,7 @@ export const guestLinks = [
 ];
 
 export const userLinks = [
-  { to: '/', text: 'REST Client' },
+  { to: 'rest-client', text: 'REST Client' },
   { to: '/', text: 'History' },
   { to: '/', text: 'Variables' },
 ];
