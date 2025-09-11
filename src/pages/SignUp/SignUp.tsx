@@ -66,7 +66,7 @@ export default function SignUp() {
     const { name, value } = e.target;
     const key = name as InputName;
     setFormData((prev) => ({ ...prev, [key]: value }));
-    validateInput({ key: key, value: value, setErrors: setErrors });
+    validateInput({ key, value, setErrors });
   };
 
   return (

@@ -12,7 +12,13 @@ interface validateInputProps {
 export const validateInput = async ({ key, value, setErrors }: validateInputProps) => {
   try {
     await authFormSchema.validateAt(key, { [key]: value });
-    setErrors((prev) => ({ ...prev, [key]: [{ id: 0, message: '' }], isError: false }));
+    setErrors((prev) => {
+      const updatedErrors = { ...prev, [key]: [{ id: 0, message: '' }] };
+      const isErrorUpdated = Object.values(updatedErrors)
+        .flat()
+        .some((error) => typeof error !== 'boolean' && error.message !== '');
+      return { ...updatedErrors, isError: isErrorUpdated };
+    });
   } catch (error) {
     if (error instanceof ValidationError) {
       setErrors((prev) => ({
