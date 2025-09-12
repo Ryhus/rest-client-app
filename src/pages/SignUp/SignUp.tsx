@@ -1,19 +1,27 @@
 import { useState } from 'react';
-import { Navigate, Form, useActionData } from 'react-router-dom';
+import {
+  Navigate,
+  Form,
+  useActionData,
+  useRouteLoaderData,
+  type ActionFunctionArgs,
+} from 'react-router-dom';
 import { Input } from '@/components';
-import { useAuthStore } from '@/stores/authStore/authStore';
-import { supabase } from '@/services/supabase';
 import { Button } from '@/components';
 import { ButtonStyle, ButtonType } from '@/components/Button/types';
 import type { AuthErrors } from '@/utils/schema';
 import { validateInput, type InputName } from '@/utils/validateInput';
+import { createClient } from '@/services/supabase/supabaseServer';
+import type { User } from '@supabase/supabase-js';
 
 import eyeHide from '@/assets/img/eyeHide.svg';
 import eyeShow from '@/assets/img/eyeShow.svg';
 
 import './SignUpStyles.scss';
 
-export async function clientAction({ request }: { request: Request }) {
+export async function action({ request }: ActionFunctionArgs) {
+  const { supabase } = createClient(request);
+
   const formData = await request.formData();
 
   const email = formData.get('email') as string;
@@ -45,7 +53,6 @@ interface SignUpData {
 }
 
 export default function SignUp() {
-  const { session } = useAuthStore();
   const [formData, setFormData] = useState<SignUpData>({
     email: '',
     name: '',
@@ -58,9 +65,8 @@ export default function SignUp() {
     password: [{ id: 0, message: '' }],
     isError: false,
   });
+  const user = useRouteLoaderData<User>('root');
   const actionData = useActionData() as { error?: string };
-
-  if (session) return <Navigate to="/" replace />;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -68,6 +74,8 @@ export default function SignUp() {
     setFormData((prev) => ({ ...prev, [key]: value }));
     validateInput({ key, value, setErrors });
   };
+
+  if (user) return <Navigate to="/" replace />;
 
   return (
     <div className="signup-page">
