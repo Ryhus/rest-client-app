@@ -1,15 +1,12 @@
-import { Link } from 'react-router-dom';
-import { useAuthStore } from '@/stores/authStore/authStore';
-import { supabase } from '@/services/supabase';
+import { Link, useRouteLoaderData, Form } from 'react-router-dom';
 import logo from '@/assets/img/logo.svg';
 import { useEffect, useState } from 'react';
 import { userLinks } from '@/utils/navLinksConfig';
-
+import { type User } from '@supabase/supabase-js';
 import './HeaderStyles.scss';
 
 export default function Header() {
-  const session = useAuthStore((s) => s.session);
-  const loading = useAuthStore((s) => s.loading);
+  const user = useRouteLoaderData<User>('root');
   const [isScrolled, setIsScrolled] = useState(false);
   const headerClass = isScrolled ? 'header scrolled' : 'header';
 
@@ -33,38 +30,36 @@ export default function Header() {
           <img className="app-logo" src={logo} alt="Rest client app logo" />
         </Link>
 
-        {!loading && (
-          <div className="navbar__actions">
-            {session ? (
-              <>
-                <div className="navbar__actions--expanded-group">
-                  {userLinks.map((link) => (
-                    <Link key={link.text} to={link.to} className="navbar__link">
-                      {link.text}
-                    </Link>
-                  ))}
-                  <Link to="/" className="navbar__link">
-                    Home
+        <div className="navbar__actions">
+          {user ? (
+            <>
+              <div className="navbar__actions--expanded-group">
+                {userLinks.map((link) => (
+                  <Link key={link.text} to={link.to} className="navbar__link">
+                    {link.text}
                   </Link>
-                </div>
-                <div className="navbar__actions--basic-group">
-                  <button className="button secondary" onClick={() => supabase.auth.signOut()}>
-                    Sign Out
-                  </button>
-                </div>
-              </>
-            ) : (
-              <div className="navbar__actions--basic-group">
-                <Link to="/login" className="button secondary">
-                  Sign In
-                </Link>
-                <Link to="/signup" className="button secondary">
-                  Sign Up
+                ))}
+                <Link to="/" className="navbar__link">
+                  Home
                 </Link>
               </div>
-            )}
-          </div>
-        )}
+              <div className="navbar__actions--basic-group">
+                <Form method="post" action="/logout">
+                  <button className="button secondary">Sign Out</button>
+                </Form>
+              </div>
+            </>
+          ) : (
+            <div className="navbar__actions--basic-group">
+              <Link to="/login" className="button secondary">
+                Sign In
+              </Link>
+              <Link to="/signup" className="button secondary">
+                Sign Up
+              </Link>
+            </div>
+          )}
+        </div>
       </nav>
     </header>
   );
