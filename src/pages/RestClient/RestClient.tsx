@@ -1,12 +1,11 @@
 import './RestClient.scss';
-import { useNavigate, useSearchParams, Navigate } from 'react-router-dom';
+import { useNavigate, useSearchParams, Navigate, useRouteLoaderData } from 'react-router-dom';
 import HeadersSection from '@/pages/RestClient/HeadersSection/HeadersSection.tsx';
 import RequestBar from '@/pages/RestClient/RequestBar/RequestBar.tsx';
 import { restClientPageStore } from '@/stores/restClientPageStore/restClientPageStore.ts';
 import { type ChangeEvent, useEffect, useState } from 'react';
 import type { Params, UIMatch } from 'react-router';
-import { useAuthStore } from '@/stores/authStore/authStore';
-import Spinner from '@/components/Spinner/Spinner.tsx';
+import { type User } from '@supabase/supabase-js';
 
 interface Props {
   loaderData?: unknown;
@@ -21,7 +20,7 @@ export default function RestClient({ params }: Props) {
   const navigate = useNavigate();
   const [urlError, setUrlError] = useState<string>('');
   const [methodError, setMethodError] = useState<string>('');
-  const { session, loading } = useAuthStore();
+  const user = useRouteLoaderData<User>('root');
 
   const {
     requestMethod,
@@ -61,14 +60,6 @@ export default function RestClient({ params }: Props) {
       addRequestHeader({ name: '', value: '' });
     }
   }, [requestHeaders]);
-
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (!session) {
-    return <Navigate to="/" replace />;
-  }
 
   const navigateAfterSendingRequest = () => {
     const segments = [
@@ -115,6 +106,8 @@ export default function RestClient({ params }: Props) {
 
     setRequestUrl(e.target.value);
   };
+
+  if (!user) return <Navigate to="/" replace />;
 
   return (
     <div className="rest-client-page">

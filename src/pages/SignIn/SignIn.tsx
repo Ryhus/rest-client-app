@@ -1,28 +1,37 @@
 import { useState } from 'react';
-import { Navigate, useActionData, Form } from 'react-router-dom';
+import {
+  Navigate,
+  useActionData,
+  Form,
+  redirect,
+  useRouteLoaderData,
+  type ActionFunctionArgs,
+} from 'react-router-dom';
 
 import { Input } from '@/components';
-import { supabase } from '@/services/supabase';
-import { useAuthStore } from '@/stores/authStore/authStore';
+
 import { Button } from '@/components';
 import { ButtonStyle, ButtonType } from '@/components/Button/types';
 import type { AuthErrors } from '@/utils/schema';
 import { validateInput, type InputName } from '@/utils/validateInput';
+import { createClient } from '@/services/supabase/supabaseServer';
+import { type User } from '@supabase/supabase-js';
 
 import eyeHide from '@/assets/img/eyeHide.svg';
 import eyeShow from '@/assets/img/eyeShow.svg';
 
 import './SignInStyles.scss';
 
-export async function clientAction({ request }: { request: Request }) {
+export async function action({ request }: ActionFunctionArgs) {
+  const { supabase, headers } = createClient(request);
   const formData = await request.formData();
 
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
+  const { error } = await supabase.auth.signInWithPassword({
+    email: email as string,
+    password: password as string,
   });
 
   if (error) {
@@ -34,7 +43,7 @@ export async function clientAction({ request }: { request: Request }) {
     };
   }
 
-  return { data };
+  return redirect('/', { headers });
 }
 
 interface SignInData {
@@ -43,7 +52,6 @@ interface SignInData {
 }
 
 export default function SignIn() {
-  const { session } = useAuthStore();
   const [formData, setFormData] = useState<SignInData>({
     email: '',
     password: '',
@@ -55,10 +63,8 @@ export default function SignIn() {
     password: [{ id: 0, message: '' }],
     isError: false,
   });
-
+  const user = useRouteLoaderData<User>('root');
   const actionData = useActionData() as { error?: string };
-
-  if (session) return <Navigate to="/" replace />;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -66,6 +72,8 @@ export default function SignIn() {
     setFormData((prev) => ({ ...prev, [key]: value }));
     validateInput({ key, value, setErrors });
   };
+
+  if (user) return <Navigate to="/" replace />;
 
   return (
     <div className="signin-page">
