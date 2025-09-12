@@ -1,16 +1,15 @@
-import { useAuthStore } from '@/stores/authStore/authStore';
-import { type UserMetaData } from '@/services/supabase';
+import { useRouteLoaderData } from 'react-router-dom';
+import { type User } from '@supabase/supabase-js';
 
 import './HomeStyles.scss';
 
 export default function Home() {
-  const session = useAuthStore((s) => s.session);
-  const userData = session?.user.user_metadata as UserMetaData | null;
+  const user = useRouteLoaderData<User>('root');
 
   return (
     <div className="home">
       <h1 className="home__tittle">
-        {session ? `Welcome back, ${userData?.name ?? 'Dear User'}!` : 'Welcome!'}
+        {user ? `Welcome back, ${user.user_metadata?.name ?? 'Dear User'}!` : 'Welcome!'}
       </h1>
       <p className="home__about">
         Our app is a modern API testing and collaboration tool designed to make working with REST
