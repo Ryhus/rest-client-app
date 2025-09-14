@@ -87,6 +87,7 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
             className="textarea"
             onChange={handleRequestBodyOnChange}
             defaultValue={requestBody}
+            spellCheck={bodyType === 'text'}
           />
         </div>
         <p className="not-valid-format">{!isValidBodyFormat && 'not valid format'}</p>
