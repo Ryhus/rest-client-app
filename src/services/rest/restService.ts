@@ -10,7 +10,6 @@ interface ApiRequestParams<TData = unknown> {
 interface ApiResponse<TResponse = unknown> {
   data: TResponse;
   status: number;
-  statusText: string;
   headers: Record<string, string>;
 }
 
@@ -35,7 +34,6 @@ export async function apiRequest<TResponse = unknown, TData = unknown>(
     return {
       data: response.data,
       status: response.status,
-      statusText: response.statusText,
       headers,
     };
   } catch (error: unknown) {
