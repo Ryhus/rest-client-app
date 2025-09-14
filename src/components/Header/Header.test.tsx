@@ -15,6 +15,10 @@ vi.mock('@/services/supabase', () => ({
   },
 }));
 
+vi.mock('@/assets/img/logo.svg', () => ({
+  default: 'mock-logo.svg',
+}));
+
 const renderWithRouter = (ui: React.ReactNode) => render(<BrowserRouter>{ui}</BrowserRouter>);
 
 const createTestSession = (): Session => ({
@@ -45,7 +49,10 @@ describe('Header component', () => {
     useAuthStore.setState({ session: null, loading: false });
 
     renderWithRouter(<Header />);
-    expect(screen.getByText(/Rest Client/i)).toBeInTheDocument();
+    const img = screen.getByAltText('Rest client app logo') as HTMLImageElement;
+    expect(img).toBeInTheDocument();
+    expect(img.src).toContain('mock-logo.svg');
+    expect(img).toHaveClass('app-logo');
   });
 
   it('renders Sign In/Sign Up when no session and not loading', () => {
@@ -56,10 +63,13 @@ describe('Header component', () => {
     expect(screen.getByText(/Sign Up/i)).toBeInTheDocument();
   });
 
-  it('renders Home and Sign Out when session exists', () => {
+  it('renders Rest Client, History, Variables, Home and Sign Out when session exists', () => {
     useAuthStore.setState({ session: createTestSession(), loading: false });
 
     renderWithRouter(<Header />);
+    expect(screen.getByText(/Rest Client/i)).toBeInTheDocument();
+    expect(screen.getByText(/History/i)).toBeInTheDocument();
+    expect(screen.getByText(/Variables/i)).toBeInTheDocument();
     expect(screen.getByText(/Home/i)).toBeInTheDocument();
     expect(screen.getByText(/Sign Out/i)).toBeInTheDocument();
   });

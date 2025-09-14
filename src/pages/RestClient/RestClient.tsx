@@ -1,15 +1,21 @@
 import './RestClient.scss';
-import { useNavigate, useSearchParams, Navigate, useFetcher } from 'react-router-dom';
+import {
+  useNavigate,
+  useSearchParams,
+  Navigate,
+  useRouteLoaderData,
+  useFetcher,
+} from 'react-router-dom';
 import HeadersSection from '@/pages/RestClient/HeadersSection/HeadersSection.tsx';
 import RequestBar from '@/pages/RestClient/RequestBar/RequestBar.tsx';
 import { restClientPageStore } from '@/stores/restClientPageStore/restClientPageStore.ts';
 import { type ChangeEvent, useEffect, useState } from 'react';
 import type { Params, UIMatch } from 'react-router';
-import { useAuthStore } from '@/stores/authStore/authStore';
 import Spinner from '@/components/Spinner/Spinner.tsx';
 import { RequestDataEditorOrViewer } from '@/pages/RestClient/RequestDataEditorOrViewer/RequestDataEditorOrViewer.tsx';
 import { apiRequest } from '@/services/rest/restService.ts';
 import axios from 'axios';
+import { type User } from '@supabase/supabase-js';
 
 interface Props {
   params: Params<string>;
@@ -22,7 +28,7 @@ export default function RestClient({ params }: Props) {
   const navigate = useNavigate();
   const [urlError, setUrlError] = useState<string>('');
   const [methodError, setMethodError] = useState<string>('');
-  const { session, loading } = useAuthStore();
+  const user = useRouteLoaderData<User>('root');
   const fetcher = useFetcher<ActionData>();
   let viewerData;
 
@@ -77,14 +83,6 @@ export default function RestClient({ params }: Props) {
       addRequestHeader({ name: '', value: '' });
     }
   }, [requestHeaders]);
-
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (!session) {
-    return <Navigate to="/" replace />;
-  }
 
   const navigateAfterSendingRequest = (params: { headers: Record<string, string> }) => {
     const { headers } = params;
@@ -152,6 +150,8 @@ export default function RestClient({ params }: Props) {
 
     setRequestUrl(e.target.value);
   };
+
+  if (!user) return <Navigate to="/" replace />;
 
   return (
     <div className="rest-client-page">

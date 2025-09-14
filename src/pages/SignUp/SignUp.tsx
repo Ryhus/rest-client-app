@@ -1,15 +1,27 @@
 import { useState } from 'react';
-import { Navigate, Form, useActionData } from 'react-router-dom';
+import {
+  Navigate,
+  Form,
+  useActionData,
+  useRouteLoaderData,
+  type ActionFunctionArgs,
+} from 'react-router-dom';
 import { Input } from '@/components';
-import { useAuthStore } from '@/stores/authStore/authStore';
-import { supabase } from '@/services/supabase';
+import { Button } from '@/components';
+import { ButtonStyle, ButtonType } from '@/components/Button/types';
+import type { AuthErrors } from '@/utils/schema';
+import { validateInput, type InputName } from '@/utils/validateInput';
+import { createClient } from '@/services/supabase/supabaseServer';
+import type { User } from '@supabase/supabase-js';
 
 import eyeHide from '@/assets/img/eyeHide.svg';
 import eyeShow from '@/assets/img/eyeShow.svg';
 
 import './SignUpStyles.scss';
 
-export async function clientAction({ request }: { request: Request }) {
+export async function action({ request }: ActionFunctionArgs) {
+  const { supabase } = createClient(request);
+
   const formData = await request.formData();
 
   const email = formData.get('email') as string;
@@ -34,61 +46,86 @@ export async function clientAction({ request }: { request: Request }) {
   return { data };
 }
 
+interface SignUpData {
+  email: string;
+  name: string;
+  password: string;
+}
+
 export default function SignUp() {
-  const { session } = useAuthStore();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
+  const [formData, setFormData] = useState<SignUpData>({
+    email: '',
+    name: '',
+    password: '',
+  });
   const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState<AuthErrors>({
+    name: [{ id: 0, message: '' }],
+    email: [{ id: 0, message: '' }],
+    password: [{ id: 0, message: '' }],
+    isError: false,
+  });
+  const user = useRouteLoaderData<User>('root');
   const actionData = useActionData() as { error?: string };
 
-  if (session) return <Navigate to="/" replace />;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const key = name as InputName;
+    setFormData((prev) => ({ ...prev, [key]: value }));
+    validateInput({ key, value, setErrors });
+  };
+
+  if (user) return <Navigate to="/" replace />;
 
   return (
     <div className="signup-page">
-      <h2>Create Account</h2>
-      <Form className="form" method="post">
+      <h2 className="signup-page__title">Create Account</h2>
+      <Form className="signup-page__form" method="post">
         <Input
           type="text"
           id="email"
           labelText="Email"
           name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        ></Input>
+          value={formData.email}
+          onChange={handleChange}
+          errors={errors.email}
+        />
         <Input
           type="text"
           id="name"
           labelText="Name"
           name="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        ></Input>
+          value={formData.name}
+          onChange={handleChange}
+          errors={errors.name}
+        />
         <Input
           type={showPassword ? 'text' : 'password'}
           id="password"
           labelText="Password"
           name="password"
-          value={password}
+          value={formData.password}
           rightIcon={
-            <button
-              type="button"
-              className="icon-button"
-              onClick={() => setShowPassword((prev) => !prev)}
-            >
+            <div className="toggler" onClick={() => setShowPassword((prev) => !prev)}>
               {showPassword ? (
                 <img src={eyeHide} alt="eye hide" />
               ) : (
                 <img src={eyeShow} alt="eye show" />
               )}
-            </button>
+            </div>
           }
-          onChange={(e) => setPassword(e.target.value)}
-        ></Input>
-        {actionData && <p className="form__server-error">{actionData.error}</p>}
-        <button type="submit" className="form__submit-bttn">
+          onChange={handleChange}
+          errors={errors.password}
+        />
+        {actionData && <p className="signup-page__server-error">{actionData.error}</p>}
+        <Button
+          style={ButtonStyle.Primary}
+          type={ButtonType.Submit}
+          customClass="signup-page__form-button"
+          isDisabled={errors.isError}
+        >
           Sign Up
-        </button>
+        </Button>
       </Form>
     </div>
   );

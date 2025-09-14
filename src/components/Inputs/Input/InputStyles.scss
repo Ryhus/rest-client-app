@@ -7,7 +7,8 @@
   font-size: variables.$font-size-base;
   font-style: variables.$font-style-normal;
   font-weight: variables.$font-weight-regular;
-  width: 252px;
+  width: 100%;
+  height: 66px;
 }
 
 .input-label {
@@ -20,6 +21,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: 100%;
   padding: 12px;
   gap: variables.$spacing-sm;
   border: 1px solid variables.$input-color;
@@ -45,7 +47,7 @@
   flex-direction: column;
   align-items: flex-start;
   padding: 0 8px;
-  width: 252px;
+  width: 100%;
   min-height: 18px;
   color: variables.$color-warning;
   font-size: variables.$font-size-sm;
@@ -55,6 +57,13 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  position: relative;
+}
+
+.input-right-icon {
+  position: absolute;
+  right: 5px;
+  top: 10px;
 }
 
 .input-field::placeholder {

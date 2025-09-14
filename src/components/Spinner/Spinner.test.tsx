@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 
 import Spinner from './Spinner';
 
-vi.mock('@/assets/img/Logo.svg', () => ({
+vi.mock('@/assets/img/logo.svg', () => ({
   default: 'mock-logo.svg',
 }));
 
