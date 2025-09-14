@@ -5,17 +5,17 @@
   flex-direction: column;
   gap: 12px;
 
-  & .content-container {
+  .content-container {
     height: 250px;
     overflow-y: auto;
     border: 1px solid variables.$border-color;
   }
 
-  & .table {
+  .table {
     width: 100%;
   }
 
-  & .headers-table .thead {
+  .thead {
     .key,
     .value {
       width: 50%;

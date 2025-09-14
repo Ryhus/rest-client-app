@@ -3,16 +3,17 @@ import { Selector } from '@/components';
 import { restClientPageStore } from '@/stores/restClientPageStore/restClientPageStore.ts';
 import { type ChangeEvent, useState } from 'react';
 
-export interface ResponseForViewer {
-  status: number;
-  statusText: string;
-  body: string;
+interface PropsEditor {
+  mode: 'editor';
 }
 
-interface Props {
-  mode: 'editor' | 'viewer';
-  response?: ResponseForViewer | null;
-  responseErrorMessage?: string;
+interface PropsViewer {
+  mode: 'viewer';
+  viewerData?: {
+    data?: string;
+    status?: number;
+    errorMessage?: string;
+  };
 }
 
 type BodyType = 'text' | 'json';
@@ -34,8 +35,24 @@ function isValidRequestBodyFormat(params: { bodyType: BodyType; body: string }):
   return false;
 }
 
-export function RequestDataEditorOrViewer(props: Props) {
-  const { mode, response, responseErrorMessage } = props;
+function getStatusClassName(status?: number): string {
+  if (!status) {
+    return '';
+  }
+
+  switch (true) {
+    case status > 199 && status < 300:
+      return 'success';
+    case status > 399:
+      return 'error';
+    default:
+      return 'info';
+  }
+}
+
+export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
+  const { mode } = props;
+  const { viewerData } = mode === 'viewer' ? props : {};
   const [bodyType, setBodyType] = useState<BodyType>('text');
   const [isValidBodyFormat, setIsValidBodyFormat] = useState(true);
   const isEditorMode = mode === 'editor';
@@ -78,13 +95,8 @@ export function RequestDataEditorOrViewer(props: Props) {
   };
 
   const renderViewer = () => {
-    let statusCodeClassName = 'info';
-
-    if (response?.status) {
-      statusCodeClassName =
-        response.status > 199 && response.status < 300 ? 'success' : statusCodeClassName;
-      statusCodeClassName = response.status > 399 ? 'error' : statusCodeClassName;
-    }
+    const { data, errorMessage, status } = viewerData || {};
+    const statusClassName = getStatusClassName(status);
 
     return (
       <>
@@ -93,16 +105,13 @@ export function RequestDataEditorOrViewer(props: Props) {
         </div>
         <div className="content-container">
           <div className="viewer">
-            {response ? (
-              <>
-                <div
-                  className={`status-code ${statusCodeClassName}`}
-                >{`${response.status} ${response.statusText}`}</div>
-                <div className="body">{response.body && <pre>{response.body}</pre>}</div>
-              </>
-            ) : (
-              <p className="error">{responseErrorMessage}</p>
+            {status && <div className={`status-code ${statusClassName}`}>{status}</div>}
+            {data && (
+              <div className="body">
+                <pre>{data}</pre>
+              </div>
             )}
+            {errorMessage && <p className="error">{errorMessage}</p>}
           </div>
         </div>
       </>

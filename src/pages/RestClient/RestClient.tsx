@@ -1,5 +1,5 @@
 import './RestClient.scss';
-import { useNavigate, useSearchParams, Navigate } from 'react-router-dom';
+import { useNavigate, useSearchParams, Navigate, useFetcher } from 'react-router-dom';
 import HeadersSection from '@/pages/RestClient/HeadersSection/HeadersSection.tsx';
 import RequestBar from '@/pages/RestClient/RequestBar/RequestBar.tsx';
 import { restClientPageStore } from '@/stores/restClientPageStore/restClientPageStore.ts';
@@ -7,15 +7,11 @@ import { type ChangeEvent, useEffect, useState } from 'react';
 import type { Params, UIMatch } from 'react-router';
 import { useAuthStore } from '@/stores/authStore/authStore';
 import Spinner from '@/components/Spinner/Spinner.tsx';
-import {
-  RequestDataEditorOrViewer,
-  type ResponseForViewer,
-} from '@/pages/RestClient/RequestDataEditorOrViewer/RequestDataEditorOrViewer.tsx';
+import { RequestDataEditorOrViewer } from '@/pages/RestClient/RequestDataEditorOrViewer/RequestDataEditorOrViewer.tsx';
 import { apiRequest } from '@/services/rest/restService.ts';
+import axios from 'axios';
 
 interface Props {
-  loaderData?: unknown;
-  actionData?: unknown;
   params: Params<string>;
   matches: UIMatch[];
 }
@@ -27,8 +23,20 @@ export default function RestClient({ params }: Props) {
   const [urlError, setUrlError] = useState<string>('');
   const [methodError, setMethodError] = useState<string>('');
   const { session, loading } = useAuthStore();
-  const [response, setResponse] = useState<ResponseForViewer | null>(null);
-  const [responseErrorMessage, setResponseErrorMessage] = useState('');
+  const fetcher = useFetcher<ActionData>();
+  let viewerData;
+
+  if (fetcher.data && 'errorMessage' in fetcher.data) {
+    viewerData = {
+      status: fetcher.data.status,
+      errorMessage: fetcher.data.errorMessage,
+    };
+  } else {
+    viewerData = {
+      status: fetcher.data?.status,
+      data: JSON.stringify(fetcher.data, null, 2),
+    };
+  }
 
   const {
     requestMethod,
@@ -118,24 +126,15 @@ export default function RestClient({ params }: Props) {
 
     navigateAfterSendingRequest({ headers });
 
-    try {
-      const response = await apiRequest({
+    await fetcher.submit(
+      {
         method: requestMethod,
         url: requestUrl,
-        data: requestBody,
-        config: { headers },
-      });
-
-      setResponse({
-        status: response.status,
-        statusText: response.statusText,
-        body: JSON.stringify(response.data, null, 2),
-      });
-      setResponseErrorMessage('');
-    } catch {
-      setResponse(null);
-      setResponseErrorMessage('Failed to fetch');
-    }
+        body: requestBody,
+        headers: JSON.stringify(headers),
+      },
+      { method: 'POST', action: '/rest-client' }
+    );
   };
 
   const handleMethodChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -167,11 +166,53 @@ export default function RestClient({ params }: Props) {
       />
       <HeadersSection />
       <RequestDataEditorOrViewer mode="editor" />
-      <RequestDataEditorOrViewer
-        mode="viewer"
-        response={response}
-        responseErrorMessage={responseErrorMessage}
-      />
+      <RequestDataEditorOrViewer mode="viewer" viewerData={viewerData} />
+      {fetcher.state === 'submitting' && (
+        <div className="bg-overlay">
+          <Spinner />
+        </div>
+      )}
     </div>
   );
+}
+
+type ActionData =
+  | {
+      data?: unknown;
+      status: number;
+      headers: Record<string, string>;
+    }
+  | {
+      errorMessage: string;
+      status?: number;
+    };
+
+export async function action({ request }: { request: Request }): Promise<ActionData> {
+  const data = await request.formData();
+
+  const method = data.get('method') as string;
+  const url = data.get('url') as string;
+  const body = data.get('body') as string | null;
+  const headersJson = data.get('headers') as string;
+  const headers = headersJson ? JSON.parse(headersJson) : {};
+
+  try {
+    return await apiRequest({
+      method,
+      url,
+      data: body,
+      config: { headers },
+    });
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return {
+        status: error.response?.status,
+        errorMessage: error.response?.data || error.message,
+      };
+    }
+
+    return {
+      errorMessage: error instanceof Error ? error.message : String(error),
+    };
+  }
 }
