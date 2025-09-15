@@ -8,6 +8,10 @@
     display: flex;
     gap: 8px;
     align-items: center;
+
+    .beautify {
+      margin-left: auto;
+    }
   }
 
   .content-container {

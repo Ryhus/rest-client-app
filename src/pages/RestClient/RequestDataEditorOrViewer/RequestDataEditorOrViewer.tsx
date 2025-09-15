@@ -1,7 +1,8 @@
 import './RequestDataEditorOrViewer.scss';
-import { Selector } from '@/components';
+import { Button, Selector } from '@/components';
 import { restClientPageStore } from '@/stores/restClientPageStore/restClientPageStore.ts';
 import { type ChangeEvent, useState } from 'react';
+import { ButtonStyle } from '@/components/Button/types.ts';
 
 interface PropsEditor {
   mode: 'editor';
@@ -71,6 +72,14 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
       setIsValidBodyFormat(isValidRequestBodyFormat({ bodyType: type, body: requestBody }));
     };
 
+    const beautifyJson = () => {
+      try {
+        setRequestBody(JSON.stringify(JSON.parse(requestBody), null, 2));
+      } catch {
+        return;
+      }
+    };
+
     return (
       <>
         <div className="title-container">
@@ -80,13 +89,23 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
             data={['text', 'json']}
             onChange={handleRequestBodyTypeChange}
           />
+          {bodyType === 'json' && (
+            <Button
+              customClass="beautify"
+              style={ButtonStyle.Secondary}
+              onClick={beautifyJson}
+              isDisabled={!isValidBodyFormat}
+            >
+              Beautify
+            </Button>
+          )}
         </div>
         <div className="content-container">
           <textarea
             id={`data-editor-${mode}`}
             className="textarea"
             onChange={handleRequestBodyOnChange}
-            defaultValue={requestBody}
+            value={requestBody}
             spellCheck={bodyType === 'text'}
           />
         </div>
