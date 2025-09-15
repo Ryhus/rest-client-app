@@ -19,6 +19,10 @@ export default [
         path: 'logout',
         file: './pages/Logout/Logout.tsx',
       },
+      {
+        path: '*',
+        file: './pages/NotFound/NotFound.tsx',
+      },
     ],
   },
 ] satisfies RouteConfig;

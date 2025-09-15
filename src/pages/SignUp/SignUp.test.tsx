@@ -5,6 +5,7 @@ import { useAuthStore } from '@/stores/authStore/authStore';
 import type { User, Session } from '@supabase/supabase-js';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import * as reactRouter from 'react-router-dom';
+import { act } from 'react';
 
 vi.mock('@/stores/authStore/authStore', () => ({
   useAuthStore: vi.fn(),
@@ -110,22 +111,24 @@ describe('SignUp component', () => {
     expect(screen.queryByText(/Invalid signup/i)).not.toBeInTheDocument();
   });
 
-  it('fires onChange events for all inputs', () => {
+  it('fires onChange events for all inputs', async () => {
     renderWithDataRouter();
 
-    fireEvent.change(screen.getByLabelText(/Email/i), {
-      target: { value: 'a@b.com' },
-    });
-    fireEvent.change(screen.getByLabelText(/Name/i), {
-      target: { value: 'Test User' },
-    });
-    fireEvent.change(screen.getByLabelText(/Password/i), {
-      target: { value: '123456' },
-    });
+    await act(async () => {
+      fireEvent.change(screen.getByLabelText(/Email/i), {
+        target: { value: 'a@b.com' },
+      });
+      fireEvent.change(screen.getByLabelText(/Name/i), {
+        target: { value: 'Test User' },
+      });
+      fireEvent.change(screen.getByLabelText(/Password/i), {
+        target: { value: '123456' },
+      });
 
-    expect((screen.getByLabelText(/Email/i) as HTMLInputElement).value).toBe('a@b.com');
-    expect((screen.getByLabelText(/Name/i) as HTMLInputElement).value).toBe('Test User');
-    expect((screen.getByLabelText(/Password/i) as HTMLInputElement).value).toBe('123456');
+      expect((screen.getByLabelText(/Email/i) as HTMLInputElement).value).toBe('a@b.com');
+      expect((screen.getByLabelText(/Name/i) as HTMLInputElement).value).toBe('Test User');
+      expect((screen.getByLabelText(/Password/i) as HTMLInputElement).value).toBe('123456');
+    });
   });
 
   it('submits the form', () => {
