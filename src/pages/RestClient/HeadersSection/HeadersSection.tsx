@@ -19,8 +19,8 @@ const tableHeaders = ['Key', 'Value', ''];
 export default function HeadersSection() {
   const { requestHeaders, updateRequestHeader, removeRequestHeader } = restClientPageStore();
 
-  function getTableRow(props: RestClientHeader) {
-    const { id, name, value } = props;
+  function getTableRow(params: RestClientHeader) {
+    const { id, name, value } = params;
     const datalistOptions = HEADERS_COLLECTION.map((h) => <option key={`${id}-${h}`}>{h}</option>);
     const isBtnDisabled = requestHeaders.length === 1 || requestHeaders.at(-1)?.id === id;
 
@@ -62,12 +62,10 @@ export default function HeadersSection() {
   }
 
   return (
-    <div className="section">
-      <div className="section-header">
-        <p className="title">Headers:</p>
-      </div>
-      <div className="section-body">
-        <table className="table headers-table">
+    <div className="headers-container">
+      <p className="title">Headers:</p>
+      <div className="content-container">
+        <table className="table">
           <thead className="thead">
             <tr className="tr">
               {tableHeaders.map((header, index) => (

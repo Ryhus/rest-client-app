@@ -8,7 +8,7 @@ export default [
       { path: 'signup', file: './pages/SignUp/SignUp.tsx' },
       { path: 'login', file: './pages/SignIn/SignIn.tsx' },
       {
-        path: '/rest-client/:method?/:encodedUrl?/:encodedBody?',
+        path: 'rest-client/:method?/:encodedUrl?/:encodedBody?',
         file: './pages/RestClient/RestClient.tsx',
       },
       {

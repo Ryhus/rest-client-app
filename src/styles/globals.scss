@@ -22,8 +22,6 @@
   border-collapse: collapse;
 
   .thead {
-    position: sticky;
-
     .td {
       color: variables.$font-color-secondary;
       font-weight: 600;
@@ -31,7 +29,7 @@
   }
 
   .td {
-    padding: 8px;
+    padding: 4px;
     border: 1px solid variables.$border-color;
   }
 }
@@ -51,4 +49,8 @@
   &:focus {
     border-color: variables.$border-color;
   }
+}
+
+.textarea {
+  outline: none;
 }
