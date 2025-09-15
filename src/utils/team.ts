@@ -14,7 +14,7 @@ export const team = [
     name: 'Maria Parinova',
     role: 'frontend developer',
     description:
-      'Junior Frontend Developer experienced in building responsive websites and SPAs with React. Skilled in JavaScript, TypeScript, React and UI/UX best practices.',
+      'Frontend Developer experienced in building responsive websites and SPAs with React. Skilled in JavaScript, TypeScript, React and UI/UX best practices.',
     gh: 'https://github.com/mariaparinova',
   },
   {
@@ -24,7 +24,7 @@ export const team = [
     name: 'Anastasia Kudrevich',
     role: 'frontend developer',
     description:
-      'Junior Frontend Developer skilled in JavaScript, TypeScript, and React. After 6 years leading retail operations, switched to tech.',
+      'Frontend Developer skilled in JavaScript, TypeScript, and React. After 6 years leading retail operations, switched to tech.',
     gh: 'https://github.com/silvermockingjay',
   },
 ];
