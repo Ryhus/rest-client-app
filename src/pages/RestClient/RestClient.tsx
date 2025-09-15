@@ -5,6 +5,7 @@ import {
   Navigate,
   useRouteLoaderData,
   useFetcher,
+  type ActionFunctionArgs,
 } from 'react-router-dom';
 import HeadersSection from '@/pages/RestClient/HeadersSection/HeadersSection.tsx';
 import RequestBar from '@/pages/RestClient/RequestBar/RequestBar.tsx';
@@ -35,7 +36,7 @@ export default function RestClient({ params }: Props) {
   if (fetcher.data && 'errorMessage' in fetcher.data) {
     viewerData = {
       status: fetcher.data.status,
-      errorMessage: fetcher.data.errorMessage,
+      errorMessage: JSON.stringify(fetcher.data.errorMessage),
     };
   } else {
     viewerData = {
@@ -187,7 +188,7 @@ type ActionData =
       status?: number;
     };
 
-export async function action({ request }: { request: Request }): Promise<ActionData> {
+export async function action({ request }: ActionFunctionArgs): Promise<ActionData> {
   const data = await request.formData();
 
   const method = data.get('method') as string;
