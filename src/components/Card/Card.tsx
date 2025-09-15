@@ -12,7 +12,7 @@ interface Profile {
 
 export default function Card(profile: Profile) {
   return (
-    <div className="card-container">
+    <div className="card-container" data-testid="card">
       <div>
         <img className="card-image" src={profile.image} alt={profile.name} />
       </div>
