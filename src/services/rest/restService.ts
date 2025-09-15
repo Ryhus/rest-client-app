@@ -19,7 +19,12 @@ export async function apiRequest<TResponse = unknown, TData = unknown>(
   const { method, url, data, config } = params;
 
   try {
-    const response = await axios.request<TResponse>({ method, url, data, ...config });
+    const response = await axios.request<TResponse>({
+      method,
+      url,
+      data,
+      ...config,
+    });
 
     const headers: Record<string, string> = {};
     for (const [key, value] of Object.entries(response.headers)) {

@@ -5,7 +5,7 @@
   width: 100%;
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 1;
   background-color: variables.$color-basic;
   border-bottom: 0.1rem solid variables.$border-color;
   padding: 1rem 7rem;
@@ -55,7 +55,7 @@
       &:hover {
         color: variables.$color-secondary-light;
 
-        &:after{
+        &:after {
           width: 100%;
         }
       }

@@ -19,11 +19,9 @@ export default function NotFound() {
           To home page
         </Button>
       </div>
-      <div className="figure-1"></div>
-      <div className="figure-2"></div>
-      <div className="figure-3"></div>
-      <div className="figure-4"></div>
-      <div className="figure-5"></div>
+      {[1, 2, 3, 4, 5].map((num) => (
+        <div key={num} className={`figure-${num}`} />
+      ))}
     </div>
   );
 }
