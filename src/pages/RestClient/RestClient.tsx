@@ -1,16 +1,24 @@
 import './RestClient.scss';
-import { useNavigate, useSearchParams, Navigate } from 'react-router-dom';
+import {
+  useNavigate,
+  useSearchParams,
+  Navigate,
+  useRouteLoaderData,
+  useFetcher,
+  type ActionFunctionArgs,
+} from 'react-router-dom';
 import HeadersSection from '@/pages/RestClient/HeadersSection/HeadersSection.tsx';
 import RequestBar from '@/pages/RestClient/RequestBar/RequestBar.tsx';
 import { restClientPageStore } from '@/stores/restClientPageStore/restClientPageStore.ts';
 import { type ChangeEvent, useEffect, useState } from 'react';
 import type { Params, UIMatch } from 'react-router';
-import { useAuthStore } from '@/stores/authStore/authStore';
 import Spinner from '@/components/Spinner/Spinner.tsx';
+import { RequestDataEditorOrViewer } from '@/pages/RestClient/RequestDataEditorOrViewer/RequestDataEditorOrViewer.tsx';
+import { apiRequest } from '@/services/rest/restService.ts';
+import axios from 'axios';
+import { type User } from '@supabase/supabase-js';
 
 interface Props {
-  loaderData?: unknown;
-  actionData?: unknown;
   params: Params<string>;
   matches: UIMatch[];
 }
@@ -21,12 +29,27 @@ export default function RestClient({ params }: Props) {
   const navigate = useNavigate();
   const [urlError, setUrlError] = useState<string>('');
   const [methodError, setMethodError] = useState<string>('');
-  const { session, loading } = useAuthStore();
+  const user = useRouteLoaderData<User>('root');
+  const fetcher = useFetcher<ActionData>();
+  let viewerData;
+
+  if (fetcher.data && 'errorMessage' in fetcher.data) {
+    viewerData = {
+      status: fetcher.data.status,
+      errorMessage: JSON.stringify(fetcher.data.errorMessage),
+    };
+  } else {
+    viewerData = {
+      status: fetcher.data?.status,
+      data: JSON.stringify(fetcher.data, null, 2),
+    };
+  }
 
   const {
     requestMethod,
     requestUrl,
     requestHeaders,
+    requestBody,
     setRequestMethod,
     setRequestUrl,
     setRequestBody,
@@ -62,24 +85,16 @@ export default function RestClient({ params }: Props) {
     }
   }, [requestHeaders]);
 
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (!session) {
-    return <Navigate to="/" replace />;
-  }
-
-  const navigateAfterSendingRequest = () => {
+  const navigateAfterSendingRequest = (params: { headers: Record<string, string> }) => {
+    const { headers } = params;
     const segments = [
       '/rest-client',
-      requestMethod || undefined,
-      requestUrl ? btoa(requestUrl) : undefined,
+      requestMethod,
+      btoa(requestUrl),
+      requestBody ? btoa(requestBody) : undefined,
     ].filter((s) => s !== undefined);
 
-    const newUrlSearchParams = new URLSearchParams(
-      requestHeaders.filter((h) => h.name || h.value).map((r) => [r.name, r.value])
-    );
+    const newUrlSearchParams = new URLSearchParams(headers);
 
     navigate({
       pathname: segments.join('/'),
@@ -87,17 +102,38 @@ export default function RestClient({ params }: Props) {
     });
   };
 
-  const handleSendingRequest = () => {
+  const handleSendingRequest = async () => {
+    let hasError = false;
+
     if (!requestUrl) {
       setUrlError('required field');
+      hasError = true;
     }
 
     if (!requestMethod) {
       setMethodError('required field');
+      hasError = true;
+    }
+
+    if (hasError) {
       return;
     }
 
-    navigateAfterSendingRequest();
+    const headers = Object.fromEntries(
+      requestHeaders.filter((h) => h.name && h.value).map((r) => [r.name, r.value])
+    );
+
+    navigateAfterSendingRequest({ headers });
+
+    await fetcher.submit(
+      {
+        method: requestMethod,
+        url: requestUrl,
+        body: requestBody,
+        headers: JSON.stringify(headers),
+      },
+      { method: 'POST', action: '/rest-client' }
+    );
   };
 
   const handleMethodChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -116,6 +152,8 @@ export default function RestClient({ params }: Props) {
     setRequestUrl(e.target.value);
   };
 
+  if (!user) return <Navigate to="/" replace />;
+
   return (
     <div className="rest-client-page">
       <RequestBar
@@ -128,6 +166,54 @@ export default function RestClient({ params }: Props) {
         methodError={methodError}
       />
       <HeadersSection />
+      <RequestDataEditorOrViewer mode="editor" />
+      <RequestDataEditorOrViewer mode="viewer" viewerData={viewerData} />
+      {fetcher.state === 'submitting' && (
+        <div className="bg-overlay">
+          <Spinner />
+        </div>
+      )}
     </div>
   );
+}
+
+type ActionData =
+  | {
+      data?: unknown;
+      status: number;
+      headers: Record<string, string>;
+    }
+  | {
+      errorMessage: string;
+      status?: number;
+    };
+
+export async function action({ request }: ActionFunctionArgs): Promise<ActionData> {
+  const data = await request.formData();
+
+  const method = data.get('method') as string;
+  const url = data.get('url') as string;
+  const body = data.get('body') as string | null;
+  const headersJson = data.get('headers') as string;
+  const headers = headersJson ? JSON.parse(headersJson) : {};
+
+  try {
+    return await apiRequest({
+      method,
+      url,
+      data: body,
+      config: { headers },
+    });
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return {
+        status: error.response?.status,
+        errorMessage: error.response?.data || error.message,
+      };
+    }
+
+    return {
+      errorMessage: error instanceof Error ? error.message : String(error),
+    };
+  }
 }

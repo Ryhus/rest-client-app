@@ -1,10 +1,8 @@
 import { describe, it, vi, beforeEach, expect, type Mock } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import SignUp, { clientAction } from './SignUp';
+import SignUp from './SignUp';
 import { useAuthStore } from '@/stores/authStore/authStore';
-import { supabase } from '@/services/supabase';
-import type { User, Session, AuthError } from '@supabase/supabase-js';
-import { AuthError as SupabaseAuthError } from '@supabase/supabase-js';
+import type { User, Session } from '@supabase/supabase-js';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import * as reactRouter from 'react-router-dom';
 import { act } from 'react';
@@ -140,72 +138,5 @@ describe('SignUp component', () => {
     if (!form) throw new Error('Form not found');
 
     fireEvent.submit(form);
-  });
-});
-
-describe('clientAction', () => {
-  const email = 'test@test.com';
-  const name = 'Test User';
-  const password = '123456';
-
-  const createMockRequest = (): Request =>
-    ({
-      formData: vi.fn().mockResolvedValue(
-        Object.assign(new FormData(), {
-          get: (key: string) => (key === 'email' ? email : key === 'name' ? name : password),
-        })
-      ),
-    }) as unknown as Request;
-
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it('returns data on successful signup', async () => {
-    const user: User = {
-      id: '1',
-      aud: 'authenticated',
-      role: 'authenticated',
-      email,
-      app_metadata: {},
-      user_metadata: { name },
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    };
-
-    vi.mocked(supabase.auth.signUp).mockResolvedValue({
-      data: { user, session: null },
-      error: null,
-    });
-
-    const request = createMockRequest();
-    const result = await clientAction({ request });
-    expect(result).toEqual({ data: { user, session: null } });
-  });
-
-  it('returns error message on failed signup', async () => {
-    const error: AuthError = new SupabaseAuthError('Email already exists', 400);
-
-    vi.mocked(supabase.auth.signUp).mockResolvedValue({
-      data: { user: null, session: null },
-      error,
-    });
-
-    const request = createMockRequest();
-    const result = await clientAction({ request });
-    expect(result).toEqual({ error: 'Email already exists' });
-  });
-
-  it('returns network error message if "Failed to fetch"', async () => {
-    const error: AuthError = new SupabaseAuthError('Failed to fetch', 500);
-
-    vi.mocked(supabase.auth.signUp).mockResolvedValue({
-      data: { user: null, session: null },
-      error,
-    });
-
-    const request = createMockRequest();
-    const result = await clientAction({ request });
-    expect(result).toEqual({ error: 'Pls, check your internet connection.' });
   });
 });

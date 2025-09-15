@@ -1,3 +1,5 @@
+@use '@/styles/base/variables';
+
 .rest-client-page {
   display: flex;
   flex-direction: column;
@@ -6,15 +8,16 @@
   padding: 40px;
   max-width: 1000px;
 
-  .section {
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .section-body {
-      margin-top: 12px;
-    }
+  .bg-overlay {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: variables.$bg-color-overlay;
   }
 }

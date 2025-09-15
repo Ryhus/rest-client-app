@@ -1,10 +1,22 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
+import {
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  type LoaderFunctionArgs,
+} from 'react-router';
 import React from 'react';
+import { createClient } from './services/supabase/supabaseServer';
 
-import { setupAuthListener } from './services/supabase/authListener';
+export async function loader({ request }: LoaderFunctionArgs) {
+  const { supabase } = createClient(request);
 
-if (typeof window !== 'undefined') {
-  setupAuthListener();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  return user;
 }
 
 export function links() {
