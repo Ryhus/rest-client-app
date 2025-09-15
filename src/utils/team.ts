@@ -1,0 +1,30 @@
+export const team = [
+  {
+    id: 0,
+    image: 'https://avatars.githubusercontent.com/u/148607879?v=4',
+    name: 'Yevhen Ryhus',
+    role: 'team lead',
+    description:
+      'Former data scientist, now passionate about web development. Experienced in JavaScript, TypeScript, and React, with a growing interest in modern frameworks and DevOps.',
+    gh: 'https://github.com/ryhus',
+  },
+  {
+    id: 1,
+    image: 'https://avatars.githubusercontent.com/u/95028871?v=4',
+    name: 'Maria Parinova',
+    role: 'frontend developer',
+    description:
+      'Junior Frontend Developer experienced in building responsive websites and SPAs with React. Skilled in JavaScript, TypeScript, React and UI/UX best practices.',
+    gh: 'https://github.com/mariaparinova',
+  },
+  {
+    id: 2,
+    image:
+      'https://avatars.githubusercontent.com/u/141926915?s=400&u=c909ba71384002c4b9e7ca184bddb4a2e4c4a7c7&v=4',
+    name: 'Anastasia Kudrevich',
+    role: 'frontend developer',
+    description:
+      'Junior Frontend Developer skilled in JavaScript, TypeScript, and React. After 6 years leading retail operations, switched to tech.',
+    gh: 'https://github.com/silvermockingjay',
+  },
+];
