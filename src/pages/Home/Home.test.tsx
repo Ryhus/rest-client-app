@@ -1,13 +1,21 @@
 import { describe, it, beforeEach, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import Home from './Home';
-
-import { useAuthStore } from '@/stores/authStore/authStore';
+import { createMemoryRouter, RouterProvider, useRouteLoaderData } from 'react-router-dom';
 import type { Session } from '@supabase/supabase-js';
 import type { UserMetaData } from '@/services/supabase';
 
-const renderWithRouter = (ui: React.ReactNode) => render(<BrowserRouter>{ui}</BrowserRouter>);
+import Home from './Home';
+
+vi.mock('react-router-dom', async () => {
+  const actualModule = await vi.importActual('react-router-dom');
+  return {
+    ...actualModule,
+    useRouteLoaderData: vi.fn(),
+  };
+});
+
+const mockedUseRouteLoaderData = useRouteLoaderData as unknown as ReturnType<typeof vi.fn>;
+const router = createMemoryRouter([{ path: '/', element: <Home /> }], { initialEntries: ['/'] });
 
 const createTestSession = (name?: string): Session => ({
   access_token: 'token',
@@ -29,41 +37,44 @@ const createTestSession = (name?: string): Session => ({
 
 describe('Home component', () => {
   beforeEach(() => {
-    useAuthStore.setState({ session: null, loading: false });
+    mockedUseRouteLoaderData.mockReturnValue(null);
     vi.clearAllMocks();
   });
 
   it('renders guest welcome message when no session', () => {
-    useAuthStore.setState({ session: null, loading: false });
+    mockedUseRouteLoaderData.mockReturnValue(null);
 
-    renderWithRouter(<Home />);
+    render(<RouterProvider router={router} />);
     expect(screen.getByText(/Welcome!/i)).toBeInTheDocument();
   });
 
   it('renders user welcome message with name when session exists', () => {
-    useAuthStore.setState({
-      session: createTestSession('John Doe'),
-      loading: false,
-    });
+    const session = createTestSession('John Doe');
+    mockedUseRouteLoaderData.mockReturnValue(session.user);
 
-    renderWithRouter(<Home />);
+    render(<RouterProvider router={router} />);
     expect(screen.getByText(/Welcome back, John Doe!/i)).toBeInTheDocument();
   });
 
   it('falls back to "Dear User" if user name is missing', () => {
-    useAuthStore.setState({
-      session: createTestSession(undefined),
-      loading: false,
-    });
+    const session = createTestSession(undefined);
+    mockedUseRouteLoaderData.mockReturnValue(session.user);
 
-    renderWithRouter(<Home />);
+    render(<RouterProvider router={router} />);
     expect(screen.getByText(/Welcome back, Dear User!/i)).toBeInTheDocument();
   });
 
-  it('render app info', () => {
-    renderWithRouter(<Home />);
-    const info = screen.getByText(/Our app is/i);
+  it('renders app info', () => {
+    render(<RouterProvider router={router} />);
+    const info = screen.getByText(
+      /Rest Client app is a modern API testing and collaboration tool/i
+    );
     expect(info).toBeInTheDocument();
-    expect(info).toHaveClass('home__about');
+  });
+
+  it('renders team members profile cards', () => {
+    render(<RouterProvider router={router} />);
+    const cards = screen.getAllByTestId('card');
+    expect(cards).toHaveLength(3);
   });
 });
