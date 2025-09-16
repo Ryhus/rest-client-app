@@ -15,8 +15,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
   } = await supabase.auth.getUser();
 
   if (!user || userError) return redirect('/');
-  console.log(user);
-  const { data } = await supabase.from('history').select('*').eq('user_id', user.id);
+
+  const { data } = await supabase
+    .from('history')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('request_timestamp', { ascending: false });
 
   return data;
 }
