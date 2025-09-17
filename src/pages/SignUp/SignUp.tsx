@@ -13,6 +13,7 @@ import type { AuthErrors } from '@/utils/schema';
 import { validateInput, type InputName } from '@/utils/validateInput';
 import { createClient } from '@/services/supabase/supabaseServer';
 import type { User } from '@supabase/supabase-js';
+import { useTranslation } from 'react-i18next';
 
 import eyeHide from '@/assets/img/eyeHide.svg';
 import eyeShow from '@/assets/img/eyeShow.svg';
@@ -53,6 +54,7 @@ interface SignUpData {
 }
 
 export default function SignUp() {
+  const { t } = useTranslation('authorization');
   const [formData, setFormData] = useState<SignUpData>({
     email: '',
     name: '',
@@ -79,12 +81,12 @@ export default function SignUp() {
 
   return (
     <div className="signup-page">
-      <h2 className="signup-page__title">Create Account</h2>
+      <h2 className="signup-page__title">{t('signUpTitle')}</h2>
       <Form className="signup-page__form" method="post">
         <Input
           type="text"
           id="email"
-          labelText="Email"
+          labelText={t('email')}
           name="email"
           value={formData.email}
           onChange={handleChange}
@@ -93,7 +95,7 @@ export default function SignUp() {
         <Input
           type="text"
           id="name"
-          labelText="Name"
+          labelText={t('name')}
           name="name"
           value={formData.name}
           onChange={handleChange}
@@ -102,7 +104,7 @@ export default function SignUp() {
         <Input
           type={showPassword ? 'text' : 'password'}
           id="password"
-          labelText="Password"
+          labelText={t('password')}
           name="password"
           value={formData.password}
           rightIcon={
@@ -124,7 +126,7 @@ export default function SignUp() {
           customClass="signup-page__form-button"
           isDisabled={errors.isError}
         >
-          Sign Up
+          {t('signUp')}
         </Button>
       </Form>
     </div>

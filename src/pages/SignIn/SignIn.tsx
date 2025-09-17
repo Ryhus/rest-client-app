@@ -7,15 +7,14 @@ import {
   useRouteLoaderData,
   type ActionFunctionArgs,
 } from 'react-router-dom';
-
 import { Input } from '@/components';
-
 import { Button } from '@/components';
 import { ButtonStyle, ButtonType } from '@/components/Button/types';
 import type { AuthErrors } from '@/utils/schema';
 import { validateInput, type InputName } from '@/utils/validateInput';
 import { createClient } from '@/services/supabase/supabaseServer';
 import { type User } from '@supabase/supabase-js';
+import { useTranslation } from 'react-i18next';
 
 import eyeHide from '@/assets/img/eyeHide.svg';
 import eyeShow from '@/assets/img/eyeShow.svg';
@@ -52,6 +51,7 @@ interface SignInData {
 }
 
 export default function SignIn() {
+  const { t } = useTranslation('authorization');
   const [formData, setFormData] = useState<SignInData>({
     email: '',
     password: '',
@@ -77,12 +77,12 @@ export default function SignIn() {
 
   return (
     <div className="signin-page">
-      <h2 className="signin-page__title">Login</h2>
+      <h2 className="signin-page__title">{t('loginTitle')}</h2>
       <Form className="signin-page__form" method="post">
         <Input
           type="text"
           id="email"
-          labelText="Email"
+          labelText={t('email')}
           name="email"
           value={formData.email}
           onChange={handleChange}
@@ -91,7 +91,7 @@ export default function SignIn() {
         <Input
           type={showPassword ? 'text' : 'password'}
           id="password"
-          labelText="Password"
+          labelText={t('password')}
           name="password"
           value={formData.password}
           rightIcon={
@@ -113,7 +113,7 @@ export default function SignIn() {
           customClass="signin-page__form-button"
           isDisabled={errors.isError}
         >
-          Login
+          {t('login')}
         </Button>
       </Form>
     </div>

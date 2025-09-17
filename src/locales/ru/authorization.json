@@ -3,5 +3,7 @@
   "name": "Имя",
   "password": "Пароль",
   "login": "Вход",
-  "signUp": "Регистрация"
+  "signUp": "Регистрация",
+  "loginTitle": "Логин",
+  "signUpTitle": "Создайте аккаунт"
 }
