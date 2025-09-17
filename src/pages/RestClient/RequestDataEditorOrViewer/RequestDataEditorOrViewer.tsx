@@ -85,7 +85,7 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
     return (
       <>
         <div className="title-container">
-          <p className="title">{t('body')}</p>
+          <p className="title">{t('body')}:</p>
           <Selector
             id="editor-mode"
             data={['text', 'json']}
@@ -98,7 +98,7 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
               onClick={beautifyJson}
               isDisabled={!isValidBodyFormat}
             >
-              Beautify
+              {t('beautifyBtn')}
             </Button>
           )}
         </div>
@@ -123,7 +123,7 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
     return (
       <>
         <div className="title-container">
-          <p className="title">{t('response')}</p>
+          <p className="title">{t('response')}:</p>
         </div>
         <div className="content-container">
           <div className="viewer">

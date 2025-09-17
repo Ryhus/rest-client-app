@@ -7,6 +7,7 @@ import {
 } from '@/stores/restClientPageStore/restClientPageStore.ts';
 import { useEffect, useState } from 'react';
 import fetchToCurl from 'fetch-to-curl';
+import { useTranslation } from 'react-i18next';
 
 enum HumanReadableCodeOptions {
   Curl = 'curl',
@@ -67,6 +68,7 @@ export default function CodeSection() {
   );
   const [codeResult, setCodeResult] = useState<string>('');
   const { requestMethod, requestUrl, requestHeaders, requestBody } = restClientPageStore();
+  const { t } = useTranslation('rest-client');
 
   const getRequestCode = async () => {
     const params: GetRequestCodeSnippetParams = {
@@ -103,7 +105,7 @@ export default function CodeSection() {
   return (
     <div className="code-container">
       <div className="title-container">
-        <p className="title">Code:</p>
+        <p className="title">{t('code')}:</p>
         <Selector
           id="code"
           data={codeOptions}

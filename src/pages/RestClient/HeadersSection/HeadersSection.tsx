@@ -65,7 +65,7 @@ export default function HeadersSection() {
 
   return (
     <div className="headers-container">
-      <p className="title">{t('headers')}</p>
+      <p className="title">{t('headers')}:</p>
       <div className="content-container">
         <table className="table">
           <thead className="thead">

@@ -9,5 +9,7 @@
   "response": "Детали ответа",
   "requestError": "Запрос завершился с кодом ошибки {{code}}",
   "formatError": "Неверный формат",
-  "requiredField": "Обязательное поле"
+  "requiredField": "Обязательное поле",
+  "code": "Код",
+  "beautifyBtn": "Форматировать"
 }
