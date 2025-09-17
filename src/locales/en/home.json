@@ -1,7 +1,9 @@
 {
-  "welcome": "Welcome back, {{student}}!",
+  "welcomeUser": "Welcome back, {{user}}!",
+  "userNameFallback": "dear user",
+  "welcomeGuest": "Welcome!",
   "aboutApp": "Rest Client app is a modern API testing and collaboration tool designed to make working with REST APIs faster and easier. You can send requests, inspect responses and keep your history in one place. Whether you’re debugging, exploring, or documenting an API, our app helps you do it efficiently.",
-  "aboutCourse": "Rest Client app is created as a final task of <link>{{courseName}}</link>",
+  "aboutCourse": "Rest Client app is created as a final task of <courseLink>{{courseName}}</courseLink>",
   "team": [
     {
       "id": 0,
