@@ -1,4 +1,4 @@
-import { authFormSchema, type AuthErrors } from './schema';
+import { getAuthSchema, type AuthErrors } from './schema';
 import { ValidationError } from 'yup';
 
 export type InputName = 'email' | 'name' | 'password';
@@ -11,6 +11,7 @@ interface validateInputProps {
 
 export const validateInput = async ({ key, value, setErrors }: validateInputProps) => {
   try {
+    const authFormSchema = getAuthSchema();
     await authFormSchema.validateAt(key, { [key]: value });
     setErrors((prev) => {
       const updatedErrors = { ...prev, [key]: [{ id: 0, message: '' }] };
