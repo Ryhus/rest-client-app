@@ -10,7 +10,7 @@
       "image": "https://avatars.githubusercontent.com/u/148607879?v=4",
       "name": "Евгений Ригус",
       "role": "тимлид",
-      "description": "Фронтенд разработчик с опытом работы с JavaScript, TypeScript и React, с интересом к современным фреймворкам и DevOps. Ранее работал аналитиком данных в течение 5 лет.",
+      "description": "Фронтенд разработчик, владеющий JavaScript, TypeScript и React, с интересом к современным фреймворкам и DevOps. Ранее работал аналитиком данных.",
       "gh": "https://github.com/ryhus"
     },
     {
@@ -29,5 +29,6 @@
       "description": "Фронтенд разработчик, владеющий JavaScript, TypeScript и React. После 6 лет работы на лидерских позициях в ритейле перешла в IT.",
       "gh": "https://github.com/silvermockingjay"
     }
-  ]
+  ],
+  "primaryRole": "тимлид"
 }

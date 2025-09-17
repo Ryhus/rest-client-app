@@ -1,7 +1,8 @@
+import { useTranslation } from 'react-i18next';
 import GHLogo from '@/assets/img/gh_logo.png';
 import './Card.scss';
 
-interface Profile {
+export interface Profile {
   id: number;
   image: string;
   name: string;
@@ -11,6 +12,7 @@ interface Profile {
 }
 
 export default function Card(profile: Profile) {
+  const { t } = useTranslation('home');
   return (
     <div className="card-container" data-testid="card">
       <div>
@@ -19,7 +21,7 @@ export default function Card(profile: Profile) {
       <div className="card-content">
         <div className="card-header">
           <h1 className="card-title">{profile.name}</h1>
-          <p className={profile.role === 'team lead' ? 'card-role-primary' : 'card-role'}>
+          <p className={profile.role === t('primaryRole') ? 'card-role-primary' : 'card-role'}>
             {profile.role}
           </p>
         </div>
