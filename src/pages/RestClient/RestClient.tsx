@@ -18,6 +18,7 @@ import { apiRequest } from '@/services/rest/restService.ts';
 import axios from 'axios';
 import { type User } from '@supabase/supabase-js';
 import { useTranslation } from 'react-i18next';
+import CodeSection from '@/pages/RestClient/CodeSection/CodeSection.tsx';
 
 interface Props {
   params: Params<string>;
@@ -122,7 +123,7 @@ export default function RestClient({ params }: Props) {
     }
 
     const headers = Object.fromEntries(
-      requestHeaders.filter((h) => h.name && h.value).map((r) => [r.name, r.value])
+      requestHeaders.filter((h) => h.name && h.value).map((h) => [h.name, h.value])
     );
 
     navigateAfterSendingRequest({ headers });
@@ -170,6 +171,7 @@ export default function RestClient({ params }: Props) {
       <HeadersSection />
       <RequestDataEditorOrViewer mode="editor" />
       <RequestDataEditorOrViewer mode="viewer" viewerData={viewerData} />
+      <CodeSection />
       {fetcher.state === 'submitting' && (
         <div className="bg-overlay">
           <Spinner />

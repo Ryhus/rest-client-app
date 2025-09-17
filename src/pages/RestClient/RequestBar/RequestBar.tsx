@@ -36,7 +36,7 @@ export default function RequestBar(props: Props) {
         id={'id-method-options'}
         listName="method-options"
         onChange={handleMethodOnChange}
-        defaultValue={initMethod}
+        value={initMethod}
         data={initRequestMethods}
         spaceForErrorMessage={true}
         errors={[{ id: 1, message: methodError }]}
@@ -47,7 +47,7 @@ export default function RequestBar(props: Props) {
         name="search"
         inputContainerClassName="input-container-search"
         inputClassName="input-search"
-        defaultValue={initSearchValue}
+        value={initSearchValue}
         onChange={handleSearchOnChange}
         errors={[{ id: 0, message: urlError }]}
         placeholder={t('endpoint')}
