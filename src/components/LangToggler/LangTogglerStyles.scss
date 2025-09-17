@@ -19,8 +19,13 @@
     background-color: variables.$color-basic;
     border: none;
 
+    &:hover {
+      cursor: pointer;
+    }
+
     &:disabled {
       color: variables.$color-disabled;
+      cursor: default;
     }
   }
 }
