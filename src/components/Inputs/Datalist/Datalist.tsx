@@ -1,6 +1,7 @@
 import type { ChangeEventHandler } from 'react';
 import './DatalistStyles.scss';
 import type { InputError } from '@/components/Inputs/Input/Input.tsx';
+import clsx from 'clsx';
 
 interface DatalistProps {
   id: string;
@@ -14,6 +15,7 @@ interface DatalistProps {
   defaultValue?: string;
   errors?: InputError[];
   spaceForErrorMessage?: boolean;
+  border?: boolean;
 }
 
 export default function Datalist({
@@ -28,6 +30,7 @@ export default function Datalist({
   defaultValue,
   errors,
   spaceForErrorMessage = false,
+  border = true,
 }: DatalistProps) {
   const renderError = () => {
     if (spaceForErrorMessage || errors) {
@@ -50,7 +53,7 @@ export default function Datalist({
         id={id}
         list={listName}
         name={name}
-        className="datalist-input"
+        className={clsx('datalist-input', border && 'border')}
         placeholder={placeholder}
         value={value}
         onChange={onChange}

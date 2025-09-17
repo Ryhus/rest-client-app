@@ -10,7 +10,7 @@
   max-width: 1440px;
   font-family: variables.$font-family-base;
   background-color: variables.$color-basic;
-  box-shadow: variables.$border-color 0px 0px 30px 0px;
+  box-shadow: variables.$border-color 0 0 30px 0;
 }
 
 .main {
@@ -23,31 +23,14 @@
 
   .thead {
     .td {
+      padding: 4px;
       color: variables.$font-color-secondary;
       font-weight: 600;
     }
   }
 
   .td {
-    padding: 4px;
     border: 1px solid variables.$border-color;
-  }
-}
-
-.table-input {
-  padding: variables.$spacing-xs;
-  width: 100%;
-  border: 1px solid transparent;
-  border-radius: variables.$border-radius;
-  outline: none;
-  transition: border-color 0.2s;
-
-  &::placeholder {
-    color: variables.$input-placeholder-color;
-  }
-
-  &:focus {
-    border-color: variables.$border-color;
   }
 }
 

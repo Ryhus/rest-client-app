@@ -21,6 +21,8 @@ interface InputProps {
   isDisabled?: boolean;
   defaultValue?: string;
   placeholder?: string;
+  spaceForErrorMessage?: boolean;
+  border?: boolean;
 }
 
 function Input({
@@ -37,12 +39,27 @@ function Input({
   isDisabled,
   defaultValue,
   placeholder,
+  spaceForErrorMessage = true,
+  border = true,
 }: InputProps) {
   const inputFieldClass = clsx(
     'input-field',
+    border && 'border',
     `${inputClassName}`,
     `${rightIcon ? 'input-field--right-icon' : ''}`
   );
+
+  const renderError = () => {
+    if (spaceForErrorMessage || errors) {
+      return (
+        <div className="input-field--error">
+          {errors?.map((error) => (
+            <div key={error.id}>{error.message}</div>
+          ))}
+        </div>
+      );
+    }
+  };
 
   return (
     <div className={`input-container ${inputContainerClassName}`}>
@@ -62,11 +79,7 @@ function Input({
           placeholder={placeholder}
         ></input>
         {rightIcon && <div className="input-right-icon">{rightIcon}</div>}
-        <div className="input-field--error">
-          {errors?.map((error) => (
-            <div key={error.id}>{error.message}</div>
-          ))}
-        </div>
+        {renderError()}
       </div>
     </div>
   );
