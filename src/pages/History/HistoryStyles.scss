@@ -62,36 +62,19 @@
         color: variables.$color-secondary-light;
         text-decoration: underline;
       }
-
-      .method {
-        color: variables.$method-color-brawn;
-
-        &--GET {
-          color: variables.$method-color-green;
-        }
-        &--POST {
-          color: variables.$method-color-orange;
-        }
-        &--PUT {
-          color: variables.$method-color-blue;
-        }
-        &--PATCH {
-          color: variables.$method-color-purple;
-        }
-        &--HEAD {
-          color: variables.$method-color-green;
-        }
-        &--OPTIONS {
-          color: variables.$method-color-purple;
-        }
-        &--DELETE {
-          color: variables.$method-color-red;
-        }
-      }
     }
 
     .request-row:hover {
       background-color: variables.$bg-color;
+    }
+  }
+
+  .analytics-bttn {
+    &:hover {
+      transform: scale(1.1);
+    }
+    &:active {
+      transform: scale(0.95);
     }
   }
 }

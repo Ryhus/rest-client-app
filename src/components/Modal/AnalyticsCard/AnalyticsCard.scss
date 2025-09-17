@@ -30,7 +30,7 @@
     align-items: center;
     margin: 24px 0;
 
-    .endpoint-method {
+    .method {
       border: 1px solid;
       border-radius: 4px;
       padding: 4px 8px;
@@ -91,6 +91,15 @@
           font-size: 12px;
           border: 1px solid variables.$border-color;
           border-radius: 4px;
+
+          &--error {
+            color: variables.$color-warning;
+            border-color: variables.$color-warning;
+          }
+          &--ok {
+            color: variables.$color-success;
+            border-color: variables.$color-success;
+          }
         }
       }
     }
@@ -118,6 +127,14 @@
     min-height: 24px;
     path {
       stroke: variables.$color-warning;
+    }
+  }
+  .close-modal-bttn {
+    &:hover {
+      transform: scale(1.1);
+    }
+    &:active {
+      transform: scale(0.95);
     }
   }
 }

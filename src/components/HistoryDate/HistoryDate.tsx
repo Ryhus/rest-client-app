@@ -15,10 +15,10 @@ interface HistoryDateProps {
 
 export default function HistoryDate({ date, rows }: HistoryDateProps) {
   const [isOpened, setIsOpened] = useState(false);
-  const [isOpenedModal, setIsOpenedModal] = useState(false);
+  const [openRowId, setOpenRowId] = useState<number | null>(null);
 
   const handleCloseModal = () => {
-    setIsOpenedModal(false);
+    setOpenRowId(null);
   };
 
   return (
@@ -46,18 +46,19 @@ export default function HistoryDate({ date, rows }: HistoryDateProps) {
               <img
                 src={threeDots}
                 alt="open request info"
+                className="analytics-bttn"
                 onClick={() => {
-                  setIsOpenedModal((prev) => !prev);
+                  setOpenRowId(historyRow.id);
                 }}
               />
+              {openRowId === historyRow.id && (
+                <Modal closeModal={handleCloseModal}>
+                  <AnalyticsCard closeModal={handleCloseModal} row={historyRow} />
+                </Modal>
+              )}
             </li>
           ))}
         </ul>
-      )}
-      {isOpenedModal && (
-        <Modal closeModal={handleCloseModal}>
-          <AnalyticsCard closeModal={handleCloseModal} />
-        </Modal>
       )}
     </>
   );
