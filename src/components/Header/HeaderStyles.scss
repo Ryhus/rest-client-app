@@ -2,19 +2,22 @@
 @use '@/components/Button/ButtonStyles';
 
 .header {
+  display: flex;
+  gap: 2rem;
   width: 100%;
   position: sticky;
   top: 0;
   z-index: 1;
   background-color: variables.$color-basic;
   border-bottom: 0.1rem solid variables.$border-color;
-  padding: 1rem 7rem;
+  padding: 1rem 5rem;
   transition: 0.3s ease;
 
   .navbar {
     display: flex;
     align-items: center;
     gap: 3rem;
+    width: 90%;
 
     &__actions {
       display: flex;
