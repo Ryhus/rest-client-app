@@ -8,5 +8,6 @@
   "body": "Body",
   "response": "Response details",
   "requestError": "Request failed with status code {{code}}",
-  "formatError": "Not valid format"
+  "formatError": "Not valid format",
+  "requiredField": "Required field"
 }
