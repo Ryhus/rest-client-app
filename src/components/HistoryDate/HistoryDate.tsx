@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { type HistoryRow } from '@/types/types';
+import { Modal, AnalyticsCard } from '@/components/Modal';
 
 import './HistoryDateStyles.scss';
 
@@ -14,18 +15,24 @@ interface HistoryDateProps {
 
 export default function HistoryDate({ date, rows }: HistoryDateProps) {
   const [isOpened, setIsOpened] = useState(false);
+  const [isOpenedModal, setIsOpenedModal] = useState(false);
+
+  const handleCloseModal = () => {
+    setIsOpenedModal(false);
+  };
 
   return (
-    <li key={date.toString()} onClick={() => setIsOpened((prev) => !prev)}>
-      <div className="closed-list-container">
-        <img
-          src={chevronRight}
-          alt="chevron right"
-          className={isOpened ? `list-icon--opened-list` : `list-icon--closed-list`}
-        />
-        {date}
-      </div>
-
+    <>
+      <li key={date.toString()} onClick={() => setIsOpened((prev) => !prev)}>
+        <div className="closed-list-container">
+          <img
+            src={chevronRight}
+            alt="chevron right"
+            className={isOpened ? `list-icon--opened-list` : `list-icon--closed-list`}
+          />
+          {date}
+        </div>
+      </li>
       {isOpened && (
         <ul className="opened-list-container">
           {rows.map((historyRow) => (
@@ -36,11 +43,22 @@ export default function HistoryDate({ date, rows }: HistoryDateProps) {
               <Link className="url-link" to="/rest-client">
                 {historyRow.endpoint}
               </Link>
-              <img src={threeDots} alt="open request info" />
+              <img
+                src={threeDots}
+                alt="open request info"
+                onClick={() => {
+                  setIsOpenedModal((prev) => !prev);
+                }}
+              />
             </li>
           ))}
         </ul>
       )}
-    </li>
+      {isOpenedModal && (
+        <Modal closeModal={handleCloseModal}>
+          <AnalyticsCard closeModal={handleCloseModal} />
+        </Modal>
+      )}
+    </>
   );
 }
