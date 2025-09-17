@@ -72,7 +72,7 @@ export default function HeadersSection() {
             <tr className="tr">
               {tableHeaders.map((header, index) => (
                 <td key={`${header}-${index}`} className={`td ${header}`}>
-                  {t(header)}
+                  {header && t(header)}
                 </td>
               ))}
             </tr>
