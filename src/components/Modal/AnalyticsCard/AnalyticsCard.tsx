@@ -2,6 +2,7 @@ import { Button } from '@/components/Button';
 import { ButtonStyle } from '@/components/Button/types';
 import type { HistoryRow } from '@/types/types';
 import { formatDate } from '@/utils/datesUtils';
+import { useTranslation } from 'react-i18next';
 
 import './AnalyticsCard.scss';
 
@@ -18,6 +19,8 @@ interface AnalyticsCardProps {
 }
 
 export default function AnalyticsCard({ closeModal, row }: AnalyticsCardProps) {
+  const { t } = useTranslation('history');
+
   const dateTime = formatDate(row.request_timestamp, true);
 
   return (
@@ -35,21 +38,21 @@ export default function AnalyticsCard({ closeModal, row }: AnalyticsCardProps) {
       </div>
       <div className="main-analytics-container">
         <div className="analytics-container request-analytics-container">
-          <h4>Request</h4>
+          <h4>{t('request')}</h4>
           <div className="analytics-border"></div>
           <div className="analytics-data">
             <div>
               <ClockIcon className="icon" />
-              <span>{`duration ${row.duration}`}</span>
+              <span>{`${t('duration')} ${row.duration} ${t('ms')}`}</span>
             </div>
             <div>
               <UploadIcon className="icon" />
-              <span>{`payload ${row.request_size} bytes`}</span>
+              <span>{`${t('payload')} ${row.request_size} ${t('bytes')}`}</span>
             </div>
           </div>
         </div>
         <div className="analytics-container request-analytics-container">
-          <h4>Response</h4>
+          <h4>{t('response')}</h4>
           <div className="analytics-border"></div>
           <div className="analytics-data">
             <div
@@ -60,7 +63,7 @@ export default function AnalyticsCard({ closeModal, row }: AnalyticsCardProps) {
 
             <div>
               <DownloadIcon className="icon" />
-              <span>{`payload ${row.response_size} bytes`}</span>
+              <span>{`${t('payload')} ${row.response_size} ${t('bytes')}`}</span>
             </div>
           </div>
         </div>

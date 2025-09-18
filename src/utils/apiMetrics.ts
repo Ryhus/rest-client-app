@@ -40,7 +40,7 @@ export async function apiRequestWithMetrics<TResponse = unknown, TData = unknown
     }
 
     const duration = performance.now() - start;
-    const formattedDuration = `${Math.round(duration)} ms`;
+    const formattedDuration = `${Math.round(duration)}`;
 
     return {
       ...response,

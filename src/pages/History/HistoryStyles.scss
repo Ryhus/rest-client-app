@@ -1,5 +1,20 @@
 @use '@/styles/base/variables';
 
+.rest-suggestion {
+  margin-top: 40px;
+  display: flex;
+  justify-self: center;
+  color: variables.$font-color-secondary;
+
+  .suggestion-link {
+    color: variables.$color-secondary;
+  }
+  .suggestion-link:hover {
+    color: variables.$color-secondary-light;
+    text-decoration: underline;
+  }
+}
+
 .history-list {
   margin-top: 3rem;
   display: flex;
