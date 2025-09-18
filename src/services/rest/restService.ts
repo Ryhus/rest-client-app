@@ -1,14 +1,14 @@
 import axios from 'axios';
 
-interface ApiRequestParams<TData = unknown> {
+export interface ApiRequestParams<TData = unknown> {
   method: string;
   url: string;
   data?: TData;
   config?: Record<string, unknown>;
 }
 
-interface ApiResponse<TResponse = unknown> {
-  data: TResponse;
+export interface ApiResponse<TResponse = unknown> {
+  data: TResponse | null;
   status: number;
   headers: Record<string, string>;
 }
