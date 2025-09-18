@@ -5,6 +5,7 @@ import {
   Navigate,
   useRouteLoaderData,
   useFetcher,
+  useLocation,
   type ActionFunctionArgs,
 } from 'react-router-dom';
 import HeadersSection from '@/pages/RestClient/HeadersSection/HeadersSection.tsx';
@@ -19,6 +20,7 @@ import axios from 'axios';
 import { type User } from '@supabase/supabase-js';
 import { useTranslation } from 'react-i18next';
 import CodeSection from '@/pages/RestClient/CodeSection/CodeSection.tsx';
+import type { HistoryRow } from '@/types/types';
 
 interface Props {
   params: Params<string>;
@@ -33,6 +35,10 @@ export default function RestClient({ params }: Props) {
   const [methodError, setMethodError] = useState<string>('');
   const user = useRouteLoaderData<User>('root');
   const fetcher = useFetcher<ActionData>();
+  const location = useLocation();
+
+  const requestData = location.state as HistoryRow;
+
   let viewerData;
   const { t } = useTranslation('rest-client');
 
@@ -66,14 +72,20 @@ export default function RestClient({ params }: Props) {
   useEffect(() => {
     if (method) {
       setRequestMethod(method);
+    } else if (requestData?.request_method) {
+      setRequestMethod(requestData.request_method);
     }
 
     if (encodedUrl) {
       setRequestUrl(atob(encodedUrl));
+    } else if (requestData?.endpoint) {
+      setRequestUrl(requestData.endpoint);
     }
 
     if (encodedBody) {
       setRequestBody(atob(encodedBody));
+    } else if (requestData?.payload) {
+      setRequestBody(requestData.payload);
     }
 
     clearRequestHeaders();
@@ -81,6 +93,12 @@ export default function RestClient({ params }: Props) {
     searchParams.forEach((value, key) => {
       addRequestHeader({ name: key, value: value });
     });
+
+    if (requestData?.headers) {
+      Object.entries(requestData.headers).forEach(([key, value]) => {
+        addRequestHeader({ name: key, value });
+      });
+    }
   }, []);
 
   useEffect(() => {

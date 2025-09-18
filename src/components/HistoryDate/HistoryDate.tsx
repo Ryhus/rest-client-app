@@ -40,7 +40,7 @@ export default function HistoryDate({ date, rows }: HistoryDateProps) {
               <span className={`method method--${historyRow.request_method}`}>
                 {historyRow.request_method}
               </span>
-              <Link className="url-link" to="/rest-client">
+              <Link className="url-link" to="/rest-client" state={historyRow}>
                 {historyRow.endpoint}
               </Link>
               <img

@@ -12,7 +12,7 @@ export type Database = {
           duration: string | null;
           endpoint: string | null;
           error_details: string | null;
-          headers: string | null;
+          headers: Json | null;
           id: number;
           payload: string | null;
           request_method: string | null;
@@ -27,7 +27,7 @@ export type Database = {
           duration?: string | null;
           endpoint?: string | null;
           error_details?: string | null;
-          headers?: string | null;
+          headers?: Json | null;
           id?: number;
           payload?: string | null;
           request_method?: string | null;
@@ -42,7 +42,7 @@ export type Database = {
           duration?: string | null;
           endpoint?: string | null;
           error_details?: string | null;
-          headers?: string | null;
+          headers?: Json | null;
           id?: number;
           payload?: string | null;
           request_method?: string | null;
