@@ -67,16 +67,23 @@ export default function CodeSection() {
     HumanReadableCodeOptions.Csharp
   );
   const [codeResult, setCodeResult] = useState<string>('');
-  const { requestMethod, requestUrl, requestHeaders, requestBody } = restClientPageStore();
+
   const { t } = useTranslation('rest-client');
+
+  const {
+    requestMethod,
+    interpolatedRequestUrl,
+    interpolatedRequestHeaders,
+    interpolatedRequestBody,
+  } = restClientPageStore();
 
   const getRequestCode = async () => {
     const params: GetRequestCodeSnippetParams = {
       codeOption,
       method: requestMethod,
-      url: requestUrl,
-      headers: requestHeaders.filter((h) => h.name && h.value),
-      body: requestBody,
+      url: interpolatedRequestUrl,
+      headers: interpolatedRequestHeaders.filter((h) => h.name && h.value),
+      body: interpolatedRequestBody,
     };
 
     const getRequestCodeSnippet =
@@ -100,7 +107,13 @@ export default function CodeSection() {
     (async () => {
       await getRequestCode();
     })();
-  }, [requestMethod, requestUrl, requestHeaders, requestBody, codeOption]);
+  }, [
+    requestMethod,
+    interpolatedRequestUrl,
+    interpolatedRequestHeaders,
+    interpolatedRequestBody,
+    codeOption,
+  ]);
 
   return (
     <div className="code-container">

@@ -1,5 +1,5 @@
 import './HeadersSection.scss';
-import { Button } from '@/components';
+import { Button, Datalist, Input } from '@/components';
 import { ButtonStyle } from '@/components/Button/types.ts';
 import IconTrash from '@/assets/icons/trash.svg?react';
 import {
@@ -23,31 +23,30 @@ export default function HeadersSection() {
 
   function getTableRow(params: RestClientHeader) {
     const { id, name, value } = params;
-    const datalistOptions = HEADERS_COLLECTION.map((h) => <option key={`${id}-${h}`}>{h}</option>);
     const isBtnDisabled = requestHeaders.length === 1 || requestHeaders.at(-1)?.id === id;
 
     return (
       <tr key={`table-row-${id}`} className="tr">
         <td className="td">
-          <label htmlFor={`key-${id}`}></label>
-          <input
-            className="table-input"
+          <Datalist
             id={`key-${id}`}
-            list={`options-${id}`}
-            defaultValue={name}
+            value={name}
+            data={HEADERS_COLLECTION}
+            listName={`options-${id}`}
             placeholder={t('key')}
             onChange={(e) => updateRequestHeader({ id, name: e.target.value })}
+            spaceForErrorMessage={false}
+            border={false}
           />
-          <datalist id={`options-${id}`}>{datalistOptions}</datalist>
         </td>
         <td className="td">
-          <label htmlFor={`value-${id}`}></label>
-          <input
+          <Input
             id={`value-${id}`}
-            className="table-input"
-            defaultValue={value}
             placeholder={t('value')}
             onChange={(e) => updateRequestHeader({ id, value: e.target.value })}
+            spaceForErrorMessage={false}
+            border={false}
+            value={value}
           />
         </td>
         <td className="td">
