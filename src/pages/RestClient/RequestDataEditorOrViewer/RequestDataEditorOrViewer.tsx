@@ -2,6 +2,7 @@ import './RequestDataEditorOrViewer.scss';
 import { Button, Selector } from '@/components';
 import { restClientPageStore } from '@/stores/restClientPageStore/restClientPageStore.ts';
 import { type ChangeEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ButtonStyle } from '@/components/Button/types.ts';
 
 interface PropsEditor {
@@ -58,6 +59,7 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
   const [isValidBodyFormat, setIsValidBodyFormat] = useState(true);
   const isEditorMode = mode === 'editor';
   const { requestBody, setRequestBody } = restClientPageStore();
+  const { t } = useTranslation('rest-client');
 
   const renderEditor = () => {
     const handleRequestBodyOnChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -83,7 +85,7 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
     return (
       <>
         <div className="title-container">
-          <p className="title">Body:</p>
+          <p className="title">{t('body')}:</p>
           <Selector
             id="editor-mode"
             data={['text', 'json']}
@@ -96,7 +98,7 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
               onClick={beautifyJson}
               isDisabled={!isValidBodyFormat}
             >
-              Beautify
+              {t('beautifyBtn')}
             </Button>
           )}
         </div>
@@ -109,7 +111,7 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
             spellCheck={bodyType === 'text'}
           />
         </div>
-        <p className="not-valid-format">{!isValidBodyFormat && 'not valid format'}</p>
+        <p className="not-valid-format">{!isValidBodyFormat && t('formatError')}</p>
       </>
     );
   };
@@ -121,7 +123,7 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
     return (
       <>
         <div className="title-container">
-          <p className="title">Response details:</p>
+          <p className="title">{t('response')}:</p>
         </div>
         <div className="content-container">
           <div className="viewer">

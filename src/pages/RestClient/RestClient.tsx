@@ -17,6 +17,7 @@ import { RequestDataEditorOrViewer } from '@/pages/RestClient/RequestDataEditorO
 import { apiRequest } from '@/services/rest/restService.ts';
 import axios from 'axios';
 import { type User } from '@supabase/supabase-js';
+import { useTranslation } from 'react-i18next';
 import CodeSection from '@/pages/RestClient/CodeSection/CodeSection.tsx';
 
 interface Props {
@@ -33,6 +34,7 @@ export default function RestClient({ params }: Props) {
   const user = useRouteLoaderData<User>('root');
   const fetcher = useFetcher<ActionData>();
   let viewerData;
+  const { t } = useTranslation('rest-client');
 
   if (fetcher.data && 'errorMessage' in fetcher.data) {
     viewerData = {
@@ -110,12 +112,12 @@ export default function RestClient({ params }: Props) {
     let hasError = false;
 
     if (!requestUrl) {
-      setUrlError('required field');
+      setUrlError(t('requiredField'));
       hasError = true;
     }
 
     if (!requestMethod) {
-      setMethodError('required field');
+      setMethodError(t('requiredField'));
       hasError = true;
     }
 

@@ -3,6 +3,8 @@
 
 .not-found {
   &__container {
+    display: flex;
+    justify-content: center;
     position: relative;
     width: 850px;
     height: 650px;
@@ -18,7 +20,6 @@
     justify-content: center;
     gap: 1rem;
     position: absolute;
-    left: 340px;
     top: 210px;
   }
 

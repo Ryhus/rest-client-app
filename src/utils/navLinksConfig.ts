@@ -1,10 +1,11 @@
 export const guestLinks = [
-  { to: 'login', text: 'Sign in' },
-  { to: 'signup', text: 'Sign up' },
+  { to: 'login', text: 'signIn' },
+  { to: 'signup', text: 'signUp' },
 ];
 
 export const userLinks = [
-  { to: '/rest-client', text: 'REST Client' },
-  { to: '/history', text: 'History' },
-  { to: '/', text: 'Variables' },
+  { to: '/rest-client', text: 'restClient' },
+  { to: '/history', text: 'history' },
+  { to: '/', text: 'variables' },
+  { to: '/', text: 'home' },
 ];

@@ -3,6 +3,7 @@ import Datalist from '../../../components/Inputs/Datalist/Datalist.tsx';
 import { Button, Input } from '@/components';
 import { ButtonStyle } from '@/components/Button/types.ts';
 import type { ChangeEventHandler } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const initRequestMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'];
 
@@ -27,6 +28,8 @@ export default function RequestBar(props: Props) {
     methodError = '',
   } = props;
 
+  const { t } = useTranslation('rest-client');
+
   return (
     <div className="request-bar">
       <Datalist
@@ -37,7 +40,7 @@ export default function RequestBar(props: Props) {
         data={initRequestMethods}
         spaceForErrorMessage={true}
         errors={[{ id: 1, message: methodError }]}
-        placeholder="Method"
+        placeholder={t('method')}
       />
       <Input
         id="input-search"
@@ -47,10 +50,10 @@ export default function RequestBar(props: Props) {
         value={initSearchValue}
         onChange={handleSearchOnChange}
         errors={[{ id: 0, message: urlError }]}
-        placeholder="Endpoint URL"
+        placeholder={t('endpoint')}
       />
       <Button style={ButtonStyle.Primary} onClick={handleButtonClick}>
-        send
+        {t('send')}
       </Button>
     </div>
   );

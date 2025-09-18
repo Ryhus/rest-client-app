@@ -6,6 +6,7 @@ import {
   type RestClientHeader,
   restClientPageStore,
 } from '@/stores/restClientPageStore/restClientPageStore.ts';
+import { useTranslation } from 'react-i18next';
 
 const HEADERS_COLLECTION = [
   'Content-Type',
@@ -14,10 +15,11 @@ const HEADERS_COLLECTION = [
   'Connection',
   'Cookie',
 ];
-const tableHeaders = ['Key', 'Value', ''];
+const tableHeaders = ['key', 'value', ''];
 
 export default function HeadersSection() {
   const { requestHeaders, updateRequestHeader, removeRequestHeader } = restClientPageStore();
+  const { t } = useTranslation('rest-client');
 
   function getTableRow(params: RestClientHeader) {
     const { id, name, value } = params;
@@ -31,7 +33,7 @@ export default function HeadersSection() {
             value={name}
             data={HEADERS_COLLECTION}
             listName={`options-${id}`}
-            placeholder="Key"
+            placeholder={t('key')}
             onChange={(e) => updateRequestHeader({ id, name: e.target.value })}
             spaceForErrorMessage={false}
             border={false}
@@ -40,7 +42,7 @@ export default function HeadersSection() {
         <td className="td">
           <Input
             id={`value-${id}`}
-            placeholder="Value"
+            placeholder={t('value')}
             onChange={(e) => updateRequestHeader({ id, value: e.target.value })}
             spaceForErrorMessage={false}
             border={false}
@@ -62,14 +64,14 @@ export default function HeadersSection() {
 
   return (
     <div className="headers-container">
-      <p className="title">Headers:</p>
+      <p className="title">{t('headers')}:</p>
       <div className="content-container">
         <table className="table">
           <thead className="thead">
             <tr className="tr">
               {tableHeaders.map((header, index) => (
-                <td key={`${header}-${index}`} className={`td ${header.toLowerCase()}`}>
-                  {header}
+                <td key={`${header}-${index}`} className={`td ${header}`}>
+                  {header && t(header)}
                 </td>
               ))}
             </tr>

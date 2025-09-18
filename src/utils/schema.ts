@@ -1,22 +1,25 @@
 import type { InputError } from '@/components/Inputs/Input/Input';
 import * as yup from 'yup';
+import i18n from '../i18n';
 
-export const authFormSchema = yup.object({
-  name: yup.string().required('Name is required'),
-  email: yup
-    .string()
-    .required('Email is required')
-    .matches(
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      'Expected email format: username@example.com'
-    ),
-  password: yup
-    .string()
-    .required('Password is required')
-    .matches(/(?=.*[a-zA-Z])/, 'Password must contain at least one letter')
-    .matches(/(?=.*[0-9])/, 'Password must contain at least one number')
-    .min(8, 'Password must be at least 8 characters'),
-});
+export function getAuthSchema() {
+  return yup.object({
+    name: yup.string().required(i18n.t('name.required', { ns: 'validation' })),
+    email: yup
+      .string()
+      .required(i18n.t('email.required', { ns: 'validation' }))
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        i18n.t('email.format', { ns: 'validation' })
+      ),
+    password: yup
+      .string()
+      .required(i18n.t('password.required', { ns: 'validation' }))
+      .matches(/(?=.*[a-zA-Z])/, i18n.t('password.matchesLetter', { ns: 'validation' }))
+      .matches(/(?=.*[0-9])/, i18n.t('password.matchesNumber', { ns: 'validation' }))
+      .min(8, i18n.t('password.matchesLength', { ns: 'validation' })),
+  });
+}
 
 export interface AuthErrors {
   name: InputError[];
