@@ -13,7 +13,10 @@ interface LangTogglerProps {
 
 export default function LangToggler({ languages }: LangTogglerProps) {
   const { t } = useTranslation('languages');
-  const toggleLang = (lang: string) => i18n.changeLanguage(lang);
+  const toggleLang = (lang: string) => {
+    i18n.changeLanguage(lang);
+    localStorage.setItem('i18nLang', lang);
+  };
   return (
     <div className="lang-toggler">
       {languages.map((lang, index) => (

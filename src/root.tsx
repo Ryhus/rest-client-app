@@ -6,8 +6,9 @@ import {
   ScrollRestoration,
   type LoaderFunctionArgs,
 } from 'react-router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createClient } from './services/supabase/supabaseServer';
+import i18n from './i18n';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const { supabase } = createClient(request);
@@ -58,6 +59,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function Root() {
+  useEffect(() => {
+    const storedLang = localStorage.getItem('i18nLang');
+    if (storedLang && storedLang !== 'en') i18n.changeLanguage(storedLang);
+  }, []);
+
   return (
     <div id="root">
       <Outlet />
