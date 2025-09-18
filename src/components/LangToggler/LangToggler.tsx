@@ -14,7 +14,6 @@ interface LangTogglerProps {
 export default function LangToggler({ languages }: LangTogglerProps) {
   const { t } = useTranslation('languages');
   const toggleLang = (lang: string) => i18n.changeLanguage(lang);
-  console.log('Current language:', i18n.language);
   return (
     <div className="lang-toggler">
       {languages.map((lang, index) => (
