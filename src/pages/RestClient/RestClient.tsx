@@ -56,6 +56,9 @@ export default function RestClient({ params }: Props) {
     setRequestBody,
     addRequestHeader,
     clearRequestHeaders,
+    interpolatedRequestUrl,
+    interpolatedRequestBody,
+    interpolatedRequestHeaders,
   } = restClientPageStore();
 
   useEffect(() => {
@@ -86,8 +89,8 @@ export default function RestClient({ params }: Props) {
     }
   }, [requestHeaders]);
 
-  const navigateAfterSendingRequest = (params: { headers: Record<string, string> }) => {
-    const { headers } = params;
+  const navigateAfterSendingRequest = () => {
+    const headers = requestHeaders.filter((h) => h.name && h.value).map((h) => [h.name, h.value]);
     const segments = [
       '/rest-client',
       requestMethod,
@@ -120,18 +123,16 @@ export default function RestClient({ params }: Props) {
       return;
     }
 
-    const headers = Object.fromEntries(
-      requestHeaders.filter((h) => h.name && h.value).map((h) => [h.name, h.value])
-    );
-
-    navigateAfterSendingRequest({ headers });
+    navigateAfterSendingRequest();
 
     await fetcher.submit(
       {
         method: requestMethod,
-        url: requestUrl,
-        body: requestBody,
-        headers: JSON.stringify(headers),
+        url: interpolatedRequestUrl,
+        body: interpolatedRequestBody,
+        headers: JSON.stringify(
+          interpolatedRequestHeaders.filter((h) => h.name && h.value).map((h) => [h.name, h.value])
+        ),
       },
       { method: 'POST', action: '/rest-client' }
     );
@@ -145,7 +146,7 @@ export default function RestClient({ params }: Props) {
     setRequestMethod(e.target.value);
   };
 
-  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleURLChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (urlError) {
       setUrlError('');
     }
@@ -161,7 +162,7 @@ export default function RestClient({ params }: Props) {
         initMethod={requestMethod}
         handleMethodOnChange={handleMethodChange}
         initSearchValue={requestUrl}
-        handleSearchOnChange={handleSearchChange}
+        handleSearchOnChange={handleURLChange}
         handleButtonClick={handleSendingRequest}
         urlError={urlError}
         methodError={methodError}

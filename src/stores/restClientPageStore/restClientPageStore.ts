@@ -5,6 +5,9 @@ interface RestClientPageStore {
   requestUrl: string;
   requestBody: string;
   requestHeaders: RestClientHeader[];
+  interpolatedRequestUrl: string;
+  interpolatedRequestBody: string;
+  interpolatedRequestHeaders: RestClientHeader[];
 
   setRequestMethod: (method: string) => void;
   setRequestUrl: (url: string) => void;
@@ -26,30 +29,42 @@ export const restClientPageStore = create<RestClientPageStore>((set) => ({
   requestUrl: '',
   requestBody: '',
   requestHeaders: [],
+  interpolatedRequestUrl: '',
+  interpolatedRequestBody: '',
+  interpolatedRequestHeaders: [],
 
   setRequestMethod: (method: string) => {
     set({ requestMethod: method });
   },
 
   setRequestUrl: (url: string) => {
-    set({ requestUrl: url });
+    const interpolatedRequestUrl = interpolateVariables(url);
+    set({ requestUrl: url, interpolatedRequestUrl });
   },
 
   setRequestBody: (body: string) => {
-    set({ requestBody: body });
+    const interpolatedRequestBody = interpolateVariables(body);
+    set({ requestBody: body, interpolatedRequestBody });
   },
 
-  addRequestHeader: ({ name, value }) =>
+  addRequestHeader: ({ name, value }) => {
+    const id = crypto.randomUUID();
+    const header = {
+      id,
+      name,
+      value,
+    };
+    const interpolatedHeader = {
+      id,
+      name: name,
+      value: interpolateVariables(value),
+    };
+
     set((state) => ({
-      requestHeaders: [
-        ...state.requestHeaders,
-        {
-          id: crypto.randomUUID(),
-          name,
-          value,
-        },
-      ],
-    })),
+      requestHeaders: [...state.requestHeaders, header],
+      interpolatedRequestHeaders: [...state.interpolatedRequestHeaders, interpolatedHeader],
+    }));
+  },
 
   updateRequestHeader: ({ id, name, value }) =>
     set((state) => {
@@ -66,8 +81,17 @@ export const restClientPageStore = create<RestClientPageStore>((set) => ({
         value: value ?? header.value,
       };
 
+      const interpolatedRequestHeaders = [...state.interpolatedRequestHeaders];
+      const interpolatedHeader = interpolatedRequestHeaders[headerIndex];
+      interpolatedRequestHeaders[headerIndex] = {
+        ...interpolatedHeader,
+        name: requestHeaders[headerIndex].name,
+        value: interpolateVariables(requestHeaders[headerIndex].value),
+      };
+
       return {
         requestHeaders,
+        interpolatedRequestHeaders,
       };
     }),
 
@@ -75,6 +99,9 @@ export const restClientPageStore = create<RestClientPageStore>((set) => ({
     set((state) => {
       return {
         requestHeaders: state.requestHeaders.filter((header) => header.id !== id),
+        interpolatedRequestHeaders: state.interpolatedRequestHeaders.filter(
+          (header) => header.id !== id
+        ),
       };
     });
   },
@@ -83,7 +110,28 @@ export const restClientPageStore = create<RestClientPageStore>((set) => ({
     set(() => {
       return {
         requestHeaders: [],
+        interpolatedRequestHeaders: [],
       };
     });
   },
 }));
+
+function interpolateVariables(stringToInterpolate: string) {
+  const interpolateRegExp = /{{((?:(?!{{)[\s\S])+?)}}/g;
+  const variableNames = stringToInterpolate.match(interpolateRegExp);
+  let interpolatedString = stringToInterpolate;
+
+  variableNames?.forEach((variable) => {
+    const variableValue = getVariableByKey(variable.slice(2, -2));
+
+    if (variableValue !== undefined) {
+      interpolatedString = interpolatedString.replace(variable, variableValue);
+    }
+  });
+
+  return interpolatedString;
+}
+
+function getVariableByKey(variable: string) {
+  return `test_${variable}`;
+}
