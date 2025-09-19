@@ -20,6 +20,10 @@ export default [
         file: './pages/Logout/Logout.tsx',
       },
       {
+        path: 'variables',
+        file: './pages/Variables/Variables.tsx',
+      },
+      {
         path: '*',
         file: './pages/NotFound/NotFound.tsx',
       },
