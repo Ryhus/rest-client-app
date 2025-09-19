@@ -1,0 +1,96 @@
+@use '@/styles/base/variables';
+
+.rest-suggestion {
+  margin-top: 40px;
+  display: flex;
+  justify-self: center;
+  color: variables.$font-color-secondary;
+
+  .suggestion-link {
+    color: variables.$color-secondary;
+  }
+  .suggestion-link:hover {
+    color: variables.$color-secondary-light;
+    text-decoration: underline;
+  }
+}
+
+.history-list {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+
+  list-style-type: none;
+  color: variables.$font-color-secondary;
+  font-size: variables.$font-size-base;
+
+  li {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+
+    cursor: pointer;
+
+    .closed-list-container {
+      display: flex;
+      align-self: center;
+      padding: 8px;
+      user-select: none;
+
+      .list-icon {
+        &--opened-list {
+          rotate: 90deg;
+        }
+      }
+    }
+
+    .closed-list-container:hover {
+      background-color: variables.$bg-color;
+    }
+  }
+  li:hover {
+    .opened-list-container {
+      box-shadow: -0.1rem 0 0 variables.$color-disabled;
+    }
+  }
+
+  .opened-list-container {
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.3s ease;
+
+    .request-row {
+      padding: 8px;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      gap: 12px;
+
+      img {
+        width: 18px;
+        height: 18px;
+      }
+
+      .url-link {
+        color: variables.$font-color-primary;
+      }
+      .url-link:hover {
+        color: variables.$color-secondary-light;
+        text-decoration: underline;
+      }
+    }
+
+    .request-row:hover {
+      background-color: variables.$bg-color;
+    }
+  }
+
+  .analytics-bttn {
+    &:hover {
+      transform: scale(1.1);
+    }
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}

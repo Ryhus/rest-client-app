@@ -1,84 +1,76 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-
+import { describe, it, expect, afterEach, vi } from 'vitest';
+import type { User } from '@supabase/supabase-js';
 import Header from './Header';
-import { useAuthStore } from '@/stores/authStore/authStore';
-import { supabase } from '@/services/supabase';
-import type { Session } from '@supabase/supabase-js';
 
-vi.mock('@/services/supabase', () => ({
-  supabase: {
-    auth: {
-      signOut: vi.fn(),
-    },
-  },
-}));
-
-vi.mock('@/assets/img/logo.svg', () => ({
-  default: 'mock-logo.svg',
-}));
-
-const renderWithRouter = (ui: React.ReactNode) => render(<BrowserRouter>{ui}</BrowserRouter>);
-
-const createTestSession = (): Session => ({
-  access_token: 'token',
-  token_type: 'bearer',
-  expires_in: 3600,
-  expires_at: Math.floor(Date.now() / 1000) + 3600,
-  refresh_token: 'refresh',
-  user: {
-    id: '1',
-    aud: 'authenticated',
-    role: 'authenticated',
-    email: 'test@example.com',
-    app_metadata: {},
-    user_metadata: {},
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
+vi.mock('react-router-dom', () => {
+  return {
+    Link: ({ children, to }: { children: React.ReactNode; to: string }) => (
+      <a href={to}>{children}</a>
+    ),
+    Form: ({ children }: { children: React.ReactNode }) => <form>{children}</form>,
+    useRouteLoaderData: vi.fn<() => User | null>(),
+  };
 });
 
-describe('Header component', () => {
-  beforeEach(() => {
-    useAuthStore.setState({ session: null, loading: true });
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key: string) => key }),
+}));
+
+vi.mock('@/utils/navLinksConfig', () => ({
+  guestLinks: [{ text: 'login', to: '/login' }],
+  userLinks: [{ text: 'dashboard', to: '/dashboard' }],
+}));
+
+vi.mock('@/utils/languages', () => ({
+  languages: [{ code: 'en' }, { code: 'ru' }],
+}));
+
+vi.mock('../LangToggler/LangToggler', () => ({
+  default: ({ languages }: { languages: { code: string }[] }) => (
+    <div data-testid="lang-toggler">{languages.map((l) => l.code).join(',')}</div>
+  ),
+}));
+
+import { useRouteLoaderData } from 'react-router-dom';
+
+describe('Header', () => {
+  afterEach(() => {
     vi.clearAllMocks();
   });
 
-  it('renders logo always', () => {
-    useAuthStore.setState({ session: null, loading: false });
+  it('renders guest links when no user', () => {
+    (useRouteLoaderData as unknown as ReturnType<typeof vi.fn>).mockReturnValue(null);
 
-    renderWithRouter(<Header />);
-    const img = screen.getByAltText('Rest client app logo') as HTMLImageElement;
-    expect(img).toBeInTheDocument();
-    expect(img.src).toContain('mock-logo.svg');
-    expect(img).toHaveClass('app-logo');
+    render(<Header />);
+
+    expect(screen.getByText('login')).toBeTruthy();
+    expect(screen.getByTestId('lang-toggler')).toBeTruthy();
   });
 
-  it('renders Sign In/Sign Up when no session and not loading', () => {
-    useAuthStore.setState({ session: null, loading: false });
+  it('renders user links when user is present', () => {
+    const user: User = { id: '123', email: 'test@test.com' } as User;
 
-    renderWithRouter(<Header />);
-    expect(screen.getByText(/Sign In/i)).toBeInTheDocument();
-    expect(screen.getByText(/Sign Up/i)).toBeInTheDocument();
+    (useRouteLoaderData as unknown as ReturnType<typeof vi.fn>).mockReturnValue(user);
+
+    render(<Header />);
+
+    expect(screen.getByText('dashboard')).toBeTruthy();
+    expect(screen.getByText('signOut')).toBeTruthy();
+    expect(screen.getByTestId('lang-toggler')).toBeTruthy();
   });
 
-  it('renders Rest Client, History, Variables, Home and Sign Out when session exists', () => {
-    useAuthStore.setState({ session: createTestSession(), loading: false });
+  it('adds scrolled class when window is scrolled', () => {
+    (useRouteLoaderData as unknown as ReturnType<typeof vi.fn>).mockReturnValue(null);
 
-    renderWithRouter(<Header />);
-    expect(screen.getByText(/Rest Client/i)).toBeInTheDocument();
-    expect(screen.getByText(/History/i)).toBeInTheDocument();
-    expect(screen.getByText(/Variables/i)).toBeInTheDocument();
-    expect(screen.getByText(/Home/i)).toBeInTheDocument();
-    expect(screen.getByText(/Sign Out/i)).toBeInTheDocument();
-  });
+    render(<Header />);
 
-  it('calls signOut when Sign Out button is clicked', () => {
-    useAuthStore.setState({ session: createTestSession(), loading: false });
+    const header = screen.getByRole('banner');
+    expect(header.className).toBe('header');
 
-    renderWithRouter(<Header />);
-    fireEvent.click(screen.getByText(/Sign Out/i));
-    expect(supabase.auth.signOut).toHaveBeenCalled();
+    Object.defineProperty(window, 'scrollY', { value: 100, writable: true });
+    fireEvent.scroll(window);
+
+    expect(header.className).toBe('header scrolled');
   });
 });

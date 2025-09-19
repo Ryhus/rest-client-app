@@ -31,7 +31,7 @@ export default function Header() {
   return (
     <header className={headerClass}>
       <nav className="navbar">
-        <Link to="/rest-client" className="navbar__link">
+        <Link to="/" className="navbar__link">
           <img className="app-logo" src={logo} alt="Rest client app logo" />
         </Link>
 
