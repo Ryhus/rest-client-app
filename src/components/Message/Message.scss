@@ -6,6 +6,10 @@
   align-items: center;
   width: 336px;
   min-height: 59px;
+  padding: 10px;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
 
   &--success {
     background-color: variables.$color-success;
