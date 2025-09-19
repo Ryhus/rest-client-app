@@ -76,3 +76,37 @@
 .hide {
   display: none;
 }
+
+.method {
+  color: variables.$method-color-brawn;
+  border-color: variables.$method-color-brawn;
+
+  &--GET {
+    color: variables.$method-color-green;
+    border-color: variables.$method-color-green;
+  }
+  &--POST {
+    color: variables.$method-color-orange;
+    border-color: variables.$method-color-orange;
+  }
+  &--PUT {
+    color: variables.$method-color-blue;
+    border-color: variables.$method-color-blue;
+  }
+  &--PATCH {
+    color: variables.$method-color-purple;
+    border-color: variables.$method-color-purple;
+  }
+  &--HEAD {
+    color: variables.$method-color-green;
+    border-color: variables.$method-color-green;
+  }
+  &--OPTIONS {
+    color: variables.$method-color-purple;
+    border-color: variables.$method-color-purple;
+  }
+  &--DELETE {
+    color: variables.$method-color-red;
+    border-color: variables.$method-color-red;
+  }
+}

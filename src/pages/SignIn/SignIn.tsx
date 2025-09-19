@@ -7,8 +7,7 @@ import {
   useRouteLoaderData,
   type ActionFunctionArgs,
 } from 'react-router-dom';
-import { Input } from '@/components';
-import { Button } from '@/components';
+import { Input, Button, Message } from '@/components';
 import { ButtonStyle, ButtonType } from '@/components/Button/types';
 import type { AuthErrors } from '@/utils/schema';
 import { validateInput, type InputName } from '@/utils/validateInput';
@@ -106,7 +105,6 @@ export default function SignIn() {
           onChange={handleChange}
           errors={errors.password}
         />
-        {actionData && <p className="signin-page__server-error">{actionData.error}</p>}
         <Button
           style={ButtonStyle.Primary}
           type={ButtonType.Submit}
@@ -115,6 +113,12 @@ export default function SignIn() {
         >
           {t('login')}
         </Button>
+        {actionData && (
+          <Message
+            messageType="warning"
+            text={actionData.error || 'Service unavailable, try again'}
+          ></Message>
+        )}
       </Form>
     </div>
   );

@@ -5,6 +5,7 @@ import {
   Navigate,
   useRouteLoaderData,
   useFetcher,
+  useLocation,
   type ActionFunctionArgs,
 } from 'react-router-dom';
 import HeadersSection from '@/pages/RestClient/HeadersSection/HeadersSection.tsx';
@@ -14,11 +15,13 @@ import { type ChangeEvent, useEffect, useState } from 'react';
 import type { Params, UIMatch } from 'react-router';
 import Spinner from '@/components/Spinner/Spinner.tsx';
 import { RequestDataEditorOrViewer } from '@/pages/RestClient/RequestDataEditorOrViewer/RequestDataEditorOrViewer.tsx';
-import { apiRequest } from '@/services/rest/restService.ts';
+import { apiRequestWithMetrics } from '@/utils/apiMetrics';
 import axios from 'axios';
 import { type User } from '@supabase/supabase-js';
 import { useTranslation } from 'react-i18next';
 import CodeSection from '@/pages/RestClient/CodeSection/CodeSection.tsx';
+import type { HistoryRow } from '@/types/types';
+import { createClient } from '@/services/supabase/supabaseServer';
 
 interface Props {
   params: Params<string>;
@@ -33,6 +36,10 @@ export default function RestClient({ params }: Props) {
   const [methodError, setMethodError] = useState<string>('');
   const user = useRouteLoaderData<User>('root');
   const fetcher = useFetcher<ActionData>();
+  const location = useLocation();
+
+  const requestData = location.state as HistoryRow;
+
   let viewerData;
   const { t } = useTranslation('rest-client');
 
@@ -66,14 +73,20 @@ export default function RestClient({ params }: Props) {
   useEffect(() => {
     if (method) {
       setRequestMethod(method);
+    } else if (requestData?.request_method) {
+      setRequestMethod(requestData.request_method);
     }
 
     if (encodedUrl) {
       setRequestUrl(atob(encodedUrl));
+    } else if (requestData?.endpoint) {
+      setRequestUrl(requestData.endpoint);
     }
 
     if (encodedBody) {
       setRequestBody(atob(encodedBody));
+    } else if (requestData?.payload) {
+      setRequestBody(requestData.payload);
     }
 
     clearRequestHeaders();
@@ -81,6 +94,14 @@ export default function RestClient({ params }: Props) {
     searchParams.forEach((value, key) => {
       addRequestHeader({ name: key, value: value });
     });
+
+    if (requestData?.headers) {
+      const headersArray = JSON.parse(requestData.headers) as [string, string][];
+
+      headersArray.forEach(([key, value]) => {
+        addRequestHeader({ name: key, value });
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -194,6 +215,8 @@ type ActionData =
     };
 
 export async function action({ request }: ActionFunctionArgs): Promise<ActionData> {
+  const { supabase } = createClient(request);
+
   const data = await request.formData();
 
   const method = data.get('method') as string;
@@ -203,12 +226,39 @@ export async function action({ request }: ActionFunctionArgs): Promise<ActionDat
   const headers = headersJson ? JSON.parse(headersJson) : {};
 
   try {
-    return await apiRequest({
+    const {
+      metrics,
+      data,
+      status,
+      headers: responseHeaders,
+    } = await apiRequestWithMetrics({
       method,
       url,
       data: body,
       config: { headers },
     });
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    await supabase.from('history').insert([
+      {
+        user_id: user?.id,
+        request_timestamp: metrics.timestamp,
+        duration: metrics.duration,
+        status_code: status,
+        request_size: metrics.requestSize,
+        response_size: metrics.responseSize,
+        request_method: metrics.requestMethod,
+        endpoint: metrics.endpoint,
+        headers: headers,
+        payload: body,
+        error_details: metrics.error || null,
+      },
+    ]);
+
+    return { data, status, headers: responseHeaders };
   } catch (error) {
     if (axios.isAxiosError(error)) {
       return {

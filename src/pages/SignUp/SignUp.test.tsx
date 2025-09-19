@@ -1,142 +1,141 @@
-import { describe, it, vi, beforeEach, expect, type Mock } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import SignUp from './SignUp';
-import { useAuthStore } from '@/stores/authStore/authStore';
-import type { User, Session } from '@supabase/supabase-js';
-import { createMemoryRouter, RouterProvider } from 'react-router-dom';
-import * as reactRouter from 'react-router-dom';
-import { act } from 'react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { createMemoryRouter, RouterProvider, type ActionFunctionArgs } from 'react-router-dom';
+import SignUp, { action } from './SignUp';
+import type { ChangeEvent } from 'react';
 
-vi.mock('@/stores/authStore/authStore', () => ({
-  useAuthStore: vi.fn(),
-}));
-
-vi.mock('@/services/supabase', () => ({
-  supabase: {
-    auth: {
-      signUp: vi.fn(),
-    },
-  },
-}));
-
-vi.mock('react-router-dom', async () => {
-  const actual: typeof import('react-router-dom') = await vi.importActual('react-router-dom');
+vi.mock('react-i18next', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('react-i18next')>();
   return {
     ...actual,
-    useActionData: vi.fn(() => null),
+    useTranslation: () => ({ t: (key: string) => key }),
+    initReactI18next: { type: '3rdParty', init: () => {} },
   };
 });
 
-function renderWithDataRouter() {
-  const router = createMemoryRouter([{ path: '/', element: <SignUp /> }], {
-    initialEntries: ['/'],
-  });
-  return render(<RouterProvider router={router} />);
-}
+vi.mock('@/utils/validateInput', () => ({
+  validateInput: vi.fn(),
+}));
+const mockSignUp = vi.fn();
+
+vi.mock('@/services/supabase/supabaseServer', () => ({
+  createClient: () => ({
+    supabase: { auth: { signUp: mockSignUp } },
+  }),
+}));
+
+import { validateInput } from '@/utils/validateInput';
 
 describe('SignUp component', () => {
   beforeEach(() => {
-    vi.mocked(useAuthStore).mockReturnValue({ session: null });
     vi.clearAllMocks();
   });
 
-  it('renders signup form when no session', () => {
-    renderWithDataRouter();
-    expect(screen.getByLabelText(/Email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Password/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Sign Up/i })).toBeInTheDocument();
+  const renderWithRouter = () => {
+    const router = createMemoryRouter(
+      [
+        {
+          path: '/',
+          element: <SignUp />,
+          action: action,
+        },
+      ],
+      { initialEntries: ['/'] }
+    );
+
+    render(<RouterProvider router={router} />);
+  };
+
+  it('renders all form fields and the submit button', () => {
+    renderWithRouter();
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /signUp/i })).toBeInTheDocument();
   });
 
-  it('redirects to "/" when session exists', () => {
-    const user: User = {
-      id: '1',
-      aud: 'authenticated',
-      role: 'authenticated',
-      email: 'test@test.com',
-      app_metadata: {},
-      user_metadata: {},
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    };
+  it('updates form state when inputs change', () => {
+    renderWithRouter();
 
-    const session: Session = {
-      access_token: 'token',
-      token_type: 'bearer',
-      expires_in: 3600,
-      expires_at: Math.floor(Date.now() / 1000) + 3600,
-      refresh_token: 'refresh',
-      user,
-    };
+    const emailInput = screen.getByLabelText(/email/i) as HTMLInputElement;
+    const nameInput = screen.getByLabelText(/name/i) as HTMLInputElement;
+    const passwordInput = screen.getByLabelText(/password/i) as HTMLInputElement;
 
-    vi.mocked(useAuthStore).mockReturnValue({ session });
-    renderWithDataRouter();
+    fireEvent.change(emailInput, {
+      target: { value: 'test@example.com' },
+    } as ChangeEvent<HTMLInputElement>);
+    fireEvent.change(nameInput, { target: { value: 'John Doe' } } as ChangeEvent<HTMLInputElement>);
+    fireEvent.change(passwordInput, {
+      target: { value: '123456' },
+    } as ChangeEvent<HTMLInputElement>);
 
-    expect(screen.queryByLabelText(/Email/i)).not.toBeInTheDocument();
-    expect(screen.queryByLabelText(/Name/i)).not.toBeInTheDocument();
-    expect(screen.queryByLabelText(/Password/i)).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /Sign Up/i })).not.toBeInTheDocument();
+    expect(emailInput.value).toBe('test@example.com');
+    expect(nameInput.value).toBe('John Doe');
+    expect(passwordInput.value).toBe('123456');
+
+    expect(validateInput).toHaveBeenCalledTimes(3);
+    expect(validateInput).toHaveBeenCalledWith(
+      expect.objectContaining({ key: 'email', value: 'test@example.com' })
+    );
+    expect(validateInput).toHaveBeenCalledWith(
+      expect.objectContaining({ key: 'name', value: 'John Doe' })
+    );
+    expect(validateInput).toHaveBeenCalledWith(
+      expect.objectContaining({ key: 'password', value: '123456' })
+    );
   });
 
-  it('toggles password visibility when clicking icon button', () => {
-    renderWithDataRouter();
-
-    const passwordInput = screen.getByLabelText(/Password/i) as HTMLInputElement;
-    const inputWrapper = passwordInput.closest('.input-wrapper');
-    if (!inputWrapper) throw new Error('Input wrapper not found');
-
-    const toggleButton = inputWrapper.querySelector('.toggler') as HTMLButtonElement;
-    if (!toggleButton) throw new Error('Toggle button not found');
-
+  it('toggles password visibility', () => {
+    renderWithRouter();
+    const passwordInput = screen.getByLabelText(/password/i) as HTMLInputElement;
+    const togglerWrapper = screen.getByAltText(/eye show/i).parentElement;
+    expect(togglerWrapper).not.toBeNull();
+    if (!togglerWrapper) return;
     expect(passwordInput.type).toBe('password');
-    fireEvent.click(toggleButton);
+    fireEvent.click(togglerWrapper);
     expect(passwordInput.type).toBe('text');
-    fireEvent.click(toggleButton);
+    fireEvent.click(togglerWrapper);
     expect(passwordInput.type).toBe('password');
   });
+});
 
-  it('renders server error message from useActionData', () => {
-    (reactRouter.useActionData as Mock).mockReturnValue({
-      error: 'Invalid signup',
+describe('SignUp action function', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  const createMockRequest = (form: Record<string, string>) => {
+    const formData = new FormData();
+    Object.entries(form).forEach(([key, value]) => formData.append(key, value));
+    return new Request('http://localhost/signup', { method: 'POST', body: formData });
+  };
+
+  it('returns data on successful sign up', async () => {
+    mockSignUp.mockResolvedValue({ data: { id: '1' }, error: null });
+    const request = createMockRequest({ email: 'a@b.com', name: 'John', password: '123456' });
+    const result = await action({ request } as ActionFunctionArgs);
+
+    expect(mockSignUp).toHaveBeenCalledWith({
+      email: 'a@b.com',
+      password: '123456',
+      options: { data: { name: 'John' } },
     });
-
-    renderWithDataRouter();
-    expect(screen.getByText(/Invalid signup/i)).toBeInTheDocument();
+    expect(result).toEqual({ data: { id: '1' } });
   });
 
-  it('does not render error when actionData is null', () => {
-    (reactRouter.useActionData as Mock).mockReturnValue(null);
+  it('returns error message when sign up fails', async () => {
+    mockSignUp.mockResolvedValue({ data: null, error: { message: 'Invalid input' } });
+    const request = createMockRequest({ email: '', name: '', password: '' });
+    const result = await action({ request } as ActionFunctionArgs);
 
-    renderWithDataRouter();
-    expect(screen.queryByText(/Invalid signup/i)).not.toBeInTheDocument();
+    expect(result).toEqual({ error: 'Invalid input' });
   });
 
-  it('fires onChange events for all inputs', async () => {
-    renderWithDataRouter();
+  it('returns network error when sign up fails with "Failed to fetch"', async () => {
+    mockSignUp.mockResolvedValue({ data: null, error: { message: 'Failed to fetch' } });
+    const request = createMockRequest({ email: 'a', name: 'b', password: 'c' });
+    const result = await action({ request } as ActionFunctionArgs);
 
-    await act(async () => {
-      fireEvent.change(screen.getByLabelText(/Email/i), {
-        target: { value: 'a@b.com' },
-      });
-      fireEvent.change(screen.getByLabelText(/Name/i), {
-        target: { value: 'Test User' },
-      });
-      fireEvent.change(screen.getByLabelText(/Password/i), {
-        target: { value: '123456' },
-      });
-
-      expect((screen.getByLabelText(/Email/i) as HTMLInputElement).value).toBe('a@b.com');
-      expect((screen.getByLabelText(/Name/i) as HTMLInputElement).value).toBe('Test User');
-      expect((screen.getByLabelText(/Password/i) as HTMLInputElement).value).toBe('123456');
-    });
-  });
-
-  it('submits the form', () => {
-    renderWithDataRouter();
-
-    const form = document.querySelector('.signup-page__form') as HTMLFormElement;
-    if (!form) throw new Error('Form not found');
-
-    fireEvent.submit(form);
+    expect(result).toEqual({ error: 'Pls, check your internet connection.' });
   });
 });
