@@ -34,6 +34,13 @@
   }
 }
 
+.variables-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+}
+
 .variables-table {
   display: flex;
   flex-direction: column;

@@ -7,6 +7,7 @@ import { ButtonStyle, ButtonType } from '@/components/Button/types';
 import Table from './Table/Table';
 import InputRow from './InputRow/InputRow';
 import IconTrash from '@/assets/icons/trash.svg?react';
+import { Message } from '@/components';
 import {
   removeVariableFromLS,
   setVariableToLS,
@@ -134,7 +135,9 @@ export default function Variables() {
           <p className="variables__placeholder">{t('no-variables')}</p>
         )}
       </div>
-      {error && <p>{error}</p>}
+      <div className="variables-error">
+        {error && <Message text={error} messageType="warning" />}
+      </div>
     </div>
   );
 }
