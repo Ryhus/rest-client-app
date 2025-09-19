@@ -185,7 +185,7 @@ export default function RestClient({ params }: Props) {
         initMethod={requestMethod}
         handleMethodOnChange={handleMethodChange}
         initSearchValue={requestUrl}
-        handleSearchOnChange={handleURLChange}
+        handleEndpointOnChange={handleURLChange}
         handleButtonClick={handleSendingRequest}
         urlError={urlError}
         methodError={methodError}

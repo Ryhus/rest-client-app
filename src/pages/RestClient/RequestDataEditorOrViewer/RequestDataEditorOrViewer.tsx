@@ -85,7 +85,9 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
     return (
       <>
         <div className="title-container">
-          <p className="title">{t('body')}:</p>
+          <p className="title" data-testid="title">
+            {t('body')}:
+          </p>
           <Selector
             id="editor-mode"
             data={['text', 'json']}
@@ -111,7 +113,9 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
             spellCheck={bodyType === 'text'}
           />
         </div>
-        <p className="not-valid-format">{!isValidBodyFormat && t('formatError')}</p>
+        <p className="not-valid-format" data-testid="not-valid-format">
+          {!isValidBodyFormat && t('formatError')}
+        </p>
       </>
     );
   };
@@ -123,7 +127,9 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
     return (
       <>
         <div className="title-container">
-          <p className="title">{t('response')}:</p>
+          <p className="title" data-testid="title">
+            {t('response')}:
+          </p>
         </div>
         <div className="content-container">
           <div className="viewer">

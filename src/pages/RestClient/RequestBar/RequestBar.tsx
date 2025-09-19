@@ -7,9 +7,9 @@ import { useTranslation } from 'react-i18next';
 
 const initRequestMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'];
 
-interface Props {
+export interface RequestBarProps {
   handleMethodOnChange: ChangeEventHandler<HTMLInputElement>;
-  handleSearchOnChange: ChangeEventHandler<HTMLInputElement>;
+  handleEndpointOnChange: ChangeEventHandler<HTMLInputElement>;
   handleButtonClick: () => void;
   initMethod?: string;
   initSearchValue?: string;
@@ -17,11 +17,11 @@ interface Props {
   methodError?: string;
 }
 
-export default function RequestBar(props: Props) {
+export default function RequestBar(props: RequestBarProps) {
   const {
     initMethod,
     handleMethodOnChange,
-    handleSearchOnChange,
+    handleEndpointOnChange,
     handleButtonClick,
     initSearchValue = '',
     urlError = '',
@@ -48,7 +48,7 @@ export default function RequestBar(props: Props) {
         inputContainerClassName="input-container-search"
         inputClassName="input-search"
         value={initSearchValue}
-        onChange={handleSearchOnChange}
+        onChange={handleEndpointOnChange}
         errors={[{ id: 0, message: urlError }]}
         placeholder={t('endpoint')}
       />

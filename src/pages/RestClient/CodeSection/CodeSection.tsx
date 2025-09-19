@@ -126,7 +126,7 @@ export default function CodeSection() {
           value={codeOption}
         />
       </div>
-      <div className="content-container">
+      <div className="content-container" data-testid="content-container">
         <pre>{codeResult}</pre>
       </div>
     </div>
