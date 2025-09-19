@@ -10,6 +10,7 @@
   text-align: center;
   white-space: normal;
   overflow-wrap: anywhere;
+  border-radius: 4px;
 
   &--success {
     background-color: variables.$color-success;
