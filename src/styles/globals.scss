@@ -32,6 +32,15 @@
   .td {
     border: 1px solid variables.$border-color;
   }
+
+  .custom-input {
+    height: 40px;
+    padding: 10px;
+  }
+
+  .custom-icon {
+    padding: 0 8px;
+  }
 }
 
 .textarea {
@@ -62,4 +71,8 @@
       width: 100%;
     }
   }
+}
+
+.hide {
+  display: none;
 }
