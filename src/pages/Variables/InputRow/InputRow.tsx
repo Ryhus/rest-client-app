@@ -15,7 +15,7 @@ export interface InputRowProps {
 export default function InputRow({ value1, value2, onChange, onClick }: InputRowProps) {
   const { t } = useTranslation('variables');
   return (
-    <tr>
+    <tr data-testid="input-row">
       <td className="td">
         <Input
           id="variableName"
