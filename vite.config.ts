@@ -35,7 +35,7 @@ export default defineConfig({
         'src/utils/navLinksConfig.ts',
       ],
       thresholds: {
-        statements: 1,
+        statements: 100,
         branches: 1,
         functions: 1,
         lines: 1,
