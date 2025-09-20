@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-interface variablesTableProps<T> {
+export interface VariablesTableProps<T> {
   headers: string[];
   showHeaders: boolean;
   rows: T[];
@@ -22,11 +22,11 @@ export default function Table<T>({
   getTableRow,
   customClass,
   title,
-}: variablesTableProps<T>) {
+}: VariablesTableProps<T>) {
   const { t } = useTranslation(translation);
   return (
-    <div className={customClass}>
-      {title && <p className={showHeaders ? 'title' : 'hide'}>{t(title)}:</p>}
+    <div className={customClass} data-testid="table-container">
+      {title && <h3 className={showHeaders ? 'title' : 'hide'}>{t(title)}:</h3>}
       <div className="content-container">
         <table className="table">
           <thead className={showHeaders ? 'thead' : 'hide'}>
