@@ -116,7 +116,7 @@ export default function CodeSection() {
   ]);
 
   return (
-    <div className="code-container">
+    <div className="code-container" data-testid="code-section">
       <div className="title-container">
         <p className="title">{t('code')}:</p>
         <Selector
@@ -127,7 +127,7 @@ export default function CodeSection() {
         />
       </div>
       <div className="content-container" data-testid="content-container">
-        <pre>{codeResult}</pre>
+        <pre data-testid="pre-code">{codeResult}</pre>
       </div>
     </div>
   );

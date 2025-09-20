@@ -63,7 +63,7 @@ export default function HeadersSection() {
   }
 
   return (
-    <div className="headers-container">
+    <div className="headers-container" data-testid="headers-section">
       <p className="title" data-testid="title">
         {t('headers')}:
       </p>

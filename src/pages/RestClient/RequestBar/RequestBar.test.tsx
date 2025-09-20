@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import RequestBar, { type RequestBarProps } from '@/pages/RestClient/RequestBar/RequestBar.tsx';
-import { describe, expect, test, vi } from 'vitest';
+import { afterEach, describe, expect, test, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 
 function renderComponent(params: Partial<RequestBarProps>) {
@@ -22,6 +22,10 @@ function renderComponent(params: Partial<RequestBarProps>) {
 }
 
 describe('<RequestBar>', () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   describe('the necessary elements', () => {
     test('renders a selection of methods', () => {
       renderComponent({});

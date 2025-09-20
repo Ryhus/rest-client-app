@@ -1,6 +1,6 @@
-import { beforeEach, describe, test, expect } from 'vitest';
+import { beforeEach, describe, test, expect, afterEach } from 'vitest';
 import CodeSection from '@/pages/RestClient/CodeSection/CodeSection.tsx';
-import { render, screen, waitFor } from '@testing-library/react';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import { restClientPageStore } from '@/stores/restClientPageStore/restClientPageStore.ts';
 import userEvent from '@testing-library/user-event';
 
@@ -11,6 +11,10 @@ function renderComponent() {
 describe('<CodeSection>', () => {
   beforeEach(() => {
     restClientPageStore.setState(restClientPageStore.getInitialState());
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   describe('the necessary elements', () => {
@@ -40,13 +44,12 @@ describe('<CodeSection>', () => {
 
       renderComponent();
       const select = screen.getByRole('combobox');
-      const contentContainer = screen.getByTestId('content-container');
       await userEvent.selectOptions(select, 'curl');
 
       const code =
         'curl "https://stapi.co/animal/search" -X GET -H "Content-Type: application/json" --data-binary \'testBody\'';
       await waitFor(() => {
-        expect(contentContainer.getElementsByTagName('pre')[0]).toHaveTextContent(code);
+        expect(screen.getByTestId('pre-code')).toHaveTextContent(code);
       });
     });
 
@@ -55,7 +58,6 @@ describe('<CodeSection>', () => {
 
       renderComponent();
       const select = screen.getByRole('combobox');
-      const contentContainer = screen.getByTestId('content-container');
       await userEvent.selectOptions(select, 'JavaScript (Fetch api)');
 
       const code = `
@@ -72,10 +74,7 @@ try {
         .replace(/\s+/g, ' ')
         .trim();
 
-      await waitFor(() => {
-        const receivedCode = contentContainer.getElementsByTagName('pre')[0].textContent;
-        expect(receivedCode?.replace(/\s+/g, ' ').trim()).toEqual(code);
-      });
+      expect(screen.getByTestId('pre-code')).toHaveTextContent(code);
     });
 
     test('checks content for JavaScript (XHR)', async () => {
@@ -83,7 +82,6 @@ try {
 
       renderComponent();
       const select = screen.getByRole('combobox');
-      const contentContainer = screen.getByTestId('content-container');
       await userEvent.selectOptions(select, 'JavaScript (XHR)');
 
       const code = `
@@ -106,10 +104,7 @@ xhr.send(data);
         .replace(/\s+/g, ' ')
         .trim();
 
-      await waitFor(() => {
-        const receivedCode = contentContainer.getElementsByTagName('pre')[0].textContent;
-        expect(receivedCode?.replace(/\s+/g, ' ').trim()).toEqual(code);
-      });
+      expect(screen.getByTestId('pre-code')).toHaveTextContent(code);
     });
 
     test('checks content for JNodeJS', async () => {
@@ -117,7 +112,6 @@ xhr.send(data);
 
       renderComponent();
       const select = screen.getByRole('combobox');
-      const contentContainer = screen.getByTestId('content-container');
       await userEvent.selectOptions(select, 'NodeJS');
 
       const code = `
@@ -139,10 +133,7 @@ request(options, function (error, response, body) {
         .replace(/\s+/g, ' ')
         .trim();
 
-      await waitFor(() => {
-        const receivedCode = contentContainer.getElementsByTagName('pre')[0].textContent;
-        expect(receivedCode?.replace(/\s+/g, ' ').trim()).toEqual(code);
-      });
+      expect(screen.getByTestId('pre-code')).toHaveTextContent(code);
     });
 
     test('checks content for Python', async () => {
@@ -150,7 +141,6 @@ request(options, function (error, response, body) {
 
       renderComponent();
       const select = screen.getByRole('combobox');
-      const contentContainer = screen.getByTestId('content-container');
       await userEvent.selectOptions(select, 'Python');
 
       const code = `
@@ -168,10 +158,7 @@ print(response.json())
         .replace(/\s+/g, ' ')
         .trim();
 
-      await waitFor(() => {
-        const receivedCode = contentContainer.getElementsByTagName('pre')[0].textContent;
-        expect(receivedCode?.replace(/\s+/g, ' ').trim()).toEqual(code);
-      });
+      expect(screen.getByTestId('pre-code')).toHaveTextContent(code);
     });
 
     test('checks content for Java', async () => {
@@ -179,7 +166,6 @@ print(response.json())
 
       renderComponent();
       const select = screen.getByRole('combobox');
-      const contentContainer = screen.getByTestId('content-container');
       await userEvent.selectOptions(select, 'Java');
 
       const code = `
@@ -198,10 +184,7 @@ Response response = client.newCall(request).execute();
         .replace(/\s+/g, ' ')
         .trim();
 
-      await waitFor(() => {
-        const receivedCode = contentContainer.getElementsByTagName('pre')[0].textContent;
-        expect(receivedCode?.replace(/\s+/g, ' ').trim()).toEqual(code);
-      });
+      expect(screen.getByTestId('pre-code')).toHaveTextContent(code);
     });
 
     test('checks content for C#', async () => {
@@ -209,7 +192,6 @@ Response response = client.newCall(request).execute();
 
       renderComponent();
       const select = screen.getByRole('combobox');
-      const contentContainer = screen.getByTestId('content-container');
       await userEvent.selectOptions(select, 'C#');
 
       const code = `
@@ -222,10 +204,7 @@ IRestResponse response = client.Execute(request);
         .replace(/\s+/g, ' ')
         .trim();
 
-      await waitFor(() => {
-        const receivedCode = contentContainer.getElementsByTagName('pre')[0].textContent;
-        expect(receivedCode?.replace(/\s+/g, ' ').trim()).toEqual(code);
-      });
+      expect(screen.getByTestId('pre-code')).toHaveTextContent(code);
     });
 
     test('checks content for Go', async () => {
@@ -233,7 +212,6 @@ IRestResponse response = client.Execute(request);
 
       renderComponent();
       const select = screen.getByRole('combobox');
-      const contentContainer = screen.getByTestId('content-container');
       await userEvent.selectOptions(select, 'Go');
 
       const code = `
@@ -269,10 +247,7 @@ func main() {
         .replace(/\s+/g, ' ')
         .trim();
 
-      await waitFor(() => {
-        const receivedCode = contentContainer.getElementsByTagName('pre')[0].textContent;
-        expect(receivedCode?.replace(/\s+/g, ' ').trim()).toEqual(code);
-      });
+      expect(screen.getByTestId('pre-code')).toHaveTextContent(code);
     });
   });
 });

@@ -37,7 +37,9 @@ export default function Datalist({
       return (
         <div className="input-field--error">
           {errors?.map((error) => (
-            <div key={error.id}>{error.message}</div>
+            <div key={error.id} data-testid="datalist-error">
+              {error.message}
+            </div>
           ))}
         </div>
       );

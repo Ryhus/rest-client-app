@@ -1,6 +1,6 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import HeadersSection from '@/pages/RestClient/HeadersSection/HeadersSection.tsx';
-import { beforeEach, describe, expect, test } from 'vitest';
+import { afterEach, beforeEach, describe, expect, test } from 'vitest';
 import { restClientPageStore } from '@/stores/restClientPageStore/restClientPageStore.ts';
 import userEvent from '@testing-library/user-event';
 
@@ -16,6 +16,10 @@ describe('<HeadersSection>', () => {
       ...initState,
       requestHeaders: [{ id: '1', name: 'Content-Type', value: 'application/json' }],
     });
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   describe('the necessary elements', () => {

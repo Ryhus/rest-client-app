@@ -1,6 +1,6 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { RequestDataEditorOrViewer } from '@/pages/RestClient/RequestDataEditorOrViewer/RequestDataEditorOrViewer.tsx';
-import { describe, test, expect } from 'vitest';
+import { describe, test, expect, afterEach } from 'vitest';
 import userEvent from '@testing-library/user-event';
 
 function renderEditorComponent() {
@@ -17,6 +17,10 @@ function renderViewerComponent(params: { data?: string; status?: number; errorMe
 }
 
 describe('Editor', () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   describe('the necessary elements', () => {
     test('renders a title', () => {
       renderEditorComponent();

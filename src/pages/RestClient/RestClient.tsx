@@ -7,12 +7,12 @@ import {
   useFetcher,
   useLocation,
   type ActionFunctionArgs,
+  useParams,
 } from 'react-router-dom';
 import HeadersSection from '@/pages/RestClient/HeadersSection/HeadersSection.tsx';
 import RequestBar from '@/pages/RestClient/RequestBar/RequestBar.tsx';
 import { restClientPageStore } from '@/stores/restClientPageStore/restClientPageStore.ts';
 import { type ChangeEvent, useEffect, useState } from 'react';
-import type { Params, UIMatch } from 'react-router';
 import Spinner from '@/components/Spinner/Spinner.tsx';
 import { RequestDataEditorOrViewer } from '@/pages/RestClient/RequestDataEditorOrViewer/RequestDataEditorOrViewer.tsx';
 import { apiRequestWithMetrics } from '@/utils/apiMetrics';
@@ -23,13 +23,13 @@ import CodeSection from '@/pages/RestClient/CodeSection/CodeSection.tsx';
 import type { HistoryRow } from '@/types/types';
 import { createClient } from '@/services/supabase/supabaseServer';
 
-interface Props {
-  params: Params<string>;
-  matches: UIMatch[];
-}
+export default function RestClient() {
+  const { method, encodedUrl, encodedBody } = useParams<{
+    method?: string;
+    encodedUrl?: string;
+    encodedBody?: string;
+  }>();
 
-export default function RestClient({ params }: Props) {
-  const { method, encodedUrl, encodedBody } = params;
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [urlError, setUrlError] = useState<string>('');
@@ -180,7 +180,7 @@ export default function RestClient({ params }: Props) {
   if (!user) return <Navigate to="/" replace />;
 
   return (
-    <div className="rest-client-page">
+    <div className="rest-client-page" data-testid="rest-client-page">
       <RequestBar
         initMethod={requestMethod}
         handleMethodOnChange={handleMethodChange}

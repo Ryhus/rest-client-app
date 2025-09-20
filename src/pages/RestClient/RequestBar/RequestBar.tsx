@@ -31,7 +31,7 @@ export default function RequestBar(props: RequestBarProps) {
   const { t } = useTranslation('rest-client');
 
   return (
-    <div className="request-bar">
+    <div className="request-bar" data-testid="request-bar">
       <Datalist
         id={'id-method-options'}
         listName="method-options"

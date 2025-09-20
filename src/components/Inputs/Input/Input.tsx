@@ -54,7 +54,9 @@ function Input({
       return (
         <div className="input-field--error">
           {errors?.map((error) => (
-            <div key={error.id}>{error.message}</div>
+            <div key={error.id} data-testid="input-error">
+              {error.message}
+            </div>
           ))}
         </div>
       );
