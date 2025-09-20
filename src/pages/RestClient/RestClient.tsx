@@ -71,6 +71,10 @@ export default function RestClient() {
   } = restClientPageStore();
 
   useEffect(() => {
+    document.body.style.overflow = fetcher.state === 'submitting' ? 'hidden' : '';
+  }, [fetcher.state]);
+
+  useEffect(() => {
     if (method) {
       setRequestMethod(method);
     } else if (requestData?.request_method) {

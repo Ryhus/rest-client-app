@@ -63,34 +63,29 @@
       padding: 8px;
       display: flex;
       flex-direction: row;
-      align-items: flex-end;
+      align-items: center;
       gap: 12px;
-
-      img {
-        width: 18px;
-        height: 18px;
-      }
 
       .url-link {
         color: variables.$font-color-primary;
+        transition: color 0.3s;
       }
       .url-link:hover {
         color: variables.$color-secondary-light;
         text-decoration: underline;
       }
-    }
 
-    .request-row:hover {
-      background-color: variables.$bg-color;
-    }
-  }
-
-  .analytics-bttn {
-    &:hover {
-      transform: scale(1.1);
-    }
-    &:active {
-      transform: scale(0.95);
+      .icon-container {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.3s;
+        &:hover {
+          color: variables.$color-primary-light;
+        }
+      }
     }
   }
 }

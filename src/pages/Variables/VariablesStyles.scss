@@ -12,19 +12,20 @@
   color: variables.$font-color-primary;
 }
 
-.variables__no-content{
+.variables__no-content {
   color: variables.$font-color-secondary;
 }
 
-.variables__actions{
+.variables__actions {
   display: flex;
   gap: 1rem;
 }
 
-.variables__content{
+.variables__content {
   height: 250px;
   overflow-y: auto;
   border: 1px solid variables.$border-color;
+  border-radius: variables.$border-radius;
   width: 100%;
 
   &:has(.variables__placeholder) {

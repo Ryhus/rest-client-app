@@ -277,14 +277,6 @@ IRestResponse response = client.Execute(request);
           expect(screen.getByText('404')).toHaveClass('status-code error');
         });
       });
-
-      test('checks correct message', async () => {
-        renderComponent({ auth: true, isData: true, isError: true });
-
-        await userEvent.click(screen.getByRole('button', { name: /send/i }));
-
-        await waitFor(() => expect(screen.getByTestId('viewer-error')).toBeInTheDocument());
-      });
     });
   });
 

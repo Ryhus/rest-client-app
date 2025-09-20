@@ -10,9 +10,10 @@
   padding: 4rem 2rem;
 
   &__tittle {
-    font-size: variables.$font-size-lg;
+    font-size: variables.$font-size-md;
     font-weight: variables.$font-weight-bold;
     color: variables.$font-color-primary;
+    text-transform: uppercase;
   }
 
   &__about {
@@ -24,10 +25,12 @@
     font-weight: variables.$font-weight-regular;
     color: variables.$font-color-secondary;
     text-align: center;
+    line-height: 24px;
   }
 
   &__team-info {
     display: flex;
+    gap: variables.$spacing-md;
     margin-top: 4rem;
   }
 
