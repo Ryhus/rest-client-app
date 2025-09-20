@@ -36,7 +36,7 @@ export default function InputRow({ value1, value2, onChange, onClick }: InputRow
           value={value2}
         />
       </td>
-      <td className="td">
+      <td className="td custom-icon">
         <Button style={ButtonStyle.IconBtn} onClick={onClick}>
           <IconTrash />
         </Button>
