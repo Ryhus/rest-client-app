@@ -26,7 +26,7 @@ export default function HeadersSection() {
     const isBtnDisabled = requestHeaders.length === 1 || requestHeaders.at(-1)?.id === id;
 
     return (
-      <tr key={`table-row-${id}`} className="tr">
+      <tr key={`table-row-${id}`} className="tr" data-testid="table-row">
         <td className="td">
           <Datalist
             id={`key-${id}`}
@@ -63,9 +63,11 @@ export default function HeadersSection() {
   }
 
   return (
-    <div className="headers-container">
-      <p className="title">{t('headers')}:</p>
-      <div className="content-container">
+    <div className="headers-container" data-testid="headers-section">
+      <p className="title" data-testid="title">
+        {t('headers')}:
+      </p>
+      <div className="content-container" data-testid="content-container">
         <table className="table">
           <thead className="thead">
             <tr className="tr">

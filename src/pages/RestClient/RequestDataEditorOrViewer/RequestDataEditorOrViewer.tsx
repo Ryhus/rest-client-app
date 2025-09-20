@@ -84,8 +84,10 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
 
     return (
       <>
-        <div className="title-container">
-          <p className="title">{t('body')}:</p>
+        <div className="title-container" data-testid="editor-section">
+          <p className="title" data-testid="title">
+            {t('body')}:
+          </p>
           <Selector
             id="editor-mode"
             data={['text', 'json']}
@@ -109,9 +111,12 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
             onChange={handleRequestBodyOnChange}
             value={requestBody}
             spellCheck={bodyType === 'text'}
+            data-testid="textarea-body-editor"
           />
         </div>
-        <p className="not-valid-format">{!isValidBodyFormat && t('formatError')}</p>
+        <p className="not-valid-format" data-testid="not-valid-format">
+          {!isValidBodyFormat && t('formatError')}
+        </p>
       </>
     );
   };
@@ -122,18 +127,24 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
 
     return (
       <>
-        <div className="title-container">
-          <p className="title">{t('response')}:</p>
+        <div className="title-container" data-testid="viewer-section">
+          <p className="title" data-testid="title">
+            {t('response')}:
+          </p>
         </div>
         <div className="content-container">
           <div className="viewer">
             {status && <div className={`status-code ${statusClassName}`}>{status}</div>}
             {data && (
               <div className="body">
-                <pre>{data}</pre>
+                <pre data-testid="pre-data">{data}</pre>
               </div>
             )}
-            {errorMessage && <p className="error">{errorMessage}</p>}
+            {errorMessage && (
+              <p className="error" data-testid="viewer-error">
+                {errorMessage}
+              </p>
+            )}
           </div>
         </div>
       </>
