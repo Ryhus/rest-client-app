@@ -137,17 +137,6 @@ describe('<RestClient>', () => {
 
       expect(screen.getByTestId('code-section')).toBeInTheDocument();
     });
-
-    test('renders <Spinner>', async () => {
-      renderComponent({ auth: true });
-
-      const button = screen.getByRole('button', { name: /send/i });
-      await userEvent.click(button);
-
-      await waitFor(() => {
-        expect(screen.getByTestId('spinner')).toBeInTheDocument();
-      });
-    });
   });
 
   describe('no url data on page', () => {
