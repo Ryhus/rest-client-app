@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Navigate,
   Form,
@@ -67,6 +67,7 @@ export default function SignUp() {
   });
   const user = useRouteLoaderData<User>('root');
   const actionData = useActionData() as { error?: string };
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -75,12 +76,18 @@ export default function SignUp() {
     validateInput({ key, value, setErrors });
   };
 
+  useEffect(() => {
+    if (actionData?.error) {
+      setIsLoading(false);
+    }
+  }, [actionData]);
+
   if (user) return <Navigate to="/" replace />;
 
   return (
     <div className="signup-page">
       <h2 className="signup-page__title">{t('signUpTitle')}</h2>
-      <Form className="signup-page__form" method="post">
+      <Form className="signup-page__form" method="post" onSubmit={() => setIsLoading(true)}>
         <Input
           type="text"
           id="email"
@@ -122,9 +129,9 @@ export default function SignUp() {
           style={ButtonStyle.Primary}
           type={ButtonType.Submit}
           customClass="signup-page__form-button"
-          isDisabled={errors.isError}
+          isDisabled={errors.isError || isLoading}
         >
-          {t('signUp')}
+          {isLoading ? '...' : t('signUp')}
         </Button>
         {actionData && (
           <Message messageType="warning" text={getSupabaseAuthError(actionData.error)}></Message>
