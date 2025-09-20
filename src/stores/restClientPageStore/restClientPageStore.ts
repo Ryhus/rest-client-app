@@ -1,3 +1,4 @@
+import { getVariableFromLS } from '@/utils/manageVariable';
 import { create } from 'zustand';
 
 interface RestClientPageStore {
@@ -122,7 +123,7 @@ function interpolateVariables(stringToInterpolate: string) {
   let interpolatedString = stringToInterpolate;
 
   variableNames?.forEach((variable) => {
-    const variableValue = getVariableByKey(variable.slice(2, -2));
+    const variableValue = getVariableFromLS(variable.slice(2, -2));
 
     if (variableValue !== undefined) {
       interpolatedString = interpolatedString.replace(variable, variableValue);
@@ -130,8 +131,4 @@ function interpolateVariables(stringToInterpolate: string) {
   });
 
   return interpolatedString;
-}
-
-function getVariableByKey(variable: string) {
-  return `test_${variable}`;
 }

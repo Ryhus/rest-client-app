@@ -6,6 +6,6 @@ export const guestLinks = [
 export const userLinks = [
   { to: '/rest-client', text: 'restClient' },
   { to: '/history', text: 'history' },
-  { to: '/', text: 'variables' },
+  { to: '/variables', text: 'variables' },
   { to: '/', text: 'home' },
 ];
