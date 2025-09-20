@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Navigate,
   useActionData,
@@ -11,6 +11,7 @@ import { Input, Button, Message } from '@/components';
 import { ButtonStyle, ButtonType } from '@/components/Button/types';
 import type { AuthErrors } from '@/utils/schema';
 import { validateInput, type InputName } from '@/utils/validateInput';
+import { getSupabaseAuthError } from '@/utils/errorMaps/authErrors';
 import { createClient } from '@/services/supabase/supabaseServer';
 import { type User } from '@supabase/supabase-js';
 import { useTranslation } from 'react-i18next';
@@ -34,10 +35,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
   if (error) {
     return {
-      error:
-        error.message === 'Failed to fetch'
-          ? 'Pls, check your internet connection.'
-          : error.message,
+      error: error.code,
     };
   }
 
@@ -63,7 +61,14 @@ export default function SignIn() {
     isError: false,
   });
   const user = useRouteLoaderData<User>('root');
+  const [isLoading, setIsLoading] = useState(false);
   const actionData = useActionData() as { error?: string };
+
+  useEffect(() => {
+    if (actionData?.error) {
+      setIsLoading(false);
+    }
+  }, [actionData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -77,7 +82,7 @@ export default function SignIn() {
   return (
     <div className="signin-page">
       <h2 className="signin-page__title">{t('loginTitle')}</h2>
-      <Form className="signin-page__form" method="post">
+      <Form className="signin-page__form" method="post" onSubmit={() => setIsLoading(true)}>
         <Input
           type="text"
           id="email"
@@ -109,15 +114,12 @@ export default function SignIn() {
           style={ButtonStyle.Primary}
           type={ButtonType.Submit}
           customClass="signin-page__form-button"
-          isDisabled={errors.isError}
+          isDisabled={errors.isError || isLoading}
         >
-          {t('login')}
+          {isLoading ? '...' : t('login')}
         </Button>
         {actionData && (
-          <Message
-            messageType="warning"
-            text={actionData.error || 'Service unavailable, try again'}
-          ></Message>
+          <Message messageType="warning" text={getSupabaseAuthError(actionData.error)}></Message>
         )}
       </Form>
     </div>

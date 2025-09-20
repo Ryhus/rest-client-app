@@ -82,7 +82,7 @@ describe('SignIn component', () => {
 
   it('renders error message from actionData.error', () => {
     renderWithRouter();
-    expect(screen.getByText(/Test error message/i)).toBeInTheDocument();
+    expect(screen.getByText(/Something went wrong. Please try again./i)).toBeInTheDocument();
   });
 });
 
@@ -115,17 +115,10 @@ describe('SignIn action function', () => {
   });
 
   it('returns error when credentials are wrong', async () => {
-    mockSignIn.mockResolvedValue({ data: null, error: { message: 'Invalid login' } });
+    mockSignIn.mockResolvedValue({ data: null, error: { code: 'invalid_credentials' } });
     const request = createMockRequest({ email: 'wrong', password: 'wrong' });
     const result = await action({ request } as ActionFunctionArgs);
-    expect(result).toEqual({ error: 'Invalid login' });
-  });
-
-  it('returns network error when "Failed to fetch"', async () => {
-    mockSignIn.mockResolvedValue({ data: null, error: { message: 'Failed to fetch' } });
-    const request = createMockRequest({ email: 'a', password: 'b' });
-    const result = await action({ request } as ActionFunctionArgs);
-    expect(result).toEqual({ error: 'Pls, check your internet connection.' });
+    expect(result).toEqual({ error: 'invalid_credentials' });
   });
 
   it('updates form state and calls validateInput on input change', () => {

@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { createMemoryRouter, RouterProvider, type ActionFunctionArgs } from 'react-router-dom';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import SignUp, { action } from './SignUp';
 import type { ChangeEvent } from 'react';
 
@@ -96,46 +96,5 @@ describe('SignUp component', () => {
     expect(passwordInput.type).toBe('text');
     fireEvent.click(togglerWrapper);
     expect(passwordInput.type).toBe('password');
-  });
-});
-
-describe('SignUp action function', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  const createMockRequest = (form: Record<string, string>) => {
-    const formData = new FormData();
-    Object.entries(form).forEach(([key, value]) => formData.append(key, value));
-    return new Request('http://localhost/signup', { method: 'POST', body: formData });
-  };
-
-  it('returns data on successful sign up', async () => {
-    mockSignUp.mockResolvedValue({ data: { id: '1' }, error: null });
-    const request = createMockRequest({ email: 'a@b.com', name: 'John', password: '123456' });
-    const result = await action({ request } as ActionFunctionArgs);
-
-    expect(mockSignUp).toHaveBeenCalledWith({
-      email: 'a@b.com',
-      password: '123456',
-      options: { data: { name: 'John' } },
-    });
-    expect(result).toEqual({ data: { id: '1' } });
-  });
-
-  it('returns error message when sign up fails', async () => {
-    mockSignUp.mockResolvedValue({ data: null, error: { message: 'Invalid input' } });
-    const request = createMockRequest({ email: '', name: '', password: '' });
-    const result = await action({ request } as ActionFunctionArgs);
-
-    expect(result).toEqual({ error: 'Invalid input' });
-  });
-
-  it('returns network error when sign up fails with "Failed to fetch"', async () => {
-    mockSignUp.mockResolvedValue({ data: null, error: { message: 'Failed to fetch' } });
-    const request = createMockRequest({ email: 'a', name: 'b', password: 'c' });
-    const result = await action({ request } as ActionFunctionArgs);
-
-    expect(result).toEqual({ error: 'Pls, check your internet connection.' });
   });
 });

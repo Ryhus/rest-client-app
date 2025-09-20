@@ -1,14 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Navigate,
   Form,
   useActionData,
   useRouteLoaderData,
+  redirect,
   type ActionFunctionArgs,
 } from 'react-router-dom';
 import { Input, Button, Message } from '@/components';
 import { ButtonStyle, ButtonType } from '@/components/Button/types';
 import type { AuthErrors } from '@/utils/schema';
+import { getSupabaseAuthError } from '@/utils/errorMaps/authErrors';
 import { validateInput, type InputName } from '@/utils/validateInput';
 import { createClient } from '@/services/supabase/supabaseServer';
 import type { User } from '@supabase/supabase-js';
@@ -20,7 +22,7 @@ import eyeShow from '@/assets/img/eyeShow.svg';
 import './SignUpStyles.scss';
 
 export async function action({ request }: ActionFunctionArgs) {
-  const { supabase } = createClient(request);
+  const { supabase, headers } = createClient(request);
 
   const formData = await request.formData();
 
@@ -28,7 +30,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const name = formData.get('name') as string;
   const password = formData.get('password') as string;
 
-  const { data, error } = await supabase.auth.signUp({
+  const { error } = await supabase.auth.signUp({
     email,
     password,
     options: { data: { name: name } },
@@ -36,14 +38,11 @@ export async function action({ request }: ActionFunctionArgs) {
 
   if (error) {
     return {
-      error:
-        error.message === 'Failed to fetch'
-          ? 'Pls, check your internet connection.'
-          : error.message,
+      error: error.code,
     };
   }
 
-  return { data };
+  return redirect('/', { headers });
 }
 
 interface SignUpData {
@@ -68,6 +67,7 @@ export default function SignUp() {
   });
   const user = useRouteLoaderData<User>('root');
   const actionData = useActionData() as { error?: string };
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -76,12 +76,18 @@ export default function SignUp() {
     validateInput({ key, value, setErrors });
   };
 
+  useEffect(() => {
+    if (actionData?.error) {
+      setIsLoading(false);
+    }
+  }, [actionData]);
+
   if (user) return <Navigate to="/" replace />;
 
   return (
     <div className="signup-page">
       <h2 className="signup-page__title">{t('signUpTitle')}</h2>
-      <Form className="signup-page__form" method="post">
+      <Form className="signup-page__form" method="post" onSubmit={() => setIsLoading(true)}>
         <Input
           type="text"
           id="email"
@@ -123,16 +129,13 @@ export default function SignUp() {
           style={ButtonStyle.Primary}
           type={ButtonType.Submit}
           customClass="signup-page__form-button"
-          isDisabled={errors.isError}
+          isDisabled={errors.isError || isLoading}
         >
-          {t('signUp')}
-          {actionData && (
-            <Message
-              messageType="warning"
-              text={actionData.error || 'Service unavailable, try again'}
-            ></Message>
-          )}
+          {isLoading ? '...' : t('signUp')}
         </Button>
+        {actionData && (
+          <Message messageType="warning" text={getSupabaseAuthError(actionData.error)}></Message>
+        )}
       </Form>
     </div>
   );
