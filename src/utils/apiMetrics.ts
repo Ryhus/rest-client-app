@@ -55,7 +55,7 @@ export async function apiRequestWithMetrics<TResponse = unknown, TData = unknown
     };
   } catch (error: unknown) {
     const duration = performance.now() - start;
-    const formattedDuration = `${Math.round(duration)}ms`;
+    const formattedDuration = `${Math.round(duration)}`;
     let errorMessage = 'Unexpected error';
     if (isAxiosError(error)) errorMessage = error.response?.data || 'Unexpected error';
 

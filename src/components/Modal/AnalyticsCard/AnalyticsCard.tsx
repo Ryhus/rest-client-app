@@ -56,7 +56,7 @@ export default function AnalyticsCard({ closeModal, row }: AnalyticsCardProps) {
           <div className="analytics-border"></div>
           <div className="analytics-data">
             <div
-              className={`status-code-container status-code-container--${row.status_code && row.status_code >= 400 ? 'error' : 'ok'}`}
+              className={`status-code-container status-code-container--${(row.status_code && row.status_code >= 400) || row.status_code === 0 ? 'error' : 'ok'}`}
             >
               <span>{row.status_code}</span>
             </div>
