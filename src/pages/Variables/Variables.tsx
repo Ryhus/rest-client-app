@@ -114,7 +114,7 @@ export default function Variables() {
           {t('addBtn')}
         </Button>
         {newRow && (
-          <Button style={ButtonStyle.Primary} type={ButtonType.Button} onClick={onSaveBtnClick}>
+          <Button style={ButtonStyle.Secondary} type={ButtonType.Button} onClick={onSaveBtnClick}>
             {t('saveBtn')}
           </Button>
         )}
