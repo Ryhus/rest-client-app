@@ -4,8 +4,6 @@ import { type HistoryRow } from '@/types/types';
 import { Modal, AnalyticsCard } from '@/components/Modal';
 import IconThreeDots from '@/assets/icons/three-dots.svg?react';
 
-import './HistoryDateStyles.scss';
-
 import chevronRight from '@/assets/icons/chevron-right.svg';
 
 interface HistoryDateProps {
