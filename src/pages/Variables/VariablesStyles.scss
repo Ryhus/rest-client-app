@@ -25,7 +25,6 @@
   height: 250px;
   overflow-y: auto;
   border: 1px solid variables.$border-color;
-  border-radius: variables.$border-radius;
   width: 100%;
 
   &:has(.variables__placeholder) {
