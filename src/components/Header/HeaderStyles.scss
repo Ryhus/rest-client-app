@@ -1,0 +1,80 @@
+@use '@/styles/base/variables';
+@use '@/components/Button/ButtonStyles';
+
+.header {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: variables.$color-basic;
+  border-bottom: 0.1rem solid variables.$border-color;
+  padding: 1rem 5rem;
+  transition: 0.3s ease;
+
+  .navbar {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    width: 90%;
+
+    .app-logo {
+      width: 40px;
+      height: 40px;
+    }
+
+    &__actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: baseline;
+      width: 95%;
+
+      &:has(.navbar__actions--expanded-group) {
+        justify-content: space-between;
+      }
+
+      &--expanded-group,
+      &--basic-group {
+        display: flex;
+        gap: 1.7rem;
+      }
+    }
+
+    &__link {
+      font-size: variables.$font-size-base;
+      font-weight: variables.$font-weight-medium;
+      color: variables.$color-secondary;
+      transition: 0.3s ease;
+      position: relative;
+
+      &:after {
+        display: block;
+        position: absolute;
+        left: 0;
+        width: 0;
+        content: '';
+        height: 2px;
+        background-color: variables.$color-secondary-light;
+        transition: width 0.3s ease-out;
+      }
+
+      &:hover {
+        color: variables.$color-secondary-light;
+
+        &:after {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.app-logo {
+  width: 48px;
+  height: 48px;
+}
+
+.scrolled {
+  background-color: variables.$bg-color;
+}
