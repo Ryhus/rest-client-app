@@ -7,3 +7,4 @@ export * from './Card';
 export * from './Modal';
 export * from './HistoryDate';
 export * from './Message';
+export * from './ErrorBoundary';

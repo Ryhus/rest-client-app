@@ -1,14 +1,16 @@
 import { Outlet } from 'react-router-dom';
 
-import { Footer, Header } from '@/components';
+import { Footer, Header, ErrorBoundary, MainFallback } from '@/components';
 
 export default function MainLayout() {
   return (
     <>
       <Header />
-      <main className="main">
-        <Outlet />
-      </main>
+      <ErrorBoundary fallback={<MainFallback />}>
+        <main className="main">
+          <Outlet />
+        </main>
+      </ErrorBoundary>
       <Footer />
     </>
   );
