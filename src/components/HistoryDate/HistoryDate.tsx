@@ -21,6 +21,23 @@ export default function HistoryDate({ date, rows }: HistoryDateProps) {
     setOpenRowId(null);
   };
 
+  function restoreUrl(historyRow: HistoryRow) {
+    const { request_method, endpoint, headers, payload } = historyRow;
+
+    if (!request_method || !endpoint) return '/rest-client';
+
+    let url = `/rest-client/${request_method}/${btoa(endpoint)}`;
+    if (payload) url = url.concat('/', btoa(payload));
+
+    if (headers) {
+      const requestHeaders = JSON.parse(headers) as string[][];
+      const headersParams = new URLSearchParams(requestHeaders);
+      url = url.concat(`?${headersParams}`);
+    }
+
+    return url;
+  }
+
   return (
     <>
       <li key={date.toString()} onClick={() => setIsOpened((prev) => !prev)}>
@@ -40,7 +57,7 @@ export default function HistoryDate({ date, rows }: HistoryDateProps) {
               <span className={`method method--${historyRow.request_method}`}>
                 {historyRow.request_method}
               </span>
-              <Link className="url-link" to="/rest-client" state={historyRow}>
+              <Link className="url-link" to={restoreUrl(historyRow)}>
                 {historyRow.endpoint}
               </Link>
               <div
