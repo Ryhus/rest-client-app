@@ -5,7 +5,6 @@ import {
   Navigate,
   useRouteLoaderData,
   useFetcher,
-  useLocation,
   type ActionFunctionArgs,
   useParams,
 } from 'react-router-dom';
@@ -20,7 +19,6 @@ import axios from 'axios';
 import { type User } from '@supabase/supabase-js';
 import { useTranslation } from 'react-i18next';
 import CodeSection from '@/pages/RestClient/CodeSection/CodeSection.tsx';
-import type { HistoryRow } from '@/types/types';
 import { createClient } from '@/services/supabase/supabaseServer';
 
 export default function RestClient() {
@@ -36,9 +34,6 @@ export default function RestClient() {
   const [methodError, setMethodError] = useState<string>('');
   const user = useRouteLoaderData<User>('root');
   const fetcher = useFetcher<ActionData>();
-  const location = useLocation();
-
-  const requestData = location.state as HistoryRow;
 
   let viewerData;
   const { t } = useTranslation('rest-client');
@@ -77,20 +72,14 @@ export default function RestClient() {
   useEffect(() => {
     if (method) {
       setRequestMethod(method);
-    } else if (requestData?.request_method) {
-      setRequestMethod(requestData.request_method);
     }
 
     if (encodedUrl) {
       setRequestUrl(atob(encodedUrl));
-    } else if (requestData?.endpoint) {
-      setRequestUrl(requestData.endpoint);
     }
 
     if (encodedBody) {
       setRequestBody(atob(encodedBody));
-    } else if (requestData?.payload) {
-      setRequestBody(requestData.payload);
     }
 
     clearRequestHeaders();
@@ -98,14 +87,6 @@ export default function RestClient() {
     searchParams.forEach((value, key) => {
       addRequestHeader({ name: key, value: value });
     });
-
-    if (requestData?.headers) {
-      const headersArray = JSON.parse(requestData.headers) as [string, string][];
-
-      headersArray.forEach(([key, value]) => {
-        addRequestHeader({ name: key, value });
-      });
-    }
   }, []);
 
   useEffect(() => {
