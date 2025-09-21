@@ -7,7 +7,7 @@ describe('MainFallback', () => {
     render(<MainFallback />);
     expect(screen.getByText(/Error page/i)).toBeInTheDocument();
     expect(
-      screen.getByText(/Oops, something went worng. Try refreshing the page/i)
+      screen.getByText(/Oops, something went wrong. We are working on it, try visiting later/i)
     ).toBeInTheDocument();
   });
 });
