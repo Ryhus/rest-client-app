@@ -4,13 +4,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 336px;
   min-height: 59px;
   padding: 10px;
   text-align: center;
   white-space: normal;
   overflow-wrap: anywhere;
-  border-radius: 4px;
+  border-radius: variables.$border-radius;
 
   &--success {
     background-color: variables.$color-success;

@@ -13,11 +13,11 @@ export default function Home() {
 
   return (
     <div className="home">
-      <h3 className="home__tittle">
+      <h2>
         {user
           ? t('welcomeUser', { user: user.user_metadata?.name ?? t('userNameFallback') })
           : t('welcomeGuest')}
-      </h3>
+      </h2>
       <section className="home__about">
         <p>{t('aboutApp')}</p>
         <p>

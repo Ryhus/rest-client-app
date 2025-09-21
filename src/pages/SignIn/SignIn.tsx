@@ -81,7 +81,7 @@ export default function SignIn() {
 
   return (
     <div className="signin-page">
-      <h2 className="signin-page__title">{t('loginTitle')}</h2>
+      <h2>{t('loginTitle')}</h2>
       <Form className="signin-page__form" method="post" onSubmit={() => setIsLoading(true)}>
         <Input
           type="text"

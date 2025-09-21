@@ -48,24 +48,15 @@
   text-align: center;
 }
 
-.card-title {
-  color: variables.$font-color-primary;
-  font-size: variables.$font-size-base;
-  font-weight: variables.$font-weight-bold;
-  text-transform: uppercase;
-}
-
 .card-role {
+  margin-top: 4px;
   color: variables.$font-color-primary;
   font-size: variables.$font-size-sm;
   font-weight: variables.$font-weight-regular;
   text-transform: uppercase;
 
-  &-primary {
+  &.lead {
     color: variables.$color-primary;
-    font-size: variables.$font-size-sm;
-    font-weight: variables.$font-weight-regular;
-    text-transform: uppercase;
   }
 }
 

@@ -3,17 +3,10 @@
 .signup-page {
   display: flex;
   flex-direction: column;
-  gap: 5rem;
+  gap: 3rem;
   align-items: center;
   flex: 1;
   padding: 7rem 2rem;
-
-  &__title {
-    font-family: variables.$font-family-base;
-    font-size: variables.$font-size-lg;
-    font-weight: variables.$font-weight-bold;
-    color: variables.$font-color-primary;
-  }
 
   &__server-error {
     font-family: variables.$font-family-base;
@@ -28,7 +21,7 @@
     align-items: center;
     width: 100%;
     max-width: 350px;
-    gap: 1rem;
+    gap: 12px;
 
     &-button {
       margin-top: 1rem;

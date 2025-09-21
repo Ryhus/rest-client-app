@@ -9,13 +9,6 @@
   justify-content: center;
   padding: 4rem 2rem;
 
-  &__tittle {
-    font-size: variables.$font-size-md;
-    font-weight: variables.$font-weight-bold;
-    color: variables.$font-color-primary;
-    text-transform: uppercase;
-  }
-
   &__about {
     display: flex;
     flex-direction: column;

@@ -50,7 +50,7 @@
   }
   li:hover {
     .opened-list-container {
-      box-shadow: -0.1rem 0 0 variables.$color-disabled;
+      box-shadow: variables.$shadow;
     }
   }
 
@@ -83,7 +83,7 @@
         justify-content: center;
         transition: color 0.3s;
         &:hover {
-          color: variables.$color-primary-light;
+          color: variables.$color-primary;
         }
       }
     }
