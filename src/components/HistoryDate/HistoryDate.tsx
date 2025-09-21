@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { type HistoryRow } from '@/types/types';
 import { Modal, AnalyticsCard } from '@/components/Modal';
+import IconThreeDots from '@/assets/icons/three-dots.svg?react';
 
 import './HistoryDateStyles.scss';
 
 import chevronRight from '@/assets/icons/chevron-right.svg';
-import threeDots from '@/assets/icons/three-dots.svg';
 
 interface HistoryDateProps {
   date: string;
@@ -43,14 +43,15 @@ export default function HistoryDate({ date, rows }: HistoryDateProps) {
               <Link className="url-link" to="/rest-client" state={historyRow}>
                 {historyRow.endpoint}
               </Link>
-              <img
-                src={threeDots}
-                alt="open request info"
-                className="analytics-bttn"
+              <div
+                data-testid="open request info"
+                className="icon-container"
                 onClick={() => {
                   setOpenRowId(historyRow.id);
                 }}
-              />
+              >
+                <IconThreeDots />
+              </div>
               {openRowId === historyRow.id && (
                 <Modal closeModal={handleCloseModal}>
                   <AnalyticsCard closeModal={handleCloseModal} row={historyRow} />

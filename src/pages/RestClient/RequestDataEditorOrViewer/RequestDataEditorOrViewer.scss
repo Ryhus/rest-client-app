@@ -39,6 +39,7 @@
     .status-code {
       padding: 2px 4px;
       width: fit-content;
+      min-width: 36px;
       border-radius: variables.$border-radius;
       border: 1px solid variables.$border-color;
 

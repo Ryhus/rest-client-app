@@ -19,6 +19,11 @@
     gap: 3rem;
     width: 90%;
 
+    .app-logo {
+      width: 40px;
+      height: 40px;
+    }
+
     &__actions {
       display: flex;
       justify-content: flex-end;
@@ -38,9 +43,8 @@
 
     &__link {
       font-size: variables.$font-size-base;
-      font-weight: variables.$font-weight-bold;
+      font-weight: variables.$font-weight-medium;
       color: variables.$color-secondary;
-      text-transform: uppercase;
       transition: 0.3s ease;
       position: relative;
 

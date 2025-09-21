@@ -86,7 +86,7 @@ export default function SignUp() {
 
   return (
     <div className="signup-page">
-      <h2 className="signup-page__title">{t('signUpTitle')}</h2>
+      <h2>{t('signUpTitle')}</h2>
       <Form className="signup-page__form" method="post" onSubmit={() => setIsLoading(true)}>
         <Input
           type="text"

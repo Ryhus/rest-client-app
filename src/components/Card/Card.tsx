@@ -20,8 +20,8 @@ export default function Card(profile: Profile) {
       </div>
       <div className="card-content">
         <div className="card-header">
-          <h1 className="card-title">{profile.name}</h1>
-          <p className={profile.role === t('primaryRole') ? 'card-role-primary' : 'card-role'}>
+          <h3>{profile.name}</h3>
+          <p className={profile.role === t('primaryRole') ? 'card-role lead' : 'card-role'}>
             {profile.role}
           </p>
         </div>

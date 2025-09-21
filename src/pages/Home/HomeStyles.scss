@@ -9,12 +9,6 @@
   justify-content: center;
   padding: 4rem 2rem;
 
-  &__tittle {
-    font-size: variables.$font-size-lg;
-    font-weight: variables.$font-weight-bold;
-    color: variables.$font-color-primary;
-  }
-
   &__about {
     display: flex;
     flex-direction: column;
@@ -24,10 +18,12 @@
     font-weight: variables.$font-weight-regular;
     color: variables.$font-color-secondary;
     text-align: center;
+    line-height: 24px;
   }
 
   &__team-info {
     display: flex;
+    gap: variables.$spacing-md;
     margin-top: 4rem;
   }
 

@@ -11,7 +11,7 @@
 
   text-align: center;
   position: relative;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: variables.$shadow;
   font-family: variables.$font-family-base, Arial, sans-serif;
 
   .close-modal-bttn {
@@ -21,7 +21,6 @@
   .request-date-container {
     display: flex;
     gap: 2px;
-    align-self: left;
     align-items: center;
   }
   .endpoint-container {
@@ -49,11 +48,11 @@
       align-items: center;
       width: 242px;
       min-height: 144px;
-      padding: 20px;
+      padding: 20px 20px 32px;
       gap: 12px;
       background: #ffffff;
       border-radius: 4px;
-      box-shadow: 0px 3px 10px rgba(220, 220, 220, 0.35);
+      box-shadow: variables.$shadow;
 
       h4 {
         color: variables.$font-color-secondary;
@@ -127,14 +126,6 @@
     min-height: 24px;
     path {
       stroke: variables.$color-warning;
-    }
-  }
-  .close-modal-bttn {
-    &:hover {
-      transform: scale(1.1);
-    }
-    &:active {
-      transform: scale(0.95);
     }
   }
 }

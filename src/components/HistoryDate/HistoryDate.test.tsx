@@ -99,8 +99,8 @@ describe('HistoryDate', () => {
       </MemoryRouter>
     );
     fireEvent.click(screen.getByText('2025-09-20'));
-    const analyticsButtons = screen.getAllByAltText('open request info');
-    fireEvent.click(analyticsButtons[0]);
+    const analyticsButtons = screen.getAllByTestId('open request info')[0];
+    fireEvent.click(analyticsButtons);
     expect(screen.getByTestId('modal')).toBeInTheDocument();
     expect(screen.getByTestId('analytics-card')).toBeInTheDocument();
   });
@@ -112,7 +112,7 @@ describe('HistoryDate', () => {
       </MemoryRouter>
     );
     fireEvent.click(screen.getByText('2025-09-20'));
-    const analyticsButtons = screen.getAllByAltText('open request info');
+    const analyticsButtons = screen.getAllByTestId('open request info');
     fireEvent.click(analyticsButtons[0]);
     const closeButton = screen.getByText('Close');
     fireEvent.click(closeButton);

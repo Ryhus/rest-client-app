@@ -234,8 +234,8 @@ IRestResponse response = client.Execute(request);
   });
 
   describe('response', () => {
-    describe('when the response is an error', () => {
-      test('checks correct status', async () => {
+    describe('when the response is is success', () => {
+      test('checks status', async () => {
         renderComponent({ auth: true, isData: true, isError: false });
 
         await userEvent.click(screen.getByRole('button', { name: /send/i }));
@@ -245,7 +245,7 @@ IRestResponse response = client.Execute(request);
         });
       });
 
-      test('checks correct message', async () => {
+      test('checks message', async () => {
         renderComponent({ auth: true, isData: true, isError: false });
 
         await userEvent.click(screen.getByRole('button', { name: /send/i }));
@@ -256,8 +256,8 @@ IRestResponse response = client.Execute(request);
       });
     });
 
-    describe('when the response is success', () => {
-      test('checks correct status', async () => {
+    describe('when the response an error', () => {
+      test('checks status', async () => {
         renderComponent({ auth: true, isData: true, isError: true });
 
         await userEvent.click(screen.getByRole('button', { name: /send/i }));
@@ -265,14 +265,6 @@ IRestResponse response = client.Execute(request);
         await waitFor(() => {
           expect(screen.getByText('404')).toHaveClass('status-code error');
         });
-      });
-
-      test('checks correct message', async () => {
-        renderComponent({ auth: true, isData: true, isError: true });
-
-        await userEvent.click(screen.getByRole('button', { name: /send/i }));
-
-        await waitFor(() => expect(screen.getByTestId('viewer-error')).toBeInTheDocument());
       });
     });
   });

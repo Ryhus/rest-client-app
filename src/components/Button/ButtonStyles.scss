@@ -38,25 +38,27 @@
   background-color: variables.$color-disabled;
 }
 
+.secondary {
+  color: variables.$font-color-primary;
+  background-color: variables.$color-basic;
+  border: 1px solid variables.$color-primary;
+}
+
 .icon-btn {
   min-width: 32px;
   height: 32px;
   padding: 4px;
-}
-
-.secondary,
-.icon-btn {
   color: variables.$font-color-primary;
   background-color: variables.$color-basic;
   border: 1px solid variables.$border-color;
 }
 
 .icon-btn:hover {
-  color: variables.$color-warning;
+  color: variables.$color-primary;
 }
 
 .secondary:hover {
-  border-color: variables.$color-basic-dark;
+  color: variables.$color-primary;
 }
 
 .secondary:disabled,

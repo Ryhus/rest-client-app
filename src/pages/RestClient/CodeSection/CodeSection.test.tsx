@@ -1,11 +1,13 @@
 import { beforeEach, describe, test, expect, afterEach } from 'vitest';
 import CodeSection from '@/pages/RestClient/CodeSection/CodeSection.tsx';
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import { restClientPageStore } from '@/stores/restClientPageStore/restClientPageStore.ts';
 import userEvent from '@testing-library/user-event';
 
-function renderComponent() {
-  return render(<CodeSection />);
+async function renderComponent() {
+  return await act(() => {
+    return render(<CodeSection />);
+  });
 }
 
 describe('<CodeSection>', () => {
@@ -18,14 +20,14 @@ describe('<CodeSection>', () => {
   });
 
   describe('the necessary elements', () => {
-    test('renders a selection of languages', () => {
-      renderComponent();
+    test('renders a selection of languages', async () => {
+      await renderComponent();
 
       expect(screen.getByRole('combobox')).toBeInTheDocument();
     });
 
-    test('renders a content', () => {
-      renderComponent();
+    test('renders a content', async () => {
+      await renderComponent();
 
       expect(screen.getByTestId('content-container')).toBeInTheDocument();
     });
@@ -42,7 +44,7 @@ describe('<CodeSection>', () => {
     test('checks content for curl', async () => {
       restClientPageStore.setState(initStoreValue);
 
-      renderComponent();
+      await renderComponent();
       const select = screen.getByRole('combobox');
       await userEvent.selectOptions(select, 'curl');
 
@@ -56,7 +58,7 @@ describe('<CodeSection>', () => {
     test('checks content for JavaScript (Fetch api)', async () => {
       restClientPageStore.setState(initStoreValue);
 
-      renderComponent();
+      await renderComponent();
       const select = screen.getByRole('combobox');
       await userEvent.selectOptions(select, 'JavaScript (Fetch api)');
 
@@ -80,7 +82,7 @@ try {
     test('checks content for JavaScript (XHR)', async () => {
       restClientPageStore.setState(initStoreValue);
 
-      renderComponent();
+      await renderComponent();
       const select = screen.getByRole('combobox');
       await userEvent.selectOptions(select, 'JavaScript (XHR)');
 
@@ -110,7 +112,7 @@ xhr.send(data);
     test('checks content for JNodeJS', async () => {
       restClientPageStore.setState(initStoreValue);
 
-      renderComponent();
+      await renderComponent();
       const select = screen.getByRole('combobox');
       await userEvent.selectOptions(select, 'NodeJS');
 
@@ -139,7 +141,7 @@ request(options, function (error, response, body) {
     test('checks content for Python', async () => {
       restClientPageStore.setState(initStoreValue);
 
-      renderComponent();
+      await renderComponent();
       const select = screen.getByRole('combobox');
       await userEvent.selectOptions(select, 'Python');
 
@@ -164,7 +166,7 @@ print(response.json())
     test('checks content for Java', async () => {
       restClientPageStore.setState(initStoreValue);
 
-      renderComponent();
+      await renderComponent();
       const select = screen.getByRole('combobox');
       await userEvent.selectOptions(select, 'Java');
 
@@ -190,7 +192,7 @@ Response response = client.newCall(request).execute();
     test('checks content for C#', async () => {
       restClientPageStore.setState(initStoreValue);
 
-      renderComponent();
+      await renderComponent();
       const select = screen.getByRole('combobox');
       await userEvent.selectOptions(select, 'C#');
 
@@ -210,7 +212,7 @@ IRestResponse response = client.Execute(request);
     test('checks content for Go', async () => {
       restClientPageStore.setState(initStoreValue);
 
-      renderComponent();
+      await renderComponent();
       const select = screen.getByRole('combobox');
       await userEvent.selectOptions(select, 'Go');
 
