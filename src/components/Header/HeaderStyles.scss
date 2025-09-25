@@ -48,23 +48,9 @@
       transition: 0.3s ease;
       position: relative;
 
-      &:after {
-        display: block;
-        position: absolute;
-        left: 0;
-        width: 0;
-        content: '';
-        height: 2px;
-        background-color: variables.$color-secondary-light;
-        transition: width 0.3s ease-out;
-      }
-
-      &:hover {
+      &:hover,
+      &.active {
         color: variables.$color-secondary-light;
-
-        &:after {
-          width: 100%;
-        }
       }
     }
   }
