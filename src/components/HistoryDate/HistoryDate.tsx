@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { type HistoryRow } from '@/types/types';
 import { Modal, AnalyticsCard } from '@/components/Modal';
 import IconThreeDots from '@/assets/icons/three-dots.svg?react';
-
+import { toBase64 } from '@/utils/encoding';
 import chevronRight from '@/assets/icons/chevron-right.svg';
 
 interface HistoryDateProps {
@@ -24,8 +24,8 @@ export default function HistoryDate({ date, rows }: HistoryDateProps) {
 
     if (!request_method || !endpoint) return '/rest-client';
 
-    let url = `/rest-client/${request_method}/${btoa(endpoint)}`;
-    if (payload) url = url.concat('/', btoa(payload));
+    let url = `/rest-client/${request_method}/${toBase64(endpoint)}`;
+    if (payload) url = url.concat('/', toBase64(payload));
 
     if (headers) {
       const requestHeaders = JSON.parse(headers) as string[][];

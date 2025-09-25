@@ -5,17 +5,17 @@ describe('getAuthSchema', () => {
   const schema = getAuthSchema();
 
   it('validates correct data', async () => {
-    const validData = { name: 'John', email: 'john@example.com', password: 'Pass1234' };
+    const validData = { name: 'John', email: 'john@example.com', password: 'Pass1234!' };
     await expect(schema.validate(validData)).resolves.toEqual(validData);
   });
 
   it('fails when name is missing', async () => {
-    const data = { name: '', email: 'john@example.com', password: 'Pass1234' };
+    const data = { name: '', email: 'john@example.com', password: 'Pass1234!' };
     await expect(schema.validate(data)).rejects.toThrow('Name is required');
   });
 
   it('fails when email format is invalid', async () => {
-    const data = { name: 'John', email: 'invalid', password: 'Pass1234' };
+    const data = { name: 'John', email: 'invalid', password: 'Pass1234!' };
     await expect(schema.validate(data)).rejects.toThrow(
       'Expected email format: username@example.com'
     );
@@ -38,5 +38,9 @@ describe('getAuthSchema', () => {
     await expect(schema.validate(data)).rejects.toThrow(
       'Password must contain at least one number'
     );
+  });
+  it('fails when password has no special character', async () => {
+    const data = { name: 'John', email: 'john@example.com', password: 'Password1' };
+    await expect(schema.validate(data)).rejects.toThrow('Special symbol is required');
   });
 });
