@@ -1,4 +1,4 @@
-import { Link, useRouteLoaderData, Form } from 'react-router-dom';
+import { Link, useRouteLoaderData, Form, NavLink } from 'react-router-dom';
 import logo from '@/assets/img/logo.svg';
 import { useEffect, useState } from 'react';
 import { guestLinks, userLinks } from '@/utils/navLinksConfig';
@@ -40,9 +40,19 @@ export default function Header() {
             <>
               <div className="navbar__actions--expanded-group">
                 {userLinks.map((link) => (
-                  <Link key={link.text} to={link.to} className="navbar__link">
+                  <NavLink
+                    key={link.text}
+                    to={link.to}
+                    className={({ isActive, isPending }) =>
+                      isPending
+                        ? 'navbar__link pending'
+                        : isActive
+                          ? 'navbar__link active'
+                          : 'navbar__link'
+                    }
+                  >
                     {t(link.text)}
-                  </Link>
+                  </NavLink>
                 ))}
               </div>
               <div className="navbar__actions--basic-group">

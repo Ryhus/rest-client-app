@@ -8,6 +8,9 @@ vi.mock('react-router-dom', () => {
     Link: ({ children, to }: { children: React.ReactNode; to: string }) => (
       <a href={to}>{children}</a>
     ),
+    NavLink: ({ children, to }: { children: React.ReactNode; to: string }) => (
+      <a href={to}>{children}</a>
+    ),
     Form: ({ children }: { children: React.ReactNode }) => <form>{children}</form>,
     useRouteLoaderData: vi.fn<() => User | null>(),
   };
