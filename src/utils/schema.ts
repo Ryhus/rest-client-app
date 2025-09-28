@@ -15,9 +15,10 @@ export function getAuthSchema() {
     password: yup
       .string()
       .required(i18n.t('password.required', { ns: 'validation' }))
-      .matches(/(?=.*[a-zA-Z])/, i18n.t('password.matchesLetter', { ns: 'validation' }))
-      .matches(/(?=.*[0-9])/, i18n.t('password.matchesNumber', { ns: 'validation' }))
-      .min(8, i18n.t('password.matchesLength', { ns: 'validation' })),
+      .min(8, i18n.t('password.matchesLength', { ns: 'validation' }))
+      .matches(/\p{L}/u, i18n.t('password.matchesLetter', { ns: 'validation' }))
+      .matches(/\p{N}/u, i18n.t('password.matchesNumber', { ns: 'validation' }))
+      .matches(/[^\p{L}\p{N}]/u, i18n.t('password.matchesSpecial', { ns: 'validation' })),
   });
 }
 

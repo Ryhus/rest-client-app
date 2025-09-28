@@ -20,6 +20,7 @@ import { type User } from '@supabase/supabase-js';
 import { useTranslation } from 'react-i18next';
 import CodeSection from '@/pages/RestClient/CodeSection/CodeSection.tsx';
 import { createClient } from '@/services/supabase/supabaseServer';
+import { toBase64, fromBase64 } from '@/utils/encoding';
 
 export default function RestClient() {
   const { method, encodedUrl, encodedBody } = useParams<{
@@ -75,11 +76,11 @@ export default function RestClient() {
     }
 
     if (encodedUrl) {
-      setRequestUrl(atob(encodedUrl));
+      setRequestUrl(fromBase64(encodedUrl));
     }
 
     if (encodedBody) {
-      setRequestBody(atob(encodedBody));
+      setRequestBody(fromBase64(encodedBody));
     }
 
     clearRequestHeaders();
@@ -102,8 +103,8 @@ export default function RestClient() {
     const segments = [
       '/rest-client',
       requestMethod,
-      btoa(requestUrl),
-      requestBody ? btoa(requestBody) : undefined,
+      toBase64(requestUrl),
+      requestBody ? toBase64(requestBody) : undefined,
     ].filter((s) => s !== undefined);
 
     const newUrlSearchParams = new URLSearchParams(headers);
