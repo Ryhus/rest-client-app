@@ -65,3 +65,15 @@
   height: 24px;
   object-fit: contain;
 }
+
+@media (max-width: 768px) {
+  .card-container {
+    width: 220px;
+  }
+}
+
+@media (max-width: 380px) {
+  .card-container {
+    width: 286px;
+  }
+}
