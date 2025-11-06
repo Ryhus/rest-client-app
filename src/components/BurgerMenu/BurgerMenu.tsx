@@ -9,7 +9,7 @@ interface BurgerMenuProps {
 
 export default function BurgerMenu({ open, onClick }: BurgerMenuProps) {
   return (
-    <div className="burger-menu" onClick={onClick}>
+    <div className="burger-menu" onClick={onClick} data-testid="burger-menu">
       <div className={clsx('bar1', open && 'open')} />
       <div className={clsx('bar2', open && 'open')} />
     </div>
