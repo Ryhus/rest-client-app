@@ -66,13 +66,13 @@
   object-fit: contain;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 860px) {
   .card-container {
     width: 220px;
   }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 440px) {
   .card-container {
     width: 286px;
   }

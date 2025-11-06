@@ -78,7 +78,7 @@
   background-color: variables.$bg-color;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 860px) {
   .header__content {
     position: relative;
     justify-content: space-between;
@@ -124,7 +124,7 @@
   }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 440px) {
   .header {
     padding: 1rem 0.5rem;
 
