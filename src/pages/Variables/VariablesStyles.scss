@@ -61,3 +61,17 @@
     margin: 0 8px;
   }
 }
+
+@media (max-width: 860px) {
+  .variables__container {
+    padding: 2rem 2.5rem;
+  }
+}
+
+@media (max-width: 440px) {
+  .variables__container {
+    padding: 1.5rem 0.5rem;
+  }
+}
+
+

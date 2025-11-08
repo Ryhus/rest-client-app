@@ -36,3 +36,25 @@
     text-decoration: none;
   }
 }
+
+@media (max-width: 860px) {
+  .home__about{
+    width: 90%;
+  }
+}
+
+@media (max-width: 440px) {
+  .home {
+    padding: 1rem 0.5rem;
+  }
+
+  .home__team-info {
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .home__about{
+    width: 100%;
+  }
+}
+
