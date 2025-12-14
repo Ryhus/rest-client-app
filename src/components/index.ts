@@ -9,3 +9,4 @@ export * from './HistoryDate';
 export * from './Message';
 export * from './ErrorBoundary';
 export * from './BurgerMenu';
+export * from './RowActions';

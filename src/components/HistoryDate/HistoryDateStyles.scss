@@ -4,13 +4,13 @@
   display: flex;
   flex-direction: column;
   user-select: none;
-  cursor: pointer;
 
   .date-list-tittle {
     display: flex;
     align-self: center;
     padding: 8px;
     max-width: 115px;
+    cursor: pointer;
 
     .list-icon {
       &--opened-list {
@@ -51,6 +51,7 @@
         align-items: center;
         justify-content: center;
         transition: color 0.3s;
+        cursor: pointer;
         &:hover {
           color: variables.$color-primary;
         }
