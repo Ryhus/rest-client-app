@@ -1,0 +1,60 @@
+@use '@/styles/base/variables';
+
+.closed-list-container {
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  cursor: pointer;
+
+  .date-list-tittle {
+    display: flex;
+    align-self: center;
+    padding: 8px;
+    max-width: 115px;
+
+    .list-icon {
+      &--opened-list {
+        rotate: 90deg;
+      }
+    }
+  }
+
+  .date-list-tittle:hover {
+    background-color: variables.$bg-color;
+  }
+
+  .opened-list-container {
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.3s ease;
+
+    .request-row {
+      padding: 8px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 12px;
+
+      .url-link {
+        color: variables.$font-color-primary;
+        transition: color 0.3s;
+      }
+      .url-link:hover {
+        color: variables.$color-secondary-light;
+        text-decoration: underline;
+      }
+
+      .icon-container {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.3s;
+        &:hover {
+          color: variables.$color-primary;
+        }
+      }
+    }
+  }
+}
