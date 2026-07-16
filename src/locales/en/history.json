@@ -1,0 +1,20 @@
+{
+  "title": "Request history",
+  "requestHistory": "Requests grouped by date",
+  "openRequest": "Open {{method}} request to {{endpoint}} in the REST client",
+  "rowActions": "Actions for {{endpoint}}",
+  "openAnalytics": "Open request analytics",
+  "openAnalyticsFor": "Open analytics for {{endpoint}}",
+  "deleteRequest": "Delete request",
+  "deleteRequestFrom": "Delete {{endpoint}} from history",
+  "analyticsTitle": "Request analytics",
+  "closeAnalytics": "Close request analytics",
+  "request": "Request",
+  "response": "Response",
+  "duration": "duration",
+  "ms": "ms",
+  "payload": "payload",
+  "suggestion": "You have not executed any requests yet. Try those options:",
+  "suggestionLink": "to the REST client",
+  "bytes": "bytes"
+}

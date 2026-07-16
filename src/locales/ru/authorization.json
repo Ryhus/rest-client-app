@@ -1,0 +1,13 @@
+{
+  "email": "Электронная почта",
+  "name": "Имя",
+  "password": "Пароль",
+  "login": "Вход",
+  "signUp": "Регистрация",
+  "loginTitle": "Логин",
+  "signUpTitle": "Создайте аккаунт",
+  "showPassword": "Показать пароль",
+  "hidePassword": "Скрыть пароль",
+  "loggingIn": "Выполняется вход",
+  "creatingAccount": "Создаётся аккаунт"
+}

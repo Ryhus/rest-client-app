@@ -1,0 +1,203 @@
+@use '@/styles/base/variables';
+
+.data-container {
+  display: flex;
+  flex-direction: column;
+
+  .title-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    .beautify {
+      margin-left: auto;
+    }
+  }
+
+  .content-container {
+    margin-top: 12px;
+    height: 300px;
+    border: 1px solid variables.$border-color;
+  }
+
+  .viewer {
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: variables.$bg-color;
+
+    .status-code {
+      padding: 2px 4px;
+      width: fit-content;
+      min-width: 36px;
+      border-radius: variables.$border-radius;
+      border: 1px solid variables.$border-color;
+
+      &.info {
+        color: variables.$font-color-secondary;
+        border-color: variables.$font-color-secondary;
+      }
+
+      &.success {
+        color: variables.$color-success;
+        border-color: variables.$color-success;
+      }
+
+      &.error {
+        color: variables.$color-warning;
+        border-color: variables.$color-warning;
+      }
+    }
+
+    .body {
+      margin-top: 8px;
+    }
+
+    .response-syntax {
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: variables.$font-size-sm;
+      line-height: 22px;
+      white-space: pre;
+    }
+  }
+
+  .viewer .error {
+    margin-top: 8px;
+    color: variables.$color-warning;
+  }
+
+  .not-valid-format {
+    height: 20px;
+    color: variables.$color-warning;
+    background-color: variables.$color-basic;
+  }
+}
+
+.body-editor {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: variables.$color-basic;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: variables.$font-size-sm;
+  line-height: 22px;
+  tab-size: 2;
+
+  &:focus-within {
+    box-shadow: inset 0 0 0 1px variables.$color-basic-dark;
+  }
+}
+
+.body-editor__gutter {
+  position: absolute;
+  z-index: 3;
+  inset: 0 auto 0 0;
+  width: 48px;
+  overflow: hidden;
+  border-right: 1px solid variables.$border-color;
+  background: variables.$bg-color;
+  color: variables.$font-color-secondary;
+  text-align: right;
+  user-select: none;
+}
+
+.body-editor__line-numbers {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 12px 10px 12px 0;
+  list-style: none;
+  will-change: transform;
+
+  li {
+    height: 22px;
+  }
+}
+
+.body-editor__highlight-viewport {
+  position: absolute;
+  z-index: 1;
+  inset: 0 0 0 48px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.body-editor__highlight,
+.body-editor__textarea {
+  margin: 0;
+  padding: 12px 16px;
+  border: 0;
+  font: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  white-space: pre;
+  overflow-wrap: normal;
+}
+
+.body-editor__highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  color: variables.$font-color-primary;
+  will-change: transform;
+}
+
+.syntax-highlight__line {
+  min-height: 22px;
+}
+
+.body-editor__textarea {
+  position: absolute;
+  z-index: 2;
+  inset: 0 0 0 48px;
+  width: calc(100% - 48px);
+  height: 100%;
+  overflow: auto;
+  resize: none;
+  outline: none;
+  background: transparent;
+  color: transparent;
+  caret-color: variables.$font-color-primary;
+  -webkit-text-fill-color: transparent;
+
+  &::selection {
+    background: rgba(34, 181, 211, 0.28);
+  }
+}
+
+.syntax-token--property {
+  color: variables.$method-color-purple;
+}
+
+.syntax-token--string {
+  color: variables.$color-secondary;
+}
+
+.syntax-token--number {
+  color: variables.$method-color-blue;
+}
+
+.syntax-token--boolean {
+  color: variables.$method-color-orange;
+}
+
+.syntax-token--null {
+  color: variables.$method-color-pink;
+}
+
+@media (forced-colors: active) {
+  .body-editor__highlight-viewport {
+    display: none;
+  }
+
+  .body-editor__textarea {
+    color: CanvasText;
+    -webkit-text-fill-color: CanvasText;
+  }
+}

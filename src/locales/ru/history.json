@@ -1,0 +1,20 @@
+{
+  "title": "История запросов",
+  "requestHistory": "Запросы, сгруппированные по дате",
+  "openRequest": "Открыть запрос {{method}} к {{endpoint}} в REST-клиенте",
+  "rowActions": "Действия для {{endpoint}}",
+  "openAnalytics": "Открыть аналитику запроса",
+  "openAnalyticsFor": "Открыть аналитику для {{endpoint}}",
+  "deleteRequest": "Удалить запрос",
+  "deleteRequestFrom": "Удалить {{endpoint}} из истории",
+  "analyticsTitle": "Аналитика запроса",
+  "closeAnalytics": "Закрыть аналитику запроса",
+  "request": "Запрос",
+  "response": "Ответ",
+  "duration": "длительность",
+  "ms": "мс",
+  "payload": "данные",
+  "suggestion": "Вы ещё не выполняли запросы. Попробуйте эти варианты:",
+  "suggestionLink": "перейти на страницу REST-клиента",
+  "bytes": "байт"
+}
