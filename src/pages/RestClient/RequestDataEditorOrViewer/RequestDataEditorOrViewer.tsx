@@ -4,6 +4,7 @@ import { restClientPageStore } from '@/stores/restClientPageStore/restClientPage
 import { type ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ButtonStyle } from '@/components/Button/types.ts';
+import BodyEditor from './BodyEditor';
 
 interface PropsEditor {
   mode: 'editor';
@@ -105,13 +106,11 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
           )}
         </div>
         <div className="content-container">
-          <textarea
-            id={`data-editor-${mode}`}
-            className="textarea"
+          <BodyEditor
+            language={bodyType}
             onChange={handleRequestBodyOnChange}
             value={requestBody}
-            spellCheck={bodyType === 'text'}
-            data-testid="textarea-body-editor"
+            ariaLabel={t('requestBodyEditor')}
           />
         </div>
         <p className="not-valid-format" data-testid="not-valid-format">
