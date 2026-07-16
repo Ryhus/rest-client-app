@@ -34,8 +34,7 @@ describe('Modal', () => {
 
   it('calls closeModal when clicking on the backdrop', () => {
     renderModal(<div data-testid="modal-child">Hello Modal</div>);
-    const child = screen.getByText('Hello Modal');
-    const backdrop = child.parentElement;
+    const backdrop = screen.getByRole('dialog').parentElement;
 
     if (!backdrop) throw new Error('Backdrop element not found');
 
@@ -48,6 +47,31 @@ describe('Modal', () => {
     const child = screen.getByTestId('modal-child');
     fireEvent.mouseDown(child);
     expect(closeModalMock).not.toHaveBeenCalled();
+  });
+
+  it('exposes a named modal dialog and moves focus inside it', () => {
+    render(
+      <Modal closeModal={closeModalMock} ariaLabel="Request details">
+        <button>Close</button>
+      </Modal>
+    );
+
+    const dialog = screen.getByRole('dialog', { name: 'Request details' });
+    expect(dialog).toHaveAttribute('aria-modal', 'true');
+    expect(screen.getByRole('button', { name: 'Close' })).toHaveFocus();
+  });
+
+  it('returns focus to the trigger after closing', () => {
+    const trigger = document.createElement('button');
+    document.body.append(trigger);
+    trigger.focus();
+
+    const { unmount } = renderModal(<button>Inside</button>);
+    expect(screen.getByRole('button', { name: 'Inside' })).toHaveFocus();
+
+    unmount();
+    expect(trigger).toHaveFocus();
+    trigger.remove();
   });
 
   it('calls closeModal when Escape key is pressed', () => {

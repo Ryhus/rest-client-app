@@ -16,9 +16,10 @@ import CrossIcon from '@/assets/icons/cross.svg?react';
 interface AnalyticsCardProps {
   closeModal: () => void;
   row: HistoryRow;
+  titleId?: string;
 }
 
-export default function AnalyticsCard({ closeModal, row }: AnalyticsCardProps) {
+export default function AnalyticsCard({ closeModal, row, titleId }: AnalyticsCardProps) {
   const { t } = useTranslation('history');
 
   const dateTime = formatDate(row.request_timestamp, true);
@@ -26,10 +27,14 @@ export default function AnalyticsCard({ closeModal, row }: AnalyticsCardProps) {
   return (
     <div className="analytics-card">
       <Button style={ButtonStyle.IconBtn} customClass="close-modal-bttn" onClick={closeModal}>
-        <CrossIcon className="cross-icon" />
+        <span className="visually-hidden">{t('closeAnalytics')}</span>
+        <CrossIcon className="cross-icon" aria-hidden="true" focusable="false" />
       </Button>
+      <h2 id={titleId} className="analytics-title">
+        {t('analyticsTitle')}
+      </h2>
       <div className="request-date-container">
-        <CalendarIcon className="icon" />
+        <CalendarIcon className="icon" aria-hidden="true" focusable="false" />
         <span>{dateTime}</span>
       </div>
       <div className="endpoint-container">
@@ -42,11 +47,11 @@ export default function AnalyticsCard({ closeModal, row }: AnalyticsCardProps) {
           <div className="analytics-border"></div>
           <div className="analytics-data">
             <div>
-              <ClockIcon className="icon" />
+              <ClockIcon className="icon" aria-hidden="true" focusable="false" />
               <span>{`${t('duration')} ${row.duration} ${t('ms')}`}</span>
             </div>
             <div>
-              <UploadIcon className="icon" />
+              <UploadIcon className="icon" aria-hidden="true" focusable="false" />
               <span>{`${t('payload')} ${row.request_size} ${t('bytes')}`}</span>
             </div>
           </div>
@@ -62,7 +67,7 @@ export default function AnalyticsCard({ closeModal, row }: AnalyticsCardProps) {
             </div>
 
             <div>
-              <DownloadIcon className="icon" />
+              <DownloadIcon className="icon" aria-hidden="true" focusable="false" />
               <span>{`${t('payload')} ${row.response_size} ${t('bytes')}`}</span>
             </div>
           </div>
@@ -70,7 +75,7 @@ export default function AnalyticsCard({ closeModal, row }: AnalyticsCardProps) {
       </div>
       {row.error_details && (
         <div className="error-container">
-          <ExclamationIcon className="icon exclamation-icon" />
+          <ExclamationIcon className="icon exclamation-icon" aria-hidden="true" focusable="false" />
           <span>{row.error_details}</span>
         </div>
       )}
