@@ -63,8 +63,17 @@ describe('AnalyticsCard', () => {
 
   it('calls closeModal when close button is clicked', () => {
     render(<AnalyticsCard closeModal={closeModalMock} row={row} />);
-    const button = screen.getByRole('button');
+    const button = screen.getByRole('button', { name: 'closeAnalytics' });
     fireEvent.click(button);
     expect(closeModalMock).toHaveBeenCalled();
+  });
+
+  it('provides a heading that can label the modal dialog', () => {
+    render(<AnalyticsCard closeModal={closeModalMock} row={row} titleId="analytics-title" />);
+
+    expect(screen.getByRole('heading', { level: 2, name: 'analyticsTitle' })).toHaveAttribute(
+      'id',
+      'analytics-title'
+    );
   });
 });

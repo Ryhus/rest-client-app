@@ -40,20 +40,24 @@ export default function HistoryPage() {
   }, {});
 
   return (
-    <>
-      {data.length == 0 && (
-        <p className="rest-suggestion">
+    <section className="history-page" aria-labelledby="history-title">
+      <h1 id="history-title" className="history-title">
+        {t('title')}
+      </h1>
+      {data.length === 0 ? (
+        <p className="rest-suggestion" role="status">
           {t('suggestion')}&nbsp;
           <Link className="suggestion-link" to="/rest-client">
             {t('suggestionLink')}
           </Link>
         </p>
+      ) : (
+        <ul className="history-list" aria-label={t('requestHistory')}>
+          {Object.entries(rowsByDate).map(([date, rows]) => (
+            <HistoryDate key={date} date={date} rows={rows} />
+          ))}
+        </ul>
       )}
-      <ul className="history-list">
-        {Object.entries(rowsByDate).map(([date, rows]) => (
-          <HistoryDate key={date} date={date} rows={rows} />
-        ))}
-      </ul>
-    </>
+    </section>
   );
 }

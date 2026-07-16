@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { type HistoryRow } from '@/types/types';
-import { Modal, AnalyticsCard } from '@/components/Modal';
+import { Modal, AnalyticsCard, RowActions } from '@/components';
 import IconThreeDots from '@/assets/icons/three-dots.svg?react';
+import IconTrash from '@/assets/icons/trash.svg?react';
 import { toBase64 } from '@/utils/encoding';
 import chevronRight from '@/assets/icons/chevron-right.svg';
+
+import './HistoryDateStyles.scss';
 
 interface HistoryDateProps {
   date: string;
@@ -14,6 +18,10 @@ interface HistoryDateProps {
 export default function HistoryDate({ date, rows }: HistoryDateProps) {
   const [isOpened, setIsOpened] = useState(false);
   const [openRowId, setOpenRowId] = useState<number | null>(null);
+  const { t } = useTranslation('history');
+  const requestsId = useId();
+  const dateLabelId = useId();
+  const analyticsTitleId = useId();
 
   const handleCloseModal = () => {
     setOpenRowId(null);
@@ -37,45 +45,80 @@ export default function HistoryDate({ date, rows }: HistoryDateProps) {
   }
 
   return (
-    <>
-      <li key={date.toString()} onClick={() => setIsOpened((prev) => !prev)}>
-        <div className="closed-list-container">
-          <img
-            src={chevronRight}
-            alt="chevron right"
-            className={isOpened ? `list-icon--opened-list` : `list-icon--closed-list`}
-          />
-          {date}
-        </div>
-      </li>
+    <li className="closed-list-container">
+      <button
+        type="button"
+        className="button-reset date-list-tittle"
+        onClick={() => setIsOpened((prev) => !prev)}
+        aria-expanded={isOpened}
+        aria-controls={requestsId}
+        id={dateLabelId}
+      >
+        <img
+          src={chevronRight}
+          alt=""
+          aria-hidden="true"
+          className={isOpened ? `list-icon--opened-list` : `list-icon--closed-list`}
+        />
+        <span>{date}</span>
+      </button>
       {isOpened && (
-        <ul className="opened-list-container">
+        <ul className="opened-list-container" id={requestsId} aria-labelledby={dateLabelId}>
           {rows.map((historyRow) => (
             <li className="request-row" key={historyRow.id}>
               <span className={`method method--${historyRow.request_method}`}>
                 {historyRow.request_method}
               </span>
-              <Link className="url-link" to={restoreUrl(historyRow)}>
+              <Link
+                className="url-link"
+                to={restoreUrl(historyRow)}
+                aria-label={t('openRequest', {
+                  method: historyRow.request_method,
+                  endpoint: historyRow.endpoint,
+                })}
+              >
                 {historyRow.endpoint}
               </Link>
-              <div
-                data-testid="open request info"
-                className="icon-container"
-                onClick={() => {
-                  setOpenRowId(historyRow.id);
-                }}
-              >
-                <IconThreeDots />
-              </div>
+              <RowActions aria-label={t('rowActions', { endpoint: historyRow.endpoint })}>
+                <button
+                  type="button"
+                  data-testid="open request info"
+                  className="button-reset icon-container"
+                  onClick={() => {
+                    setOpenRowId(historyRow.id);
+                  }}
+                  title={t('openAnalytics')}
+                  aria-label={t('openAnalyticsFor', { endpoint: historyRow.endpoint })}
+                >
+                  <IconThreeDots aria-hidden="true" focusable="false" />
+                </button>
+                <button
+                  type="button"
+                  data-testid="delete request info"
+                  className="button-reset icon-container"
+                  onClick={() => {
+                    setOpenRowId(historyRow.id);
+                  }}
+                  title={t('deleteRequest')}
+                  aria-label={t('deleteRequestFrom', { endpoint: historyRow.endpoint })}
+                >
+                  <IconTrash aria-hidden="true" focusable="false" />
+                </button>
+              </RowActions>
+
               {openRowId === historyRow.id && (
-                <Modal closeModal={handleCloseModal}>
-                  <AnalyticsCard closeModal={handleCloseModal} row={historyRow} />
+                <Modal closeModal={handleCloseModal} ariaLabelledBy={analyticsTitleId}>
+                  <AnalyticsCard
+                    closeModal={handleCloseModal}
+                    row={historyRow}
+                    titleId={analyticsTitleId}
+                  />
                 </Modal>
               )}
             </li>
           ))}
         </ul>
       )}
-    </>
+    </li>
   );
 }

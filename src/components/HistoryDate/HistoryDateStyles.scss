@@ -1,0 +1,174 @@
+@use '@/styles/base/variables';
+
+.closed-list-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .date-list-tittle {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    gap: 0.35rem;
+    min-height: 44px;
+    padding: 0.5rem 0.75rem;
+    border-radius: variables.$border-radius;
+    cursor: pointer;
+    user-select: none;
+
+    img {
+      width: 1rem;
+      height: 1rem;
+      transition: transform 0.2s ease;
+    }
+
+    .list-icon--opened-list {
+      transform: rotate(90deg);
+    }
+  }
+
+  .date-list-tittle:hover {
+    background-color: variables.$bg-color;
+  }
+
+  .date-list-tittle:focus-visible {
+    outline: 3px solid variables.$color-secondary-light;
+    outline-offset: 2px;
+  }
+
+  .opened-list-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    transition: box-shadow 0.3s ease;
+
+    .request-row {
+      min-width: 0;
+      padding: 0px;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+
+      .method {
+        flex: 0 0 4.5rem;
+      }
+
+      .url-link {
+        flex: 1 1 auto;
+        min-width: 0;
+        color: variables.$font-color-primary;
+        transition: color 0.3s;
+        overflow-wrap: anywhere;
+        text-decoration: underline;
+        text-decoration-color: transparent;
+        text-underline-offset: 0.2em;
+      }
+
+      .row-actions {
+        flex: 0 0 auto;
+      }
+
+      .url-link:hover {
+        color: variables.$color-secondary-light;
+        text-decoration-color: currentColor;
+      }
+
+      .url-link:focus-visible {
+        border-radius: variables.$border-radius;
+        outline: 3px solid variables.$color-secondary-light;
+        outline-offset: 3px;
+      }
+
+      .icon-container {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.3s;
+        cursor: pointer;
+        &:hover {
+          color: variables.$color-primary;
+        }
+
+        &:focus-visible {
+          border-radius: variables.$border-radius;
+          outline: 3px solid variables.$color-secondary-light;
+          outline-offset: 2px;
+        }
+
+        svg {
+          width: 24px;
+          height: 24px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .closed-list-container {
+    .date-list-tittle {
+      align-self: flex-start;
+      gap: 4px;
+      min-height: 40px;
+      padding: 4px 10px 4px 0;
+
+      img {
+        width: 40px;
+        height: 18px;
+        object-fit: contain;
+      }
+    }
+
+    .opened-list-container {
+      .request-row {
+        min-height: 40px;
+        padding: 0;
+        gap: 8px;
+
+        .method {
+          flex-basis: 52px;
+          font-size: 12px;
+          font-weight: variables.$font-weight-medium;
+          text-align: right;
+        }
+
+        .url-link {
+          overflow: hidden;
+          font-size: variables.$font-size-sm;
+          line-height: 24px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow-wrap: normal;
+        }
+
+        .row-actions {
+          gap: 8px;
+        }
+
+        .icon-container {
+          width: 40px;
+          height: 40px;
+
+          &:first-child svg {
+            width: 16px;
+            height: 16px;
+          }
+
+          &:last-child svg {
+            width: 24px;
+            height: 24px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .closed-list-container .date-list-tittle img {
+    transition: none;
+  }
+}

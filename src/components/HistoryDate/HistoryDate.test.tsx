@@ -83,13 +83,37 @@ describe('HistoryDate', () => {
         <HistoryDate date="2025-09-20" rows={rows} />
       </MemoryRouter>
     );
-    const dateElement = screen.getByText('2025-09-20');
-    fireEvent.click(dateElement);
+    const dateButton = screen.getByRole('button', { name: '2025-09-20' });
+    const requestsId = dateButton.getAttribute('aria-controls');
+    expect(dateButton).toHaveAttribute('aria-expanded', 'false');
+
+    fireEvent.click(dateButton);
+    expect(dateButton).toHaveAttribute('aria-expanded', 'true');
+    expect(document.getElementById(requestsId ?? '')).toBeInTheDocument();
     expect(screen.getByText('/api/test1')).toBeInTheDocument();
     expect(screen.getByText('/api/test2')).toBeInTheDocument();
-    fireEvent.click(dateElement);
+    fireEvent.click(dateButton);
+    expect(dateButton).toHaveAttribute('aria-expanded', 'false');
     expect(screen.queryByText('/api/test1')).not.toBeInTheDocument();
     expect(screen.queryByText('/api/test2')).not.toBeInTheDocument();
+  });
+
+  it('provides descriptive names for request links and row actions', () => {
+    render(
+      <MemoryRouter>
+        <HistoryDate date="2025-09-20" rows={rows} />
+      </MemoryRouter>
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: '2025-09-20' }));
+
+    expect(
+      screen.getByRole('link', { name: 'Open GET request to /api/test1 in the REST client' })
+    ).toBeInTheDocument();
+    expect(screen.getByRole('group', { name: 'Actions for /api/test1' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Open analytics for /api/test1' })
+    ).toBeInTheDocument();
   });
 
   it('opens modal when analytics button is clicked', () => {

@@ -96,11 +96,14 @@ describe('HistoryPage component', () => {
       </MemoryRouter>
     );
 
-    const suggestionParagraph = screen.getByText(/suggestion/i, { selector: 'p.rest-suggestion' });
-    expect(suggestionParagraph).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Request history' })).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'You have not executed any requests yet. Try those options:'
+    );
+    expect(screen.queryByRole('list')).not.toBeInTheDocument();
 
-    const suggestionLink = screen.getByText(/suggestionLink/i, { selector: 'a.suggestion-link' });
-    expect(suggestionLink).toBeInTheDocument();
+    const suggestionLink = screen.getByRole('link', { name: 'to the REST client' });
+    expect(suggestionLink).toHaveAttribute('href', '/rest-client');
   });
 
   it('renders HistoryDate components for each date', () => {
@@ -129,5 +132,6 @@ describe('HistoryPage component', () => {
 
     expect(screen.getByText('20.09.2025')).toBeInTheDocument();
     expect(screen.getByText('21.09.2025')).toBeInTheDocument();
+    expect(screen.getByRole('list', { name: 'Requests grouped by date' })).toBeInTheDocument();
   });
 });
