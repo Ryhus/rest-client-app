@@ -1,5 +1,6 @@
 {
   "method": "Method",
+  "methodOptions": "Open method options",
   "endpoint": "Endpoint URL",
   "send": "Send",
   "headers": "Headers",

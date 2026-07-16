@@ -143,8 +143,8 @@ describe('<RestClient>', () => {
     test('checks correct method', async () => {
       renderComponent({ auth: true, isData: false });
 
-      const inputMethod = screen.getByPlaceholderText<HTMLInputElement>(/method/i);
-      expect(inputMethod.value).toBe('');
+      const methodSelector = screen.getByRole('combobox', { name: /method/i });
+      expect(methodSelector).toHaveTextContent('Method');
     });
 
     test('checks correct endpoint', async () => {
@@ -185,8 +185,8 @@ describe('<RestClient>', () => {
     test('checks correct method', async () => {
       renderComponent({ auth: true });
 
-      const inputMethod = screen.getByPlaceholderText<HTMLInputElement>(/method/i);
-      expect(inputMethod.value).toBe('GET');
+      const methodSelector = screen.getByRole('combobox', { name: /method/i });
+      expect(methodSelector).toHaveTextContent('GET');
     });
 
     test('checks correct endpoint', async () => {
@@ -273,14 +273,14 @@ IRestResponse response = client.Execute(request);
     test('update method in url after sending request', async () => {
       renderComponent({ auth: true });
 
-      const inputMethod = screen.getByPlaceholderText<HTMLInputElement>(/method/i);
+      const methodSelector = screen.getByRole('combobox', { name: /method/i });
       const sendButton = screen.getByRole('button', { name: /send/i });
-      await userEvent.clear(inputMethod);
-      await userEvent.type(inputMethod, 'POST');
+      await userEvent.click(methodSelector);
+      await userEvent.click(screen.getByRole('option', { name: 'POST' }));
       await userEvent.click(sendButton);
 
       await waitFor(() => {
-        expect(inputMethod.value).toBe('POST');
+        expect(methodSelector).toHaveTextContent('POST');
       });
     });
 
@@ -334,7 +334,7 @@ IRestResponse response = client.Execute(request);
       await userEvent.click(screen.getByRole('button', { name: /send/i }));
 
       await waitFor(() => {
-        const errorContainer = screen.getByTestId('datalist-error');
+        const errorContainer = screen.getByTestId('method-error');
         expect(errorContainer).toHaveTextContent(/Required field/i);
       });
     });
@@ -343,11 +343,11 @@ IRestResponse response = client.Execute(request);
       renderComponent({ auth: true, isData: false });
 
       await userEvent.click(screen.getByRole('button', { name: /send/i }));
-      const method = screen.getByPlaceholderText(/method/i);
-      await userEvent.type(method, 'GET');
+      await userEvent.click(screen.getByRole('combobox', { name: /method/i }));
+      await userEvent.click(screen.getByRole('option', { name: 'GET' }));
 
       await waitFor(() => {
-        const errorElement = screen.getByTestId('datalist-error');
+        const errorElement = screen.getByTestId('method-error');
         expect(errorElement).toHaveTextContent('');
       });
     });

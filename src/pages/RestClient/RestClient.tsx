@@ -147,12 +147,12 @@ export default function RestClient() {
     );
   };
 
-  const handleMethodChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleMethodChange = (method: string) => {
     if (methodError) {
       setMethodError('');
     }
 
-    setRequestMethod(e.target.value);
+    setRequestMethod(method);
   };
 
   const handleURLChange = (e: ChangeEvent<HTMLInputElement>) => {
