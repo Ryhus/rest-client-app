@@ -8,6 +8,7 @@ import {
 import { useEffect, useState } from 'react';
 import fetchToCurl from 'fetch-to-curl';
 import { useTranslation } from 'react-i18next';
+import CodeSyntaxHighlighter, { type CodeLanguage } from './CodeSyntaxHighlighter';
 
 enum HumanReadableCodeOptions {
   Curl = 'curl',
@@ -61,6 +62,25 @@ const getTargetAndClient = (option: HumanReadableCodeOptions) => {
 };
 
 const codeOptions = Object.values(HumanReadableCodeOptions);
+
+const getCodeLanguage = (option: HumanReadableCodeOptions): CodeLanguage => {
+  switch (option) {
+    case HumanReadableCodeOptions.Curl:
+      return 'shell';
+    case HumanReadableCodeOptions.JavaScriptFetch:
+    case HumanReadableCodeOptions.JavaScriptXHR:
+    case HumanReadableCodeOptions.NodeJS:
+      return 'javascript';
+    case HumanReadableCodeOptions.Python:
+      return 'python';
+    case HumanReadableCodeOptions.Java:
+      return 'java';
+    case HumanReadableCodeOptions.Go:
+      return 'go';
+    default:
+      return 'csharp';
+  }
+};
 
 export default function CodeSection() {
   const [codeOption, setCodeOption] = useState<HumanReadableCodeOptions>(
@@ -116,20 +136,37 @@ export default function CodeSection() {
   ]);
 
   return (
-    <div className="code-container" data-testid="code-section">
+    <section
+      className="code-container"
+      data-testid="code-section"
+      aria-labelledby="generated-code-title"
+    >
       <div className="title-container">
-        <p className="title">{t('code')}:</p>
+        <h2 className="title" id="generated-code-title">
+          {t('code')}:
+        </h2>
         <Selector
           id="code"
           data={codeOptions}
           onChange={(e) => setCodeOption(e.target.value as HumanReadableCodeOptions)}
           value={codeOption}
+          ariaLabel={t('codeLanguage')}
         />
       </div>
-      <div className="content-container" data-testid="content-container">
-        <pre data-testid="pre-code">{codeResult}</pre>
+      <div
+        className="content-container"
+        role="region"
+        aria-label={t('generatedCode', { language: codeOption })}
+        tabIndex={0}
+        data-testid="content-container"
+      >
+        <pre className="code-highlight" data-testid="pre-code">
+          <code>
+            <CodeSyntaxHighlighter code={codeResult} language={getCodeLanguage(codeOption)} />
+          </code>
+        </pre>
       </div>
-    </div>
+    </section>
   );
 }
 

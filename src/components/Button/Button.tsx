@@ -10,6 +10,7 @@ interface ButtonProps {
   customClass?: string;
   isDisabled?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
+  ariaLabel?: string;
   children: ReactNode;
 }
 
@@ -19,6 +20,7 @@ export default function Button({
   customClass,
   isDisabled = false,
   onClick,
+  ariaLabel,
   children,
 }: ButtonProps) {
   return (
@@ -27,6 +29,7 @@ export default function Button({
       className={clsx('button', style, customClass)}
       disabled={isDisabled}
       onClick={onClick}
+      aria-label={ariaLabel}
     >
       {children}
     </button>

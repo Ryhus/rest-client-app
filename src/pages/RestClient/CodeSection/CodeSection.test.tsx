@@ -23,13 +23,19 @@ describe('<CodeSection>', () => {
     test('renders a selection of languages', async () => {
       await renderComponent();
 
-      expect(screen.getByRole('combobox')).toBeInTheDocument();
+      expect(
+        screen.getByRole('combobox', { name: /generated code language/i })
+      ).toBeInTheDocument();
     });
 
     test('renders a content', async () => {
       await renderComponent();
 
       expect(screen.getByTestId('content-container')).toBeInTheDocument();
+      expect(screen.getByTestId('content-container')).toHaveAccessibleName(
+        /generated C# request code/i
+      );
+      expect(screen.getByTestId('content-container')).toHaveAttribute('tabindex', '0');
     });
   });
 
@@ -53,6 +59,7 @@ describe('<CodeSection>', () => {
       await waitFor(() => {
         expect(screen.getByTestId('pre-code')).toHaveTextContent(code);
       });
+      expect(screen.getByText('-X')).toHaveClass('code-token--option');
     });
 
     test('checks content for JavaScript (Fetch api)', async () => {
@@ -77,6 +84,11 @@ try {
         .trim();
 
       expect(screen.getByTestId('pre-code')).toHaveTextContent(code);
+      expect(screen.getAllByText('const')[0]).toHaveClass('code-token--keyword');
+      expect(screen.getByText("'https://stapi.co/animal/search'")).toHaveClass(
+        'code-token--string'
+      );
+      expect(screen.getByText('fetch')).toHaveClass('code-token--function');
     });
 
     test('checks content for JavaScript (XHR)', async () => {

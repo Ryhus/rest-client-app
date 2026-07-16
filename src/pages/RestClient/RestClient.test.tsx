@@ -1,11 +1,28 @@
 import RestClient from '@/pages/RestClient/RestClient.tsx';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
-import { describe, vi, test, expect, beforeEach, afterEach } from 'vitest';
+import { describe, vi, test, expect, beforeAll, beforeEach, afterAll, afterEach } from 'vitest';
 import { createMemoryRouter, RouterProvider, useRouteLoaderData } from 'react-router-dom';
 import type { Session } from '@supabase/supabase-js';
 import type { UserMetaData } from '@/services/supabase';
 import userEvent from '@testing-library/user-event';
 import { restClientPageStore } from '@/stores/restClientPageStore/restClientPageStore.ts';
+import { transferableAbortController } from 'node:util';
+
+const JsdomAbortController = globalThis.AbortController;
+const JsdomAbortSignal = globalThis.AbortSignal;
+const nodeAbortController = transferableAbortController();
+
+beforeAll(() => {
+  // React Router passes AbortController.signal to Node's global Request. In jsdom
+  // these APIs come from different realms, and undici rejects the jsdom signal.
+  globalThis.AbortController = nodeAbortController.constructor as typeof AbortController;
+  globalThis.AbortSignal = nodeAbortController.signal.constructor as typeof AbortSignal;
+});
+
+afterAll(() => {
+  globalThis.AbortController = JsdomAbortController;
+  globalThis.AbortSignal = JsdomAbortSignal;
+});
 
 vi.mock('react-router-dom', async () => {
   const actualModule = await vi.importActual('react-router-dom');
@@ -104,6 +121,7 @@ describe('<RestClient>', () => {
       renderComponent({ auth: true, isData: false });
 
       expect(screen.queryByTestId('rest-client-page')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 1, name: /REST client/i })).toBeInTheDocument();
     });
   });
 
@@ -143,8 +161,8 @@ describe('<RestClient>', () => {
     test('checks correct method', async () => {
       renderComponent({ auth: true, isData: false });
 
-      const inputMethod = screen.getByPlaceholderText<HTMLInputElement>(/method/i);
-      expect(inputMethod.value).toBe('');
+      const methodSelector = screen.getByRole('combobox', { name: /method/i });
+      expect(methodSelector).toHaveValue('');
     });
 
     test('checks correct endpoint', async () => {
@@ -185,8 +203,8 @@ describe('<RestClient>', () => {
     test('checks correct method', async () => {
       renderComponent({ auth: true });
 
-      const inputMethod = screen.getByPlaceholderText<HTMLInputElement>(/method/i);
-      expect(inputMethod.value).toBe('GET');
+      const methodSelector = screen.getByRole('combobox', { name: /method/i });
+      expect(methodSelector).toHaveValue('GET');
     });
 
     test('checks correct endpoint', async () => {
@@ -241,7 +259,7 @@ IRestResponse response = client.Execute(request);
         await userEvent.click(screen.getByRole('button', { name: /send/i }));
 
         await waitFor(() => {
-          expect(screen.getByText('200')).toHaveClass('status-code success');
+          expect(screen.getByLabelText('Response status 200')).toHaveClass('status-code success');
         });
       });
 
@@ -263,7 +281,7 @@ IRestResponse response = client.Execute(request);
         await userEvent.click(screen.getByRole('button', { name: /send/i }));
 
         await waitFor(() => {
-          expect(screen.getByText('404')).toHaveClass('status-code error');
+          expect(screen.getByLabelText('Response status 404')).toHaveClass('status-code error');
         });
       });
     });
@@ -273,14 +291,14 @@ IRestResponse response = client.Execute(request);
     test('update method in url after sending request', async () => {
       renderComponent({ auth: true });
 
-      const inputMethod = screen.getByPlaceholderText<HTMLInputElement>(/method/i);
+      const methodSelector = screen.getByRole('combobox', { name: /method/i });
       const sendButton = screen.getByRole('button', { name: /send/i });
-      await userEvent.clear(inputMethod);
-      await userEvent.type(inputMethod, 'POST');
+      await userEvent.click(methodSelector);
+      await userEvent.click(screen.getByRole('option', { name: 'POST' }));
       await userEvent.click(sendButton);
 
       await waitFor(() => {
-        expect(inputMethod.value).toBe('POST');
+        expect(methodSelector).toHaveValue('POST');
       });
     });
 
@@ -334,7 +352,7 @@ IRestResponse response = client.Execute(request);
       await userEvent.click(screen.getByRole('button', { name: /send/i }));
 
       await waitFor(() => {
-        const errorContainer = screen.getByTestId('datalist-error');
+        const errorContainer = screen.getByTestId('method-error');
         expect(errorContainer).toHaveTextContent(/Required field/i);
       });
     });
@@ -343,11 +361,11 @@ IRestResponse response = client.Execute(request);
       renderComponent({ auth: true, isData: false });
 
       await userEvent.click(screen.getByRole('button', { name: /send/i }));
-      const method = screen.getByPlaceholderText(/method/i);
-      await userEvent.type(method, 'GET');
+      await userEvent.click(screen.getByRole('combobox', { name: /method/i }));
+      await userEvent.click(screen.getByRole('option', { name: 'GET' }));
 
       await waitFor(() => {
-        const errorElement = screen.getByTestId('datalist-error');
+        const errorElement = screen.getByTestId('method-error');
         expect(errorElement).toHaveTextContent('');
       });
     });

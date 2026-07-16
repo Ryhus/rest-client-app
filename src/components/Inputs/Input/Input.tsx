@@ -23,6 +23,8 @@ interface InputProps {
   placeholder?: string;
   spaceForErrorMessage?: boolean;
   border?: boolean;
+  ariaLabel?: string;
+  ariaRequired?: boolean;
 }
 
 function Input({
@@ -41,7 +43,11 @@ function Input({
   placeholder,
   spaceForErrorMessage = true,
   border = true,
+  ariaLabel,
+  ariaRequired,
 }: InputProps) {
+  const errorId = `${id}-error`;
+  const hasError = Boolean(errors?.some((error) => error.message));
   const inputFieldClass = clsx(
     'input-field',
     border && 'border',
@@ -52,7 +58,12 @@ function Input({
   const renderError = () => {
     if (spaceForErrorMessage || errors) {
       return (
-        <div className="input-field--error">
+        <div
+          className="input-field--error"
+          id={errorId}
+          role={hasError ? 'alert' : undefined}
+          aria-live={hasError ? 'polite' : undefined}
+        >
           {errors?.map((error) => (
             <div key={error.id} data-testid="input-error">
               {error.message}
@@ -79,6 +90,10 @@ function Input({
           disabled={isDisabled}
           defaultValue={defaultValue}
           placeholder={placeholder}
+          aria-label={ariaLabel}
+          aria-required={ariaRequired}
+          aria-invalid={hasError}
+          aria-describedby={hasError ? errorId : undefined}
         ></input>
         {rightIcon && <div className="input-right-icon">{rightIcon}</div>}
         {renderError()}

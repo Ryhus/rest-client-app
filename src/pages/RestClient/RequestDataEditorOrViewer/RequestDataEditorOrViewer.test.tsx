@@ -31,7 +31,7 @@ describe('Editor', () => {
     test('renders a selection of types', () => {
       renderEditorComponent();
 
-      expect(screen.getByRole('combobox')).toBeInTheDocument();
+      expect(screen.getByRole('combobox', { name: /request body format/i })).toBeInTheDocument();
     });
 
     test('does not render a button by default type', () => {
@@ -41,9 +41,10 @@ describe('Editor', () => {
     });
 
     test('renders content', () => {
-      renderEditorComponent();
+      const { container } = renderEditorComponent();
 
-      expect(screen.getByRole('textbox')).toBeInTheDocument();
+      expect(screen.getByRole('textbox', { name: /request body editor/i })).toBeInTheDocument();
+      expect(container.querySelector('.body-editor__line-numbers')).toHaveTextContent('1');
     });
   });
 
@@ -89,8 +90,57 @@ describe('Editor', () => {
 
       const typeSelector = screen.getByRole('combobox');
       await userEvent.selectOptions(typeSelector, 'json');
+      fireEvent.change(screen.getByRole('textbox'), { target: { value: '{invalid json}' } });
 
       expect(screen.getByTestId('not-valid-format')).toBeInTheDocument();
+      expect(screen.getByRole('textbox')).toHaveAttribute('aria-invalid', 'true');
+      expect(screen.getByRole('alert')).toHaveTextContent(/not valid format/i);
+    });
+
+    test('renders line numbers for multiline content', () => {
+      const { container } = renderEditorComponent();
+      const editor = screen.getByRole('textbox', { name: /request body editor/i });
+
+      fireEvent.change(editor, { target: { value: 'first\nsecond\nthird' } });
+
+      const lineNumbers = container.querySelectorAll('.body-editor__line-numbers li');
+      expect(lineNumbers).toHaveLength(3);
+      expect(Array.from(lineNumbers).map((line) => line.textContent)).toEqual(['1', '2', '3']);
+    });
+
+    test('highlights JSON properties and values', async () => {
+      const { container } = renderEditorComponent();
+      await userEvent.selectOptions(screen.getByRole('combobox'), 'json');
+
+      fireEvent.change(screen.getByRole('textbox'), {
+        target: {
+          value: '{"name":"John","age":30,"active":true,"note":null}',
+        },
+      });
+
+      expect(container.querySelectorAll('.syntax-token--property')).toHaveLength(4);
+      expect(container.querySelector('.syntax-token--string')).toHaveTextContent('"John"');
+      expect(container.querySelector('.syntax-token--number')).toHaveTextContent('30');
+      expect(container.querySelector('.syntax-token--boolean')).toHaveTextContent('true');
+      expect(container.querySelector('.syntax-token--null')).toHaveTextContent('null');
+    });
+
+    test('keeps highlighting and line numbers synchronized with editor scroll', () => {
+      const { container } = renderEditorComponent();
+      const editor = screen.getByRole('textbox');
+
+      Object.defineProperties(editor, {
+        scrollTop: { configurable: true, value: 22 },
+        scrollLeft: { configurable: true, value: 10 },
+      });
+      fireEvent.scroll(editor);
+
+      expect(screen.getByTestId('syntax-highlight')).toHaveStyle({
+        transform: 'translate(-10px, -22px)',
+      });
+      expect(container.querySelector('.body-editor__line-numbers')).toHaveStyle({
+        transform: 'translateY(-22px)',
+      });
     });
   });
 });
@@ -116,6 +166,7 @@ describe('Viewer', () => {
 
       const status = screen.getByText('200');
       expect(status).toHaveAttribute('class', 'status-code success');
+      expect(status).toHaveAccessibleName(/response status 200/i);
     });
 
     test('renders correct error status', () => {
@@ -130,6 +181,38 @@ describe('Viewer', () => {
 
       const status = screen.getByText('100');
       expect(status).toHaveAttribute('class', 'status-code info');
+    });
+
+    test('automatically highlights a JSON response', () => {
+      const { container } = renderViewerComponent({
+        data: '{"name":"John","age":30,"active":true,"note":null}',
+        status: 200,
+      });
+
+      expect(container.querySelectorAll('.response-syntax .syntax-token--property')).toHaveLength(
+        4
+      );
+      expect(container.querySelector('.response-syntax .syntax-token--string')).toHaveTextContent(
+        '"John"'
+      );
+      expect(container.querySelector('.response-syntax .syntax-token--number')).toHaveTextContent(
+        '30'
+      );
+      expect(container.querySelector('.response-syntax .syntax-token--boolean')).toHaveTextContent(
+        'true'
+      );
+      expect(container.querySelector('.response-syntax .syntax-token--null')).toHaveTextContent(
+        'null'
+      );
+    });
+
+    test('renders a plain-text response without JSON token colors', () => {
+      const { container } = renderViewerComponent({ data: 'plain response', status: 200 });
+
+      expect(screen.getByTestId('pre-data')).toHaveTextContent('plain response');
+      expect(screen.getByTestId('pre-data')).toHaveAccessibleName(/response body/i);
+      expect(screen.getByTestId('pre-data')).toHaveAttribute('tabindex', '0');
+      expect(container.querySelector('.response-syntax .syntax-token')).not.toBeInTheDocument();
     });
   });
 });

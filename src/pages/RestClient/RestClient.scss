@@ -8,6 +8,24 @@
   padding: 40px;
   max-width: 1000px;
 
+  .title {
+    font-size: variables.$font-size-base;
+    font-weight: variables.$font-weight-regular;
+  }
+
+  &__title,
+  &__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
   .bg-overlay {
     position: absolute;
     display: flex;

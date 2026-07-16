@@ -1,20 +1,19 @@
 import './RequestBar.scss';
-import Datalist from '../../../components/Inputs/Datalist/Datalist.tsx';
 import { Button, Input } from '@/components';
 import { ButtonStyle } from '@/components/Button/types.ts';
 import type { ChangeEventHandler } from 'react';
 import { useTranslation } from 'react-i18next';
-
-const initRequestMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'];
+import MethodSelector from './MethodSelector';
 
 export interface RequestBarProps {
-  handleMethodOnChange: ChangeEventHandler<HTMLInputElement>;
+  handleMethodOnChange: (method: string) => void;
   handleEndpointOnChange: ChangeEventHandler<HTMLInputElement>;
   handleButtonClick: () => void;
   initMethod?: string;
   initSearchValue?: string;
   urlError?: string;
   methodError?: string;
+  isSending?: boolean;
 }
 
 export default function RequestBar(props: RequestBarProps) {
@@ -26,21 +25,24 @@ export default function RequestBar(props: RequestBarProps) {
     initSearchValue = '',
     urlError = '',
     methodError = '',
+    isSending = false,
   } = props;
 
   const { t } = useTranslation('rest-client');
 
   return (
-    <div className="request-bar" data-testid="request-bar">
-      <Datalist
-        id={'id-method-options'}
-        listName="method-options"
+    <section
+      className="request-bar"
+      data-testid="request-bar"
+      aria-label={t('requestConfiguration')}
+    >
+      <MethodSelector
         onChange={handleMethodOnChange}
         value={initMethod}
-        data={initRequestMethods}
-        spaceForErrorMessage={true}
-        errors={[{ id: 1, message: methodError }]}
         placeholder={t('method')}
+        optionsLabel={t('methodOptions')}
+        closeOptionsLabel={t('closeMethodOptions')}
+        error={methodError}
       />
       <Input
         id="input-search"
@@ -51,10 +53,17 @@ export default function RequestBar(props: RequestBarProps) {
         onChange={handleEndpointOnChange}
         errors={[{ id: 0, message: urlError }]}
         placeholder={t('endpoint')}
+        ariaLabel={t('endpoint')}
+        ariaRequired
       />
-      <Button style={ButtonStyle.Primary} onClick={handleButtonClick}>
+      <Button
+        style={ButtonStyle.Primary}
+        onClick={handleButtonClick}
+        isDisabled={isSending}
+        ariaLabel={t('sendRequest')}
+      >
         {t('send')}
       </Button>
-    </div>
+    </section>
   );
 }

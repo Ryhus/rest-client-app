@@ -15,13 +15,13 @@ const HEADERS_COLLECTION = [
   'Connection',
   'Cookie',
 ];
-const tableHeaders = ['key', 'value', ''];
+const tableHeaders = ['key', 'value', 'actions'];
 
 export default function HeadersSection() {
   const { requestHeaders, updateRequestHeader, removeRequestHeader } = restClientPageStore();
   const { t } = useTranslation('rest-client');
 
-  function getTableRow(params: RestClientHeader) {
+  function getTableRow(params: RestClientHeader, index: number) {
     const { id, name, value } = params;
     const isBtnDisabled = requestHeaders.length === 1 || requestHeaders.at(-1)?.id === id;
 
@@ -37,6 +37,7 @@ export default function HeadersSection() {
             onChange={(e) => updateRequestHeader({ id, name: e.target.value })}
             spaceForErrorMessage={false}
             border={false}
+            ariaLabel={t('headerKey', { index: index + 1 })}
           />
         </td>
         <td className="td">
@@ -47,6 +48,7 @@ export default function HeadersSection() {
             spaceForErrorMessage={false}
             border={false}
             value={value}
+            ariaLabel={t('headerValue', { index: index + 1 })}
           />
         </td>
         <td className="td">
@@ -54,8 +56,9 @@ export default function HeadersSection() {
             style={ButtonStyle.IconBtn}
             onClick={() => removeRequestHeader({ id })}
             isDisabled={isBtnDisabled}
+            ariaLabel={t('removeHeader', { index: index + 1 })}
           >
-            <IconTrash />
+            <IconTrash aria-hidden="true" focusable="false" />
           </Button>
         </td>
       </tr>
@@ -63,24 +66,30 @@ export default function HeadersSection() {
   }
 
   return (
-    <div className="headers-container" data-testid="headers-section">
-      <p className="title" data-testid="title">
+    <section
+      className="headers-container"
+      data-testid="headers-section"
+      aria-labelledby="request-headers-title"
+    >
+      <h2 className="title" id="request-headers-title" data-testid="title">
         {t('headers')}:
-      </p>
+      </h2>
       <div className="content-container" data-testid="content-container">
         <table className="table">
           <thead className="thead">
             <tr className="tr">
               {tableHeaders.map((header, index) => (
-                <td key={`${header}-${index}`} className={`td ${header}`}>
-                  {header && t(header)}
-                </td>
+                <th key={`${header}-${index}`} className={`td ${header}`} scope="col">
+                  <span className={header === 'actions' ? 'visually-hidden' : undefined}>
+                    {t(header)}
+                  </span>
+                </th>
               ))}
             </tr>
           </thead>
-          <tbody className="tbody">{requestHeaders.map((r) => getTableRow(r))}</tbody>
+          <tbody className="tbody">{requestHeaders.map((r, index) => getTableRow(r, index))}</tbody>
         </table>
       </div>
-    </div>
+    </section>
   );
 }

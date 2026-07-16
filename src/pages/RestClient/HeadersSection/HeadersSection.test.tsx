@@ -37,7 +37,10 @@ describe('<HeadersSection>', () => {
       expect(screen.getByRole('table')).toBeInTheDocument();
       expect(screen.getByText(/Content-Type/i)).toBeInTheDocument();
       expect(valueInput.value).toBe('application/json');
-      expect(screen.getByRole('button')).toBeInTheDocument();
+      expect(screen.getByRole('columnheader', { name: /actions/i })).toBeInTheDocument();
+      expect(screen.getByRole('combobox', { name: /header 1 key/i })).toBeInTheDocument();
+      expect(screen.getByRole('textbox', { name: /header 1 value/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /remove header 1/i })).toBeInTheDocument();
     });
   });
 

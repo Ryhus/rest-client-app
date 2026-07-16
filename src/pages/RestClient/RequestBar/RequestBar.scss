@@ -1,3 +1,5 @@
+@use '@/styles/base/variables';
+
 .request-bar {
   display: flex;
   gap: 4px;
@@ -12,5 +14,19 @@
 
   .input-field--error {
     width: 100%;
+  }
+
+  .input-search,
+  .method-selector__input {
+    &:autofill,
+    &:autofill:hover,
+    &:autofill:focus,
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus {
+      box-shadow: 0 0 0 1000px variables.$color-basic inset;
+      -webkit-text-fill-color: variables.$font-color-primary;
+      caret-color: variables.$font-color-primary;
+    }
   }
 }
