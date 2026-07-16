@@ -53,6 +53,7 @@ describe('<CodeSection>', () => {
       await waitFor(() => {
         expect(screen.getByTestId('pre-code')).toHaveTextContent(code);
       });
+      expect(screen.getByText('-X')).toHaveClass('code-token--option');
     });
 
     test('checks content for JavaScript (Fetch api)', async () => {
@@ -77,6 +78,11 @@ try {
         .trim();
 
       expect(screen.getByTestId('pre-code')).toHaveTextContent(code);
+      expect(screen.getAllByText('const')[0]).toHaveClass('code-token--keyword');
+      expect(screen.getByText("'https://stapi.co/animal/search'")).toHaveClass(
+        'code-token--string'
+      );
+      expect(screen.getByText('fetch')).toHaveClass('code-token--function');
     });
 
     test('checks content for JavaScript (XHR)', async () => {
