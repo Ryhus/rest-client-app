@@ -10,6 +10,7 @@ interface MethodSelectorProps {
   value?: string;
   placeholder: string;
   optionsLabel: string;
+  closeOptionsLabel: string;
   error?: string;
   onChange: (method: string) => void;
 }
@@ -18,6 +19,7 @@ export default function MethodSelector({
   value = '',
   placeholder,
   optionsLabel,
+  closeOptionsLabel,
   error = '',
   onChange,
 }: MethodSelectorProps) {
@@ -113,6 +115,8 @@ export default function MethodSelector({
           aria-controls={listboxId}
           aria-activedescendant={isOpen ? `${listboxId}-option-${activeIndex}` : undefined}
           aria-describedby={error ? errorId : undefined}
+          aria-invalid={Boolean(error)}
+          aria-required="true"
           placeholder={placeholder}
           value={inputValue}
           autoComplete="off"
@@ -133,7 +137,7 @@ export default function MethodSelector({
         <button
           type="button"
           className={clsx('method-selector__toggle', isOpen && 'method-selector__toggle--open')}
-          aria-label={optionsLabel}
+          aria-label={isOpen ? closeOptionsLabel : optionsLabel}
           aria-expanded={isOpen}
           aria-controls={listboxId}
           onClick={() => {
@@ -172,6 +176,7 @@ export default function MethodSelector({
       <div
         className="input-field--error"
         id={errorId}
+        role={error ? 'alert' : undefined}
         aria-live="polite"
         data-testid="method-error"
       >

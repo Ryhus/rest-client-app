@@ -31,7 +31,7 @@ describe('Editor', () => {
     test('renders a selection of types', () => {
       renderEditorComponent();
 
-      expect(screen.getByRole('combobox')).toBeInTheDocument();
+      expect(screen.getByRole('combobox', { name: /request body format/i })).toBeInTheDocument();
     });
 
     test('does not render a button by default type', () => {
@@ -90,8 +90,11 @@ describe('Editor', () => {
 
       const typeSelector = screen.getByRole('combobox');
       await userEvent.selectOptions(typeSelector, 'json');
+      fireEvent.change(screen.getByRole('textbox'), { target: { value: '{invalid json}' } });
 
       expect(screen.getByTestId('not-valid-format')).toBeInTheDocument();
+      expect(screen.getByRole('textbox')).toHaveAttribute('aria-invalid', 'true');
+      expect(screen.getByRole('alert')).toHaveTextContent(/not valid format/i);
     });
 
     test('renders line numbers for multiline content', () => {
@@ -163,6 +166,7 @@ describe('Viewer', () => {
 
       const status = screen.getByText('200');
       expect(status).toHaveAttribute('class', 'status-code success');
+      expect(status).toHaveAccessibleName(/response status 200/i);
     });
 
     test('renders correct error status', () => {
@@ -206,6 +210,8 @@ describe('Viewer', () => {
       const { container } = renderViewerComponent({ data: 'plain response', status: 200 });
 
       expect(screen.getByTestId('pre-data')).toHaveTextContent('plain response');
+      expect(screen.getByTestId('pre-data')).toHaveAccessibleName(/response body/i);
+      expect(screen.getByTestId('pre-data')).toHaveAttribute('tabindex', '0');
       expect(container.querySelector('.response-syntax .syntax-token')).not.toBeInTheDocument();
     });
   });

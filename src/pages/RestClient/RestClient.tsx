@@ -166,7 +166,12 @@ export default function RestClient() {
   if (!user) return <Navigate to="/" replace />;
 
   return (
-    <div className="rest-client-page" data-testid="rest-client-page">
+    <div
+      className="rest-client-page"
+      aria-busy={fetcher.state === 'submitting'}
+      data-testid="rest-client-page"
+    >
+      <h1 className="rest-client-page__title">{t('pageTitle')}</h1>
       <RequestBar
         initMethod={requestMethod}
         handleMethodOnChange={handleMethodChange}
@@ -175,14 +180,16 @@ export default function RestClient() {
         handleButtonClick={handleSendingRequest}
         urlError={urlError}
         methodError={methodError}
+        isSending={fetcher.state === 'submitting'}
       />
       <HeadersSection />
       <RequestDataEditorOrViewer mode="editor" />
       <RequestDataEditorOrViewer mode="viewer" viewerData={viewerData} />
       <CodeSection />
       {fetcher.state === 'submitting' && (
-        <div className="bg-overlay">
-          <Spinner />
+        <div className="bg-overlay" role="status" aria-live="polite">
+          <Spinner alt="" />
+          <span className="rest-client-page__status">{t('sendingRequest')}</span>
         </div>
       )}
     </div>

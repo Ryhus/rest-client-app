@@ -13,6 +13,7 @@ export interface RequestBarProps {
   initSearchValue?: string;
   urlError?: string;
   methodError?: string;
+  isSending?: boolean;
 }
 
 export default function RequestBar(props: RequestBarProps) {
@@ -24,17 +25,23 @@ export default function RequestBar(props: RequestBarProps) {
     initSearchValue = '',
     urlError = '',
     methodError = '',
+    isSending = false,
   } = props;
 
   const { t } = useTranslation('rest-client');
 
   return (
-    <div className="request-bar" data-testid="request-bar">
+    <section
+      className="request-bar"
+      data-testid="request-bar"
+      aria-label={t('requestConfiguration')}
+    >
       <MethodSelector
         onChange={handleMethodOnChange}
         value={initMethod}
         placeholder={t('method')}
         optionsLabel={t('methodOptions')}
+        closeOptionsLabel={t('closeMethodOptions')}
         error={methodError}
       />
       <Input
@@ -46,10 +53,17 @@ export default function RequestBar(props: RequestBarProps) {
         onChange={handleEndpointOnChange}
         errors={[{ id: 0, message: urlError }]}
         placeholder={t('endpoint')}
+        ariaLabel={t('endpoint')}
+        ariaRequired
       />
-      <Button style={ButtonStyle.Primary} onClick={handleButtonClick}>
+      <Button
+        style={ButtonStyle.Primary}
+        onClick={handleButtonClick}
+        isDisabled={isSending}
+        ariaLabel={t('sendRequest')}
+      >
         {t('send')}
       </Button>
-    </div>
+    </section>
   );
 }

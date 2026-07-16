@@ -37,7 +37,9 @@ describe('<RequestBar>', () => {
     test('renders input for Endpoint URL', () => {
       renderComponent({});
 
-      expect(screen.getByPlaceholderText(/Endpoint URL/i)).toBeInTheDocument();
+      const endpoint = screen.getByRole('textbox', { name: /Endpoint URL/i });
+      expect(endpoint).toBeInTheDocument();
+      expect(endpoint).toHaveAttribute('aria-required', 'true');
     });
 
     test('renders button', () => {
@@ -55,7 +57,21 @@ describe('<RequestBar>', () => {
     test('renders endpoint error', () => {
       renderComponent({ urlError: 'endpointError' });
 
-      expect(screen.getByText('endpointError')).toBeInTheDocument();
+      const endpoint = screen.getByRole('textbox', { name: /Endpoint URL/i });
+      const error = screen.getByRole('alert');
+      expect(error).toHaveTextContent('endpointError');
+      expect(endpoint).toHaveAttribute('aria-invalid', 'true');
+      expect(endpoint).toHaveAttribute('aria-describedby', error.id);
+    });
+
+    test('announces whether method options are open', async () => {
+      const user = userEvent.setup();
+      renderComponent({});
+
+      const toggle = screen.getByRole('button', { name: /open method options/i });
+      await user.click(toggle);
+
+      expect(toggle).toHaveAccessibleName(/close method options/i);
     });
   });
 

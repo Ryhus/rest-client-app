@@ -2,6 +2,10 @@ import logo from '@/assets/img/logo.svg';
 
 import './SpinnerStyles.scss';
 
-export default function Spinner() {
-  return <img src={logo} alt="Loading..." className="spinner" data-testid="spinner" />;
+interface SpinnerProps {
+  alt?: string;
+}
+
+export default function Spinner({ alt = 'Loading...' }: SpinnerProps) {
+  return <img src={logo} alt={alt} className="spinner" data-testid="spinner" />;
 }

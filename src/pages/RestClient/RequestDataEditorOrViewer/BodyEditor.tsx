@@ -5,10 +5,19 @@ interface BodyEditorProps {
   value: string;
   language: 'text' | 'json';
   ariaLabel: string;
+  errorId?: string;
+  isInvalid?: boolean;
   onChange: ChangeEventHandler<HTMLTextAreaElement>;
 }
 
-export default function BodyEditor({ value, language, ariaLabel, onChange }: BodyEditorProps) {
+export default function BodyEditor({
+  value,
+  language,
+  ariaLabel,
+  errorId,
+  isInvalid = false,
+  onChange,
+}: BodyEditorProps) {
   const highlightRef = useRef<HTMLPreElement>(null);
   const lineNumbersRef = useRef<HTMLOListElement>(null);
   const lines = value.split('\n');
@@ -44,6 +53,8 @@ export default function BodyEditor({ value, language, ariaLabel, onChange }: Bod
         className="body-editor__textarea"
         id="data-editor-editor"
         aria-label={ariaLabel}
+        aria-invalid={isInvalid}
+        aria-describedby={isInvalid ? errorId : undefined}
         onChange={onChange}
         onScroll={handleScroll}
         value={value}

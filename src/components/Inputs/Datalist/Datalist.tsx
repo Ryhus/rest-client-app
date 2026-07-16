@@ -16,6 +16,7 @@ interface DatalistProps {
   errors?: InputError[];
   spaceForErrorMessage?: boolean;
   border?: boolean;
+  ariaLabel?: string;
 }
 
 export default function Datalist({
@@ -31,6 +32,7 @@ export default function Datalist({
   errors,
   spaceForErrorMessage = false,
   border = true,
+  ariaLabel,
 }: DatalistProps) {
   const renderError = () => {
     if (spaceForErrorMessage || errors) {
@@ -60,6 +62,7 @@ export default function Datalist({
         value={value}
         onChange={onChange}
         defaultValue={defaultValue}
+        aria-label={ariaLabel}
       />
       {renderError()}
       <datalist id={listName}>

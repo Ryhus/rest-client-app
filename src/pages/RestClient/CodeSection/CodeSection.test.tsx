@@ -23,13 +23,19 @@ describe('<CodeSection>', () => {
     test('renders a selection of languages', async () => {
       await renderComponent();
 
-      expect(screen.getByRole('combobox')).toBeInTheDocument();
+      expect(
+        screen.getByRole('combobox', { name: /generated code language/i })
+      ).toBeInTheDocument();
     });
 
     test('renders a content', async () => {
       await renderComponent();
 
       expect(screen.getByTestId('content-container')).toBeInTheDocument();
+      expect(screen.getByTestId('content-container')).toHaveAccessibleName(
+        /generated C# request code/i
+      );
+      expect(screen.getByTestId('content-container')).toHaveAttribute('tabindex', '0');
     });
   });
 

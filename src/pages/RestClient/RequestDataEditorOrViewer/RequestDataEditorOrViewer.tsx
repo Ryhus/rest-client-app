@@ -87,13 +87,14 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
     return (
       <>
         <div className="title-container" data-testid="editor-section">
-          <p className="title" data-testid="title">
+          <h2 className="title" id="request-body-title" data-testid="title">
             {t('body')}:
-          </p>
+          </h2>
           <Selector
             id="editor-mode"
             data={['text', 'json']}
             onChange={handleRequestBodyTypeChange}
+            ariaLabel={t('bodyFormat')}
           />
           {bodyType === 'json' && (
             <Button
@@ -112,9 +113,17 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
             onChange={handleRequestBodyOnChange}
             value={requestBody}
             ariaLabel={t('requestBodyEditor')}
+            errorId="request-body-format-error"
+            isInvalid={!isValidBodyFormat}
           />
         </div>
-        <p className="not-valid-format" data-testid="not-valid-format">
+        <p
+          className="not-valid-format"
+          id="request-body-format-error"
+          role={!isValidBodyFormat ? 'alert' : undefined}
+          aria-live="polite"
+          data-testid="not-valid-format"
+        >
           {!isValidBodyFormat && t('formatError')}
         </p>
       </>
@@ -128,22 +137,39 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
     return (
       <>
         <div className="title-container" data-testid="viewer-section">
-          <p className="title" data-testid="title">
+          <h2 className="title" id="response-details-title" data-testid="title">
             {t('response')}:
-          </p>
+          </h2>
         </div>
-        <div className="content-container">
+        <div
+          className="content-container"
+          role="region"
+          aria-labelledby="response-details-title"
+          aria-live="polite"
+        >
           <div className="viewer">
-            {status && <div className={`status-code ${statusClassName}`}>{status}</div>}
+            {status && (
+              <div
+                className={`status-code ${statusClassName}`}
+                aria-label={t('responseStatus', { status })}
+              >
+                {status}
+              </div>
+            )}
             {data && (
               <div className="body">
-                <pre className="response-syntax" data-testid="pre-data">
+                <pre
+                  className="response-syntax"
+                  aria-label={t('responseBody')}
+                  tabIndex={0}
+                  data-testid="pre-data"
+                >
                   <SyntaxHighlighter value={data} language={isJson(data) ? 'json' : 'text'} />
                 </pre>
               </div>
             )}
             {errorMessage && (
-              <p className="error" data-testid="viewer-error">
+              <p className="error" role="alert" data-testid="viewer-error">
                 {errorMessage}
               </p>
             )}
@@ -153,5 +179,12 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
     );
   };
 
-  return <div className="data-container">{isEditorMode ? renderEditor() : renderViewer()}</div>;
+  return (
+    <section
+      className="data-container"
+      aria-labelledby={isEditorMode ? 'request-body-title' : 'response-details-title'}
+    >
+      {isEditorMode ? renderEditor() : renderViewer()}
+    </section>
+  );
 }
