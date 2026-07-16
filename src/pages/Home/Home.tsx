@@ -13,12 +13,15 @@ export default function Home() {
 
   return (
     <div className="home">
-      <h2>
+      <h1>
         {user
           ? t('welcomeUser', { user: user.user_metadata?.name ?? t('userNameFallback') })
           : t('welcomeGuest')}
-      </h2>
-      <section className="home__about">
+      </h1>
+      <section className="home__about" aria-labelledby="about-app-title">
+        <h2 className="home__section-title" id="about-app-title">
+          {t('aboutTitle')}
+        </h2>
         <p>{t('aboutApp')}</p>
         <p>
           <Trans
@@ -38,7 +41,10 @@ export default function Home() {
           />
         </p>
       </section>
-      <section className="home__team-info">
+      <section className="home__team-info" aria-labelledby="team-title">
+        <h2 className="home__section-title" id="team-title">
+          {t('teamTitle')}
+        </h2>
         {team.map((person) => (
           <Card key={person.id} {...person} />
         ))}

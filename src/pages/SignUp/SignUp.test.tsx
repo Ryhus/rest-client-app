@@ -48,9 +48,18 @@ describe('SignUp component', () => {
 
   it('renders all form fields and the submit button', () => {
     renderWithRouter();
-    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    const email = screen.getByLabelText(/email/i);
+    const name = screen.getByLabelText(/name/i);
+    const password = screen.getByLabelText(/^password$/i);
+    expect(screen.getByRole('heading', { level: 1, name: /signUpTitle/i })).toBeInTheDocument();
+    expect(screen.getByRole('form', { name: /signUpTitle/i })).toBeInTheDocument();
+    expect(email).toBeRequired();
+    expect(email).toHaveAttribute('type', 'email');
+    expect(email).toHaveAttribute('autocomplete', 'email');
+    expect(name).toBeRequired();
+    expect(name).toHaveAttribute('autocomplete', 'name');
+    expect(password).toBeRequired();
+    expect(password).toHaveAttribute('autocomplete', 'new-password');
     expect(screen.getByRole('button', { name: /signUp/i })).toBeInTheDocument();
   });
 
@@ -59,7 +68,7 @@ describe('SignUp component', () => {
 
     const emailInput = screen.getByLabelText(/email/i) as HTMLInputElement;
     const nameInput = screen.getByLabelText(/name/i) as HTMLInputElement;
-    const passwordInput = screen.getByLabelText(/password/i) as HTMLInputElement;
+    const passwordInput = screen.getByLabelText(/^password$/i) as HTMLInputElement;
 
     fireEvent.change(emailInput, {
       target: { value: 'test@example.com' },
@@ -87,14 +96,16 @@ describe('SignUp component', () => {
 
   it('toggles password visibility', () => {
     renderWithRouter();
-    const passwordInput = screen.getByLabelText(/password/i) as HTMLInputElement;
-    const togglerWrapper = screen.getByAltText(/eye show/i).parentElement;
-    expect(togglerWrapper).not.toBeNull();
-    if (!togglerWrapper) return;
+    const passwordInput = screen.getByLabelText(/^password$/i) as HTMLInputElement;
+    const toggle = screen.getByRole('button', { name: /showPassword/i });
     expect(passwordInput.type).toBe('password');
-    fireEvent.click(togglerWrapper);
+    expect(toggle).toHaveAttribute('aria-controls', 'password');
+    expect(toggle).toHaveAttribute('aria-pressed', 'false');
+    fireEvent.click(toggle);
     expect(passwordInput.type).toBe('text');
-    fireEvent.click(togglerWrapper);
+    expect(toggle).toHaveAccessibleName(/hidePassword/i);
+    expect(toggle).toHaveAttribute('aria-pressed', 'true');
+    fireEvent.click(toggle);
     expect(passwordInput.type).toBe('password');
   });
 });

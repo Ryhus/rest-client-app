@@ -61,28 +61,37 @@ describe('SignIn component', () => {
 
   it('renders the login form correctly', () => {
     renderWithRouter();
-    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    const email = screen.getByLabelText(/email/i);
+    const password = screen.getByLabelText(/^password$/i);
+    expect(screen.getByRole('heading', { level: 1, name: /loginTitle/i })).toBeInTheDocument();
+    expect(screen.getByRole('form', { name: /loginTitle/i })).toBeInTheDocument();
+    expect(email).toBeRequired();
+    expect(email).toHaveAttribute('type', 'email');
+    expect(email).toHaveAttribute('autocomplete', 'email');
+    expect(password).toBeRequired();
+    expect(password).toHaveAttribute('autocomplete', 'current-password');
     expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument();
   });
 
   it('toggles password visibility', () => {
     renderWithRouter();
-    const passwordInput = screen.getByLabelText(/password/i) as HTMLInputElement;
-    const togglerWrapper = screen.getByAltText(/eye show/i).parentElement;
-    expect(togglerWrapper).not.toBeNull();
-    if (!togglerWrapper) return;
+    const passwordInput = screen.getByLabelText(/^password$/i) as HTMLInputElement;
+    const toggle = screen.getByRole('button', { name: /showPassword/i });
 
     expect(passwordInput.type).toBe('password');
-    fireEvent.click(togglerWrapper);
+    expect(toggle).toHaveAttribute('aria-controls', 'password');
+    expect(toggle).toHaveAttribute('aria-pressed', 'false');
+    fireEvent.click(toggle);
     expect(passwordInput.type).toBe('text');
-    fireEvent.click(togglerWrapper);
+    expect(toggle).toHaveAccessibleName(/hidePassword/i);
+    expect(toggle).toHaveAttribute('aria-pressed', 'true');
+    fireEvent.click(toggle);
     expect(passwordInput.type).toBe('password');
   });
 
   it('renders error message from actionData.error', () => {
     renderWithRouter();
-    expect(screen.getByText(/Something went wrong. Please try again./i)).toBeInTheDocument();
+    expect(screen.getByRole('alert')).toHaveTextContent(/Something went wrong. Please try again./i);
   });
 });
 
@@ -92,9 +101,11 @@ describe('SignIn action function', () => {
   });
 
   const createMockRequest = (form: Record<string, string>) => {
-    const formData = new FormData();
-    Object.entries(form).forEach(([key, value]) => formData.append(key, value));
-    return new Request('http://localhost/signin', { method: 'POST', body: formData });
+    return new Request('http://localhost/signin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(form),
+    });
   };
 
   it('redirects on successful sign in', async () => {
@@ -125,7 +136,7 @@ describe('SignIn action function', () => {
     render(<SignIn />);
 
     const emailInput = screen.getByLabelText(/email/i) as HTMLInputElement;
-    const passwordInput = screen.getByLabelText(/password/i) as HTMLInputElement;
+    const passwordInput = screen.getByLabelText(/^password$/i) as HTMLInputElement;
 
     fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     expect(emailInput.value).toBe('test@example.com');

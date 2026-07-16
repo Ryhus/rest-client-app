@@ -81,16 +81,24 @@ export default function SignIn() {
 
   return (
     <div className="signin-page">
-      <h2>{t('loginTitle')}</h2>
-      <Form className="signin-page__form" method="post" onSubmit={() => setIsLoading(true)}>
+      <h1 id="signin-title">{t('loginTitle')}</h1>
+      <Form
+        className="signin-page__form"
+        method="post"
+        aria-labelledby="signin-title"
+        aria-busy={isLoading}
+        onSubmit={() => setIsLoading(true)}
+      >
         <Input
-          type="text"
+          type="email"
           id="email"
           labelText={t('email')}
           name="email"
           value={formData.email}
           onChange={handleChange}
           errors={errors.email}
+          isRequired
+          autoComplete="email"
         />
         <Input
           type={showPassword ? 'text' : 'password'}
@@ -99,22 +107,28 @@ export default function SignIn() {
           name="password"
           value={formData.password}
           rightIcon={
-            <div className="toggler" onClick={() => setShowPassword((prev) => !prev)}>
-              {showPassword ? (
-                <img src={eyeHide} alt="eye hide" />
-              ) : (
-                <img src={eyeShow} alt="eye show" />
-              )}
-            </div>
+            <button
+              type="button"
+              className="password-visibility-toggle"
+              aria-label={t(showPassword ? 'hidePassword' : 'showPassword')}
+              aria-pressed={showPassword}
+              aria-controls="password"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              <img src={showPassword ? eyeHide : eyeShow} alt="" aria-hidden="true" />
+            </button>
           }
           onChange={handleChange}
           errors={errors.password}
+          isRequired
+          autoComplete="current-password"
         />
         <Button
           style={ButtonStyle.Primary}
           type={ButtonType.Submit}
           customClass="signin-page__form-button"
           isDisabled={errors.isError || isLoading}
+          ariaLabel={isLoading ? t('loggingIn') : undefined}
         >
           {isLoading ? '...' : t('login')}
         </Button>

@@ -5,5 +5,9 @@
   "login": "Login",
   "signUp": "Sign Up",
   "loginTitle": "Login",
-  "signUpTitle": "Create account"
+  "signUpTitle": "Create account",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
+  "loggingIn": "Logging in",
+  "creatingAccount": "Creating account"
 }

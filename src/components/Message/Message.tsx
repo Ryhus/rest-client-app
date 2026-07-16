@@ -6,5 +6,15 @@ interface MessageProps {
 }
 
 export default function Message({ text, messageType }: MessageProps) {
-  return <div className={`message message--${messageType}`}>{text}</div>;
+  const isWarning = messageType === 'warning';
+
+  return (
+    <div
+      className={`message message--${messageType}`}
+      role={isWarning ? 'alert' : 'status'}
+      aria-live={isWarning ? 'assertive' : 'polite'}
+    >
+      {text}
+    </div>
+  );
 }

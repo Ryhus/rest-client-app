@@ -5,5 +5,9 @@
   "login": "Вход",
   "signUp": "Регистрация",
   "loginTitle": "Логин",
-  "signUpTitle": "Создайте аккаунт"
+  "signUpTitle": "Создайте аккаунт",
+  "showPassword": "Показать пароль",
+  "hidePassword": "Скрыть пароль",
+  "loggingIn": "Выполняется вход",
+  "creatingAccount": "Создаётся аккаунт"
 }

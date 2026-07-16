@@ -18,6 +18,10 @@ describe('Card', () => {
     expect(screen.getByRole('heading', { name: /John Doe/i })).toBeInTheDocument();
     expect(screen.getByText(/team lead/i)).toBeInTheDocument();
     expect(screen.getByText(/Junior Frontend Developer/i)).toBeInTheDocument();
-    expect(screen.getByAltText(/GH Logo/i)).toBeInTheDocument();
+    expect(screen.getByRole('article', { name: /John Doe/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: /Open John Doe's GitHub profile/i })
+    ).toBeInTheDocument();
+    expect(screen.queryByAltText(/GH Logo/i)).not.toBeInTheDocument();
   });
 });

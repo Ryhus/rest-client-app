@@ -86,16 +86,24 @@ export default function SignUp() {
 
   return (
     <div className="signup-page">
-      <h2>{t('signUpTitle')}</h2>
-      <Form className="signup-page__form" method="post" onSubmit={() => setIsLoading(true)}>
+      <h1 id="signup-title">{t('signUpTitle')}</h1>
+      <Form
+        className="signup-page__form"
+        method="post"
+        aria-labelledby="signup-title"
+        aria-busy={isLoading}
+        onSubmit={() => setIsLoading(true)}
+      >
         <Input
-          type="text"
+          type="email"
           id="email"
           labelText={t('email')}
           name="email"
           value={formData.email}
           onChange={handleChange}
           errors={errors.email}
+          isRequired
+          autoComplete="email"
         />
         <Input
           type="text"
@@ -105,6 +113,8 @@ export default function SignUp() {
           value={formData.name}
           onChange={handleChange}
           errors={errors.name}
+          isRequired
+          autoComplete="name"
         />
         <Input
           type={showPassword ? 'text' : 'password'}
@@ -113,16 +123,21 @@ export default function SignUp() {
           name="password"
           value={formData.password}
           rightIcon={
-            <div className="toggler" onClick={() => setShowPassword((prev) => !prev)}>
-              {showPassword ? (
-                <img src={eyeHide} alt="eye hide" />
-              ) : (
-                <img src={eyeShow} alt="eye show" />
-              )}
-            </div>
+            <button
+              type="button"
+              className="password-visibility-toggle"
+              aria-label={t(showPassword ? 'hidePassword' : 'showPassword')}
+              aria-pressed={showPassword}
+              aria-controls="password"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              <img src={showPassword ? eyeHide : eyeShow} alt="" aria-hidden="true" />
+            </button>
           }
           onChange={handleChange}
           errors={errors.password}
+          isRequired
+          autoComplete="new-password"
         />
 
         <Button
@@ -130,6 +145,7 @@ export default function SignUp() {
           type={ButtonType.Submit}
           customClass="signup-page__form-button"
           isDisabled={errors.isError || isLoading}
+          ariaLabel={isLoading ? t('creatingAccount') : undefined}
         >
           {isLoading ? '...' : t('signUp')}
         </Button>

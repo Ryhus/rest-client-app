@@ -14,6 +14,15 @@ describe('Message component', () => {
     const messageElement = screen.getByText('Success');
     expect(messageElement).toHaveClass('message');
     expect(messageElement).toHaveClass('message--success');
+    expect(messageElement).toHaveAttribute('role', 'status');
+    expect(messageElement).toHaveAttribute('aria-live', 'polite');
+  });
+
+  it('announces warning messages as alerts', () => {
+    render(<Message text="Warning" messageType="warning" />);
+
+    expect(screen.getByRole('alert')).toHaveTextContent('Warning');
+    expect(screen.getByRole('alert')).toHaveAttribute('aria-live', 'assertive');
   });
 
   it('handles no messageType gracefully', () => {

@@ -69,6 +69,14 @@
   top: 12px;
 }
 
+.password-visibility-toggle {
+  display: flex;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
 .input-field::placeholder {
   color: variables.$input-placeholder-color;
 }

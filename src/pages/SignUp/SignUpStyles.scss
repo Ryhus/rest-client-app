@@ -8,6 +8,10 @@
   flex: 1;
   padding: 7rem 2rem;
 
+  > h1 {
+    font-size: variables.$font-size-md;
+  }
+
   &__server-error {
     font-family: variables.$font-family-base;
     font-size: variables.$font-size-base;

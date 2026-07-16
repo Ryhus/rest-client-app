@@ -45,7 +45,7 @@ describe('Home component', () => {
     mockedUseRouteLoaderData.mockReturnValue(null);
 
     render(<RouterProvider router={router} />);
-    expect(screen.getByText(/Welcome!/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: /Welcome!/i })).toBeInTheDocument();
   });
 
   it('renders user welcome message with name when session exists', () => {
@@ -66,6 +66,7 @@ describe('Home component', () => {
 
   it('renders app info', () => {
     render(<RouterProvider router={router} />);
+    expect(screen.getByRole('region', { name: /about the application/i })).toBeInTheDocument();
     const info = screen.getByText(
       /Rest Client app is a modern API testing and collaboration tool/i
     );
@@ -76,5 +77,10 @@ describe('Home component', () => {
     render(<RouterProvider router={router} />);
     const cards = screen.getAllByTestId('card');
     expect(cards).toHaveLength(3);
+    expect(screen.getByRole('region', { name: /development team/i })).toBeInTheDocument();
+    expect(screen.getAllByRole('article')).toHaveLength(3);
+    expect(
+      screen.getByRole('link', { name: /open Yevhen Ryhus's GitHub profile/i })
+    ).toBeInTheDocument();
   });
 });

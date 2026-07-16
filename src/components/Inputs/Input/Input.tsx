@@ -25,6 +25,8 @@ interface InputProps {
   border?: boolean;
   ariaLabel?: string;
   ariaRequired?: boolean;
+  isRequired?: boolean;
+  autoComplete?: string;
 }
 
 function Input({
@@ -45,6 +47,8 @@ function Input({
   border = true,
   ariaLabel,
   ariaRequired,
+  isRequired = false,
+  autoComplete,
 }: InputProps) {
   const errorId = `${id}-error`;
   const hasError = Boolean(errors?.some((error) => error.message));
@@ -91,9 +95,11 @@ function Input({
           defaultValue={defaultValue}
           placeholder={placeholder}
           aria-label={ariaLabel}
-          aria-required={ariaRequired}
+          aria-required={ariaRequired ?? isRequired}
           aria-invalid={hasError}
           aria-describedby={hasError ? errorId : undefined}
+          required={isRequired}
+          autoComplete={autoComplete}
         ></input>
         {rightIcon && <div className="input-right-icon">{rightIcon}</div>}
         {renderError()}

@@ -2,6 +2,9 @@
   "welcomeUser": "Welcome back, {{user}}!",
   "userNameFallback": "dear user",
   "welcomeGuest": "Welcome!",
+  "aboutTitle": "About the application",
+  "teamTitle": "Development team",
+  "githubProfile": "Open {{name}}'s GitHub profile",
   "aboutApp": "Rest Client app is a modern API testing and collaboration tool designed to make working with REST APIs faster and easier. You can send requests, inspect responses and keep your history in one place. Whether you’re debugging, exploring, or documenting an API, our app helps you do it efficiently.",
   "aboutCourse": "Rest Client app is created as a final task of <courseLink>{{courseName}}</courseLink>",
   "team": [
