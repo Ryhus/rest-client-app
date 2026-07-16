@@ -17,9 +17,4 @@
   max-height: 100%;
   overflow: auto;
   border-radius: 4px;
-
-  &:focus-visible {
-    outline: 3px solid #22b5d3;
-    outline-offset: 3px;
-  }
 }

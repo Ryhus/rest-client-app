@@ -16,11 +16,6 @@
 
   .close-modal-bttn {
     align-self: end;
-
-    &:focus-visible {
-      outline: 3px solid variables.$color-secondary-light;
-      outline-offset: 2px;
-    }
   }
 
   .analytics-title {

@@ -31,11 +31,6 @@
     background-color: variables.$bg-color;
   }
 
-  .date-list-tittle:focus-visible {
-    outline: 3px solid variables.$color-secondary-light;
-    outline-offset: 2px;
-  }
-
   .opened-list-container {
     width: 100%;
     display: flex;
@@ -74,12 +69,6 @@
         text-decoration-color: currentColor;
       }
 
-      .url-link:focus-visible {
-        border-radius: variables.$border-radius;
-        outline: 3px solid variables.$color-secondary-light;
-        outline-offset: 3px;
-      }
-
       .icon-container {
         width: 44px;
         height: 44px;
@@ -90,12 +79,6 @@
         cursor: pointer;
         &:hover {
           color: variables.$color-primary;
-        }
-
-        &:focus-visible {
-          border-radius: variables.$border-radius;
-          outline: 3px solid variables.$color-secondary-light;
-          outline-offset: 2px;
         }
 
         svg {

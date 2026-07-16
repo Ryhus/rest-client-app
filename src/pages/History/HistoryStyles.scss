@@ -37,11 +37,6 @@
     color: variables.$color-secondary-light;
   }
 
-  .suggestion-link:focus-visible {
-    border-radius: variables.$border-radius;
-    outline: 3px solid variables.$color-secondary-light;
-    outline-offset: 3px;
-  }
 }
 
 .history-list {
