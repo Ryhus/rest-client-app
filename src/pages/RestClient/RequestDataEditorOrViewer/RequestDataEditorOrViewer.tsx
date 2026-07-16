@@ -5,6 +5,7 @@ import { type ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ButtonStyle } from '@/components/Button/types.ts';
 import BodyEditor from './BodyEditor';
+import SyntaxHighlighter, { isJson } from './SyntaxHighlighter';
 
 interface PropsEditor {
   mode: 'editor';
@@ -136,7 +137,9 @@ export function RequestDataEditorOrViewer(props: PropsEditor | PropsViewer) {
             {status && <div className={`status-code ${statusClassName}`}>{status}</div>}
             {data && (
               <div className="body">
-                <pre data-testid="pre-data">{data}</pre>
+                <pre className="response-syntax" data-testid="pre-data">
+                  <SyntaxHighlighter value={data} language={isJson(data) ? 'json' : 'text'} />
+                </pre>
               </div>
             )}
             {errorMessage && (

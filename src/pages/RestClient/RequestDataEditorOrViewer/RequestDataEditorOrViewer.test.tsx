@@ -178,5 +178,35 @@ describe('Viewer', () => {
       const status = screen.getByText('100');
       expect(status).toHaveAttribute('class', 'status-code info');
     });
+
+    test('automatically highlights a JSON response', () => {
+      const { container } = renderViewerComponent({
+        data: '{"name":"John","age":30,"active":true,"note":null}',
+        status: 200,
+      });
+
+      expect(container.querySelectorAll('.response-syntax .syntax-token--property')).toHaveLength(
+        4
+      );
+      expect(container.querySelector('.response-syntax .syntax-token--string')).toHaveTextContent(
+        '"John"'
+      );
+      expect(container.querySelector('.response-syntax .syntax-token--number')).toHaveTextContent(
+        '30'
+      );
+      expect(container.querySelector('.response-syntax .syntax-token--boolean')).toHaveTextContent(
+        'true'
+      );
+      expect(container.querySelector('.response-syntax .syntax-token--null')).toHaveTextContent(
+        'null'
+      );
+    });
+
+    test('renders a plain-text response without JSON token colors', () => {
+      const { container } = renderViewerComponent({ data: 'plain response', status: 200 });
+
+      expect(screen.getByTestId('pre-data')).toHaveTextContent('plain response');
+      expect(container.querySelector('.response-syntax .syntax-token')).not.toBeInTheDocument();
+    });
   });
 });

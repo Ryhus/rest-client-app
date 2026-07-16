@@ -53,6 +53,13 @@
     .body {
       margin-top: 8px;
     }
+
+    .response-syntax {
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: variables.$font-size-sm;
+      line-height: 22px;
+      white-space: pre;
+    }
   }
 
   .viewer .error {
@@ -69,6 +76,7 @@
 
 .body-editor {
   position: relative;
+  isolation: isolate;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -140,7 +148,7 @@
   will-change: transform;
 }
 
-.body-editor__line {
+.syntax-highlight__line {
   min-height: 22px;
 }
 
