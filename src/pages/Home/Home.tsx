@@ -15,7 +15,7 @@ export default function Home() {
     <div className="home">
       <h1>
         {user
-          ? t('welcomeUser', { user: user.user_metadata?.name ?? t('userNameFallback') })
+          ? t('welcomeUser', { user: user.user_metadata?.name || t('userNameFallback') })
           : t('welcomeGuest')}
       </h1>
       <section className="home__about" aria-labelledby="about-app-title">
